@@ -164,116 +164,82 @@ export function RunnerWindow() {
       ctx.stroke();
       
     } else {
-      // Run animation - 6 frame cycle with heavily capped cadence
-      // Target: ~2.2 strides per second max (6 frames = 1 stride, so ~370ms per cycle min)
-      const MIN_CYCLE_MS = 380;  // ~2.6 strides/sec max - very readable
-      const MAX_CYCLE_MS = 500;  // slower at low speed (~2 strides/sec)
-      const speedNormalized = Math.min(1, (speed - INITIAL_SPEED) / (MAX_SPEED - INITIAL_SPEED));
-      const k = 1.5; // gentler easing factor
-      const easedProgress = 1 - Math.exp(-k * speedNormalized);
-      const targetCycleSpeed = MAX_CYCLE_MS - (MAX_CYCLE_MS - MIN_CYCLE_MS) * easedProgress;
+      // Simple 2-frame run cycle with hard-capped cadence
+      const CYCLE_MS = 300; // Fixed ~3.3 strides/sec - clean and readable
+      const frame = Math.floor((Date.now() / (CYCLE_MS / 2)) % 2); // 2 frames
       
-      // Per-frame time for smooth 6-frame cycle
-      const frameTime = targetCycleSpeed / 6;
-      const frame = Math.floor((Date.now() / frameTime) % 6);
+      // Very subtle bob (almost imperceptible)
+      const bob = frame === 0 ? -1 : 0;
+      const adjustedHipY = hipY + bob;
+      const adjustedShoulderY = shoulderY + bob;
+      const adjustedHeadY = headY + bob;
       
-      // Speed-based enhancements for "faster feel" without faster cadence
-      const strideMultiplier = 1 + speedNormalized * 0.3;  // up to 30% more stride extension
-      const forwardLean = speedNormalized * 3;  // up to 3px forward lean
-      const bobAmplitude = 2 + speedNormalized * 1.5;  // slightly more bounce at speed
-      
-      // Vertical bob synced to stride (enhanced at speed)
-      const baseBob = (frame === 1 || frame === 4) ? -bobAmplitude : (frame === 2 || frame === 5) ? bobAmplitude * 0.5 : 0;
-      const adjustedHipY = hipY + baseBob;
-      const adjustedShoulderY = shoulderY + baseBob;
-      const adjustedHeadY = headY + baseBob;
-      
-      // Apply forward lean at higher speeds
-      const leanedCenterX = centerX + forwardLean;
-      
-      // Torso (vertical line with lean)
+      // Torso (vertical line)
       ctx.beginPath();
       ctx.moveTo(centerX, adjustedHipY);
-      ctx.lineTo(leanedCenterX, adjustedShoulderY);
+      ctx.lineTo(centerX, adjustedShoulderY);
       ctx.stroke();
       
-      // Backpack (on the left/back side)
+      // Backpack
       ctx.fillStyle = '#4a5568';
-      ctx.fillRect(leanedCenterX - 10, adjustedShoulderY + 2, 8, 14);
+      ctx.fillRect(centerX - 10, adjustedShoulderY + 2, 8, 14);
       ctx.fillStyle = '#718096';
-      ctx.fillRect(leanedCenterX - 9, adjustedShoulderY + 4, 6, 5);
+      ctx.fillRect(centerX - 9, adjustedShoulderY + 4, 6, 5);
       ctx.fillStyle = '#2d3748';
       
-      // Head (circle)
+      // Head
       ctx.beginPath();
-      ctx.arc(leanedCenterX, adjustedHeadY, 8, 0, Math.PI * 2);
+      ctx.arc(centerX, adjustedHeadY, 8, 0, Math.PI * 2);
       ctx.fill();
       
-      // Leg positions based on frame (alternating stride) - enhanced at speed
-      const baseAngles = [
-        { left: { hip: 25, knee: -15 }, right: { hip: -20, knee: 10 } },   // frame 0
-        { left: { hip: 10, knee: 5 }, right: { hip: -10, knee: 0 } },      // frame 1 - passing
-        { left: { hip: -20, knee: 10 }, right: { hip: 25, knee: -15 } },   // frame 2
-        { left: { hip: -25, knee: 15 }, right: { hip: 20, knee: -10 } },   // frame 3
-        { left: { hip: -10, knee: 0 }, right: { hip: 10, knee: 5 } },      // frame 4 - passing
-        { left: { hip: 20, knee: -10 }, right: { hip: -25, knee: 15 } },   // frame 5
-      ];
-      
-      const baseAngle = baseAngles[frame];
-      // Apply stride multiplier to angles for extended reach at speed
-      const angles = {
-        left: { 
-          hip: baseAngle.left.hip * strideMultiplier, 
-          knee: baseAngle.left.knee * strideMultiplier 
-        },
-        right: { 
-          hip: baseAngle.right.hip * strideMultiplier, 
-          knee: baseAngle.right.knee * strideMultiplier 
-        }
-      };
+      // Simple 2-frame leg positions
       const legLength = 12;
       
-      // Left leg
-      const leftHipAngle = (angles.left.hip * Math.PI) / 180;
-      const leftKneeAngle = (angles.left.knee * Math.PI) / 180;
-      const leftKneeX = centerX - 3 + Math.sin(leftHipAngle) * legLength;
-      const leftKneeY = adjustedHipY + Math.cos(leftHipAngle) * legLength;
-      const leftFootX = leftKneeX + Math.sin(leftHipAngle + leftKneeAngle) * legLength;
-      const leftFootY = leftKneeY + Math.cos(leftHipAngle + leftKneeAngle) * legLength;
+      if (frame === 0) {
+        // Frame 0: Left forward, right back
+        // Left leg - forward
+        ctx.beginPath();
+        ctx.moveTo(centerX - 3, adjustedHipY);
+        ctx.lineTo(centerX + 5, adjustedHipY + 12);
+        ctx.lineTo(centerX + 8, runner.y);
+        ctx.stroke();
+        
+        // Right leg - back
+        ctx.beginPath();
+        ctx.moveTo(centerX + 3, adjustedHipY);
+        ctx.lineTo(centerX - 5, adjustedHipY + 12);
+        ctx.lineTo(centerX - 8, runner.y);
+        ctx.stroke();
+      } else {
+        // Frame 1: Right forward, left back
+        // Left leg - back
+        ctx.beginPath();
+        ctx.moveTo(centerX - 3, adjustedHipY);
+        ctx.lineTo(centerX - 5, adjustedHipY + 12);
+        ctx.lineTo(centerX - 8, runner.y);
+        ctx.stroke();
+        
+        // Right leg - forward
+        ctx.beginPath();
+        ctx.moveTo(centerX + 3, adjustedHipY);
+        ctx.lineTo(centerX + 5, adjustedHipY + 12);
+        ctx.lineTo(centerX + 8, runner.y);
+        ctx.stroke();
+      }
       
-      ctx.beginPath();
-      ctx.moveTo(centerX - 3, adjustedHipY);
-      ctx.lineTo(leftKneeX, leftKneeY);
-      ctx.lineTo(leftFootX, Math.min(leftFootY, runner.y));
-      ctx.stroke();
-      
-      // Right leg
-      const rightHipAngle = (angles.right.hip * Math.PI) / 180;
-      const rightKneeAngle = (angles.right.knee * Math.PI) / 180;
-      const rightKneeX = centerX + 3 + Math.sin(rightHipAngle) * legLength;
-      const rightKneeY = adjustedHipY + Math.cos(rightHipAngle) * legLength;
-      const rightFootX = rightKneeX + Math.sin(rightHipAngle + rightKneeAngle) * legLength;
-      const rightFootY = rightKneeY + Math.cos(rightHipAngle + rightKneeAngle) * legLength;
-      
-      ctx.beginPath();
-      ctx.moveTo(centerX + 3, adjustedHipY);
-      ctx.lineTo(rightKneeX, rightKneeY);
-      ctx.lineTo(rightFootX, Math.min(rightFootY, runner.y));
-      ctx.stroke();
-      
-      // Arms counter-swing opposite to legs (enhanced at speed)
-      const armSwing = Math.sin((frame / 6) * Math.PI * 2) * (12 * strideMultiplier);
+      // Simple arm swing (opposite to legs)
+      const armOffset = frame === 0 ? 6 : -6;
       
       // Left arm
       ctx.beginPath();
       ctx.moveTo(centerX - 2, adjustedShoulderY + 3);
-      ctx.lineTo(centerX - 2 + armSwing, adjustedShoulderY + 15);
+      ctx.lineTo(centerX - 2 - armOffset, adjustedShoulderY + 14);
       ctx.stroke();
       
       // Right arm
       ctx.beginPath();
       ctx.moveTo(centerX + 2, adjustedShoulderY + 3);
-      ctx.lineTo(centerX + 2 - armSwing, adjustedShoulderY + 15);
+      ctx.lineTo(centerX + 2 + armOffset, adjustedShoulderY + 14);
       ctx.stroke();
     }
     
@@ -393,12 +359,16 @@ export function RunnerWindow() {
     drawRunner(ctx, runner, state.speed);
 
     // Spawn obstacles (with grace period at start)
+    // ~15% more obstacles, scaling slightly with speed
     const timeSinceStart = Date.now() - gameStartTimeRef.current;
     const pastGracePeriod = timeSinceStart > GRACE_PERIOD_MS;
-    const spawnChance = 0.015 + (state.speed - INITIAL_SPEED) * 0.001;
+    const baseSpawnChance = 0.018; // was 0.015 (~20% increase)
+    const speedBonus = (state.speed - INITIAL_SPEED) * 0.0015; // was 0.001 (50% more scaling)
+    const spawnChance = baseSpawnChance + speedBonus;
+    const minGap = 180; // slightly reduced from 200 for more obstacles
     
     if (pastGracePeriod && Math.random() < spawnChance && (obstaclesRef.current.length === 0 || 
-        obstaclesRef.current[obstaclesRef.current.length - 1].x < canvas.width - 200)) {
+        obstaclesRef.current[obstaclesRef.current.length - 1].x < canvas.width - minGap)) {
       const types: ('camera' | 'tripod' | 'computer')[] = ['camera', 'tripod', 'computer'];
       const type = types[Math.floor(Math.random() * types.length)];
       obstaclesRef.current.push({
@@ -444,10 +414,11 @@ export function RunnerWindow() {
       }
     }
 
-    // Update score and speed
+    // Update score (distance-based: faster = more points) and speed
+    const scoreIncrement = Math.floor(state.speed * 0.5); // Score scales with speed
     setGameState(prev => ({
       ...prev,
-      score: prev.score + 1,
+      score: prev.score + scoreIncrement,
       speed: Math.min(prev.speed + SPEED_INCREMENT, MAX_SPEED),
     }));
 
