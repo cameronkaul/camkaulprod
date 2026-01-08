@@ -161,8 +161,14 @@ export function RunnerWindow() {
       ctx.stroke();
       
     } else {
-      // Run animation - 6 frame cycle synced to speed
-      const cycleSpeed = 60 / (speed * 0.8); // Faster animation at higher speed
+      // Run animation - 6 frame cycle with capped cadence
+      // Use exponential easing to prevent spazzing at high speeds
+      const MIN_CYCLE_MS = 70;  // ~14 FPS max cadence (readable cap)
+      const MAX_CYCLE_MS = 120; // slower at low speed
+      const speedNormalized = (speed - INITIAL_SPEED) / (MAX_SPEED - INITIAL_SPEED);
+      const k = 2.5; // easing factor
+      const easedProgress = 1 - Math.exp(-k * speedNormalized);
+      const cycleSpeed = MAX_CYCLE_MS - (MAX_CYCLE_MS - MIN_CYCLE_MS) * easedProgress;
       const frame = Math.floor((Date.now() / cycleSpeed) % 6);
       
       // Vertical bob synced to stride
