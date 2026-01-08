@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Folder, User, Mail, FileText, Film, FolderPlus, Image, ArrowUpDown, LayoutGrid, LucideIcon } from 'lucide-react';
+import { Folder, User, Mail, FileText, Film, Gamepad2, FolderPlus, Image, ArrowUpDown, LayoutGrid, LucideIcon } from 'lucide-react';
 import { WindowProvider, useWindows, WindowId } from '@/contexts/WindowContext';
 import { MenuBar } from '@/components/desktop/MenuBar';
 import { Dock } from '@/components/desktop/Dock';
@@ -13,6 +13,7 @@ import { ContactWindow } from '@/components/windows/ContactWindow';
 import { ResumeWindow } from '@/components/windows/ResumeWindow';
 import { ReelsWindow } from '@/components/windows/ReelsWindow';
 import { TrashWindow } from '@/components/windows/TrashWindow';
+import { RunnerWindow } from '@/components/windows/RunnerWindow';
 import {
   ContextMenu,
   ContextMenuContent,
@@ -36,6 +37,7 @@ const desktopIcons: DesktopIconConfig[] = [
   { id: 'contact', icon: Mail, label: 'Contact' },
   { id: 'resume', icon: FileText, label: 'Resume' },
   { id: 'reels', icon: Film, label: 'Reels' },
+  { id: 'runner', icon: Gamepad2, label: 'Runner' },
 ];
 
 function DesktopContent() {
@@ -75,8 +77,8 @@ function DesktopContent() {
           {/* Menu Bar */}
           <MenuBar onSpotlightOpen={() => setSpotlightOpen(true)} />
 
-          {/* Desktop Icons */}
-          <div className="absolute top-12 right-6 flex flex-col gap-2 z-10">
+          {/* Desktop Icons - Left side, stacked vertically */}
+          <div className="absolute top-14 left-4 flex flex-col gap-1 z-10">
             {desktopIcons.map((item) => (
               <DesktopIcon
                 key={item.id}
@@ -98,6 +100,7 @@ function DesktopContent() {
           <Window id="resume"><ResumeWindow /></Window>
           <Window id="reels"><ReelsWindow /></Window>
           <Window id="trash"><TrashWindow /></Window>
+          <Window id="runner"><RunnerWindow /></Window>
 
           {/* Dock */}
           <Dock />

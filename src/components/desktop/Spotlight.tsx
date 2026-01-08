@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Folder, Film, User, Mail, FileText } from 'lucide-react';
+import { Search, Folder, Film, User, Mail, FileText, Gamepad2 } from 'lucide-react';
 import { projects } from '@/data/projects';
 import { useWindows, WindowId } from '@/contexts/WindowContext';
 
@@ -37,6 +37,7 @@ export function Spotlight({ isOpen, onClose }: SpotlightProps) {
       { type: 'window', id: 'contact', windowId: 'contact', title: 'Contact', subtitle: 'Get in touch', icon: Mail },
       { type: 'window', id: 'resume', windowId: 'resume', title: 'Resume', subtitle: 'Experience & skills', icon: FileText },
       { type: 'window', id: 'reels', windowId: 'reels', title: 'Reels', subtitle: 'Watch highlights', icon: Film },
+      { type: 'window', id: 'runner', windowId: 'runner', title: 'Runner', subtitle: 'Play the mini game', icon: Gamepad2 },
     ];
 
     // Project results

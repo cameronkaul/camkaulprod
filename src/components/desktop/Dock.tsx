@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { Folder, User, Mail, FileText, Film, Trash2 } from 'lucide-react';
+import { Folder, User, Mail, FileText, Film, Trash2, Gamepad2 } from 'lucide-react';
 import { useWindows, WindowId } from '@/contexts/WindowContext';
 import {
   ContextMenu,
@@ -22,6 +22,7 @@ const dockItems: DockItem[] = [
   { id: 'contact', icon: Mail, label: 'Contact' },
   { id: 'resume', icon: FileText, label: 'Resume' },
   { id: 'reels', icon: Film, label: 'Reels' },
+  { id: 'runner', icon: Gamepad2, label: 'Runner' },
   { id: 'trash', icon: Trash2, label: 'Deleted Scenes' },
 ];
 
@@ -61,7 +62,7 @@ export function Dock() {
 
   return (
     <motion.div
-      className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[9997]"
+      className="fixed bottom-4 left-0 right-0 flex justify-center z-[9997]"
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.3, type: 'spring', stiffness: 200, damping: 20 }}
