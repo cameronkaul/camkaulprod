@@ -150,7 +150,7 @@ function DockIcon({
   const ref = useRef<HTMLButtonElement>(null);
   
   // Calculate distance from mouse for magnification
-  const distance = useTransform(mouseX, (val) => {
+  const distance = useTransform(mouseX, (val: number) => {
     if (!ref.current) return 150;
     const rect = ref.current.getBoundingClientRect();
     const iconCenter = rect.left + rect.width / 2;
