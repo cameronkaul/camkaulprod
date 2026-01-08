@@ -29,14 +29,16 @@ interface Obstacle {
 const GRAVITY = 0.8;
 const JUMP_FORCE = -14;
 const GROUND_Y = 180;
-const INITIAL_SPEED = 5;
-const SPEED_INCREMENT = 0.001;
-const MAX_SPEED = 15;
+const INITIAL_SPEED = 7;  // ~40% faster start (was 5)
+const SPEED_INCREMENT = 0.0008;  // Slightly slower ramp for smoother curve
+const MAX_SPEED = 16;
+const GRACE_PERIOD_MS = 1000;  // 1 second before first obstacle can spawn
 
 export function RunnerWindow() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>(0);
   const obstaclesRef = useRef<Obstacle[]>([]);
+  const gameStartTimeRef = useRef<number>(0);
   const runnerRef = useRef<Runner>({
     x: 60,
     y: GROUND_Y,
@@ -77,6 +79,7 @@ export function RunnerWindow() {
       isJumping: false,
     };
     obstaclesRef.current = [];
+    gameStartTimeRef.current = Date.now();
     setGameState(prev => ({
       ...prev,
       isRunning: true,
@@ -161,42 +164,53 @@ export function RunnerWindow() {
       ctx.stroke();
       
     } else {
-      // Run animation - 6 frame cycle with capped cadence
-      // Use exponential easing to prevent spazzing at high speeds
-      const MIN_CYCLE_MS = 70;  // ~14 FPS max cadence (readable cap)
-      const MAX_CYCLE_MS = 120; // slower at low speed
-      const speedNormalized = (speed - INITIAL_SPEED) / (MAX_SPEED - INITIAL_SPEED);
-      const k = 2.5; // easing factor
+      // Run animation - 6 frame cycle with heavily capped cadence
+      // Target: ~2.2 strides per second max (6 frames = 1 stride, so ~370ms per cycle min)
+      const MIN_CYCLE_MS = 380;  // ~2.6 strides/sec max - very readable
+      const MAX_CYCLE_MS = 500;  // slower at low speed (~2 strides/sec)
+      const speedNormalized = Math.min(1, (speed - INITIAL_SPEED) / (MAX_SPEED - INITIAL_SPEED));
+      const k = 1.5; // gentler easing factor
       const easedProgress = 1 - Math.exp(-k * speedNormalized);
-      const cycleSpeed = MAX_CYCLE_MS - (MAX_CYCLE_MS - MIN_CYCLE_MS) * easedProgress;
-      const frame = Math.floor((Date.now() / cycleSpeed) % 6);
+      const targetCycleSpeed = MAX_CYCLE_MS - (MAX_CYCLE_MS - MIN_CYCLE_MS) * easedProgress;
       
-      // Vertical bob synced to stride
-      const bob = (frame === 1 || frame === 4) ? -2 : (frame === 2 || frame === 5) ? 1 : 0;
-      const adjustedHipY = hipY + bob;
-      const adjustedShoulderY = shoulderY + bob;
-      const adjustedHeadY = headY + bob;
+      // Per-frame time for smooth 6-frame cycle
+      const frameTime = targetCycleSpeed / 6;
+      const frame = Math.floor((Date.now() / frameTime) % 6);
       
-      // Torso (vertical line)
+      // Speed-based enhancements for "faster feel" without faster cadence
+      const strideMultiplier = 1 + speedNormalized * 0.3;  // up to 30% more stride extension
+      const forwardLean = speedNormalized * 3;  // up to 3px forward lean
+      const bobAmplitude = 2 + speedNormalized * 1.5;  // slightly more bounce at speed
+      
+      // Vertical bob synced to stride (enhanced at speed)
+      const baseBob = (frame === 1 || frame === 4) ? -bobAmplitude : (frame === 2 || frame === 5) ? bobAmplitude * 0.5 : 0;
+      const adjustedHipY = hipY + baseBob;
+      const adjustedShoulderY = shoulderY + baseBob;
+      const adjustedHeadY = headY + baseBob;
+      
+      // Apply forward lean at higher speeds
+      const leanedCenterX = centerX + forwardLean;
+      
+      // Torso (vertical line with lean)
       ctx.beginPath();
       ctx.moveTo(centerX, adjustedHipY);
-      ctx.lineTo(centerX, adjustedShoulderY);
+      ctx.lineTo(leanedCenterX, adjustedShoulderY);
       ctx.stroke();
       
       // Backpack (on the left/back side)
       ctx.fillStyle = '#4a5568';
-      ctx.fillRect(centerX - 10, adjustedShoulderY + 2, 8, 14);
+      ctx.fillRect(leanedCenterX - 10, adjustedShoulderY + 2, 8, 14);
       ctx.fillStyle = '#718096';
-      ctx.fillRect(centerX - 9, adjustedShoulderY + 4, 6, 5);
+      ctx.fillRect(leanedCenterX - 9, adjustedShoulderY + 4, 6, 5);
       ctx.fillStyle = '#2d3748';
       
       // Head (circle)
       ctx.beginPath();
-      ctx.arc(centerX, adjustedHeadY, 8, 0, Math.PI * 2);
+      ctx.arc(leanedCenterX, adjustedHeadY, 8, 0, Math.PI * 2);
       ctx.fill();
       
-      // Leg positions based on frame (alternating stride)
-      const legAngles = [
+      // Leg positions based on frame (alternating stride) - enhanced at speed
+      const baseAngles = [
         { left: { hip: 25, knee: -15 }, right: { hip: -20, knee: 10 } },   // frame 0
         { left: { hip: 10, knee: 5 }, right: { hip: -10, knee: 0 } },      // frame 1 - passing
         { left: { hip: -20, knee: 10 }, right: { hip: 25, knee: -15 } },   // frame 2
@@ -205,7 +219,18 @@ export function RunnerWindow() {
         { left: { hip: 20, knee: -10 }, right: { hip: -25, knee: 15 } },   // frame 5
       ];
       
-      const angles = legAngles[frame];
+      const baseAngle = baseAngles[frame];
+      // Apply stride multiplier to angles for extended reach at speed
+      const angles = {
+        left: { 
+          hip: baseAngle.left.hip * strideMultiplier, 
+          knee: baseAngle.left.knee * strideMultiplier 
+        },
+        right: { 
+          hip: baseAngle.right.hip * strideMultiplier, 
+          knee: baseAngle.right.knee * strideMultiplier 
+        }
+      };
       const legLength = 12;
       
       // Left leg
@@ -236,8 +261,8 @@ export function RunnerWindow() {
       ctx.lineTo(rightFootX, Math.min(rightFootY, runner.y));
       ctx.stroke();
       
-      // Arms counter-swing opposite to legs
-      const armSwing = Math.sin((frame / 6) * Math.PI * 2) * 12;
+      // Arms counter-swing opposite to legs (enhanced at speed)
+      const armSwing = Math.sin((frame / 6) * Math.PI * 2) * (12 * strideMultiplier);
       
       // Left arm
       ctx.beginPath();
@@ -367,9 +392,12 @@ export function RunnerWindow() {
     // Draw runner
     drawRunner(ctx, runner, state.speed);
 
-    // Spawn obstacles
+    // Spawn obstacles (with grace period at start)
+    const timeSinceStart = Date.now() - gameStartTimeRef.current;
+    const pastGracePeriod = timeSinceStart > GRACE_PERIOD_MS;
     const spawnChance = 0.015 + (state.speed - INITIAL_SPEED) * 0.001;
-    if (Math.random() < spawnChance && (obstaclesRef.current.length === 0 || 
+    
+    if (pastGracePeriod && Math.random() < spawnChance && (obstaclesRef.current.length === 0 || 
         obstaclesRef.current[obstaclesRef.current.length - 1].x < canvas.width - 200)) {
       const types: ('camera' | 'tripod' | 'computer')[] = ['camera', 'tripod', 'computer'];
       const type = types[Math.floor(Math.random() * types.length)];
