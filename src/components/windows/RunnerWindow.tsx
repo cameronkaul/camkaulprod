@@ -99,39 +99,152 @@ export function RunnerWindow() {
     });
   }, []);
 
-  // Draw runner (stylized character with backpack)
-  const drawRunner = useCallback((ctx: CanvasRenderingContext2D, runner: Runner) => {
+  // Draw runner (stick figure with backpack, facing right)
+  const drawRunner = useCallback((ctx: CanvasRenderingContext2D, runner: Runner, speed: number) => {
     ctx.save();
     
-    // Body
-    ctx.fillStyle = '#2d3748';
-    ctx.fillRect(runner.x + 5, runner.y - 35, 20, 30);
+    const centerX = runner.x + 15;
+    const hipY = runner.y - 15;
+    const shoulderY = runner.y - 35;
+    const headY = runner.y - 45;
     
-    // Backpack
-    ctx.fillStyle = '#4a5568';
-    ctx.fillRect(runner.x + 20, runner.y - 30, 10, 20);
-    ctx.fillStyle = '#718096';
-    ctx.fillRect(runner.x + 22, runner.y - 28, 6, 8);
-    
-    // Head
-    ctx.fillStyle = '#f6e05e';
-    ctx.beginPath();
-    ctx.arc(runner.x + 15, runner.y - 42, 10, 0, Math.PI * 2);
-    ctx.fill();
-    
-    // Legs (animated based on movement)
-    const legOffset = Math.sin(Date.now() / 80) * 5;
-    ctx.fillStyle = '#2d3748';
-    ctx.fillRect(runner.x + 7, runner.y - 5, 6, 10);
-    ctx.fillRect(runner.x + 17, runner.y - 5, 6, 10);
-    
-    // Arms
     ctx.strokeStyle = '#2d3748';
-    ctx.lineWidth = 4;
-    ctx.beginPath();
-    ctx.moveTo(runner.x + 5, runner.y - 25);
-    ctx.lineTo(runner.x - 2, runner.y - 15 + legOffset);
-    ctx.stroke();
+    ctx.fillStyle = '#2d3748';
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    
+    if (runner.isJumping) {
+      // Jump pose - legs tucked, arms back
+      
+      // Torso (vertical line)
+      ctx.beginPath();
+      ctx.moveTo(centerX, hipY);
+      ctx.lineTo(centerX, shoulderY);
+      ctx.stroke();
+      
+      // Backpack (on the left/back side, since facing right)
+      ctx.fillStyle = '#4a5568';
+      ctx.fillRect(centerX - 10, shoulderY + 2, 8, 14);
+      ctx.fillStyle = '#718096';
+      ctx.fillRect(centerX - 9, shoulderY + 4, 6, 5);
+      ctx.fillStyle = '#2d3748';
+      
+      // Head (circle)
+      ctx.beginPath();
+      ctx.arc(centerX, headY, 8, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Left leg - tucked back and up
+      ctx.beginPath();
+      ctx.moveTo(centerX - 2, hipY);
+      ctx.lineTo(centerX - 8, hipY + 8);
+      ctx.lineTo(centerX - 12, hipY + 2);
+      ctx.stroke();
+      
+      // Right leg - tucked back and up
+      ctx.beginPath();
+      ctx.moveTo(centerX + 2, hipY);
+      ctx.lineTo(centerX - 4, hipY + 10);
+      ctx.lineTo(centerX - 10, hipY + 6);
+      ctx.stroke();
+      
+      // Left arm - held back
+      ctx.beginPath();
+      ctx.moveTo(centerX - 2, shoulderY + 3);
+      ctx.lineTo(centerX - 10, shoulderY + 8);
+      ctx.stroke();
+      
+      // Right arm - slightly forward
+      ctx.beginPath();
+      ctx.moveTo(centerX + 2, shoulderY + 3);
+      ctx.lineTo(centerX + 8, shoulderY + 10);
+      ctx.stroke();
+      
+    } else {
+      // Run animation - 6 frame cycle synced to speed
+      const cycleSpeed = 60 / (speed * 0.8); // Faster animation at higher speed
+      const frame = Math.floor((Date.now() / cycleSpeed) % 6);
+      
+      // Vertical bob synced to stride
+      const bob = (frame === 1 || frame === 4) ? -2 : (frame === 2 || frame === 5) ? 1 : 0;
+      const adjustedHipY = hipY + bob;
+      const adjustedShoulderY = shoulderY + bob;
+      const adjustedHeadY = headY + bob;
+      
+      // Torso (vertical line)
+      ctx.beginPath();
+      ctx.moveTo(centerX, adjustedHipY);
+      ctx.lineTo(centerX, adjustedShoulderY);
+      ctx.stroke();
+      
+      // Backpack (on the left/back side)
+      ctx.fillStyle = '#4a5568';
+      ctx.fillRect(centerX - 10, adjustedShoulderY + 2, 8, 14);
+      ctx.fillStyle = '#718096';
+      ctx.fillRect(centerX - 9, adjustedShoulderY + 4, 6, 5);
+      ctx.fillStyle = '#2d3748';
+      
+      // Head (circle)
+      ctx.beginPath();
+      ctx.arc(centerX, adjustedHeadY, 8, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Leg positions based on frame (alternating stride)
+      const legAngles = [
+        { left: { hip: 25, knee: -15 }, right: { hip: -20, knee: 10 } },   // frame 0
+        { left: { hip: 10, knee: 5 }, right: { hip: -10, knee: 0 } },      // frame 1 - passing
+        { left: { hip: -20, knee: 10 }, right: { hip: 25, knee: -15 } },   // frame 2
+        { left: { hip: -25, knee: 15 }, right: { hip: 20, knee: -10 } },   // frame 3
+        { left: { hip: -10, knee: 0 }, right: { hip: 10, knee: 5 } },      // frame 4 - passing
+        { left: { hip: 20, knee: -10 }, right: { hip: -25, knee: 15 } },   // frame 5
+      ];
+      
+      const angles = legAngles[frame];
+      const legLength = 12;
+      
+      // Left leg
+      const leftHipAngle = (angles.left.hip * Math.PI) / 180;
+      const leftKneeAngle = (angles.left.knee * Math.PI) / 180;
+      const leftKneeX = centerX - 3 + Math.sin(leftHipAngle) * legLength;
+      const leftKneeY = adjustedHipY + Math.cos(leftHipAngle) * legLength;
+      const leftFootX = leftKneeX + Math.sin(leftHipAngle + leftKneeAngle) * legLength;
+      const leftFootY = leftKneeY + Math.cos(leftHipAngle + leftKneeAngle) * legLength;
+      
+      ctx.beginPath();
+      ctx.moveTo(centerX - 3, adjustedHipY);
+      ctx.lineTo(leftKneeX, leftKneeY);
+      ctx.lineTo(leftFootX, Math.min(leftFootY, runner.y));
+      ctx.stroke();
+      
+      // Right leg
+      const rightHipAngle = (angles.right.hip * Math.PI) / 180;
+      const rightKneeAngle = (angles.right.knee * Math.PI) / 180;
+      const rightKneeX = centerX + 3 + Math.sin(rightHipAngle) * legLength;
+      const rightKneeY = adjustedHipY + Math.cos(rightHipAngle) * legLength;
+      const rightFootX = rightKneeX + Math.sin(rightHipAngle + rightKneeAngle) * legLength;
+      const rightFootY = rightKneeY + Math.cos(rightHipAngle + rightKneeAngle) * legLength;
+      
+      ctx.beginPath();
+      ctx.moveTo(centerX + 3, adjustedHipY);
+      ctx.lineTo(rightKneeX, rightKneeY);
+      ctx.lineTo(rightFootX, Math.min(rightFootY, runner.y));
+      ctx.stroke();
+      
+      // Arms counter-swing opposite to legs
+      const armSwing = Math.sin((frame / 6) * Math.PI * 2) * 12;
+      
+      // Left arm
+      ctx.beginPath();
+      ctx.moveTo(centerX - 2, adjustedShoulderY + 3);
+      ctx.lineTo(centerX - 2 + armSwing, adjustedShoulderY + 15);
+      ctx.stroke();
+      
+      // Right arm
+      ctx.beginPath();
+      ctx.moveTo(centerX + 2, adjustedShoulderY + 3);
+      ctx.lineTo(centerX + 2 - armSwing, adjustedShoulderY + 15);
+      ctx.stroke();
+    }
     
     ctx.restore();
   }, []);
@@ -139,20 +252,38 @@ export function RunnerWindow() {
   // Draw obstacle (camera, tripod, or computer)
   const drawObstacle = useCallback((ctx: CanvasRenderingContext2D, obstacle: Obstacle) => {
     ctx.save();
-    ctx.fillStyle = '#e53e3e';
     
     switch (obstacle.type) {
       case 'camera':
-        // Camera body
+        // Camera body - rectangular block
         ctx.fillStyle = '#1a202c';
-        ctx.fillRect(obstacle.x, obstacle.y - 25, 30, 20);
-        // Lens
+        ctx.fillRect(obstacle.x + 5, obstacle.y - 22, 22, 16);
+        
+        // Viewfinder bump on top
+        ctx.fillStyle = '#2d3748';
+        ctx.fillRect(obstacle.x + 18, obstacle.y - 28, 8, 6);
+        
+        // Lens barrel protruding from front (right side)
+        ctx.fillStyle = '#1a202c';
+        ctx.fillRect(obstacle.x + 27, obstacle.y - 19, 6, 10);
+        
+        // Lens glass (circle at end of barrel)
+        ctx.fillStyle = '#4a5568';
         ctx.beginPath();
-        ctx.arc(obstacle.x + 35, obstacle.y - 15, 8, 0, Math.PI * 2);
+        ctx.arc(obstacle.x + 33, obstacle.y - 14, 5, 0, Math.PI * 2);
         ctx.fill();
-        // Flash
-        ctx.fillStyle = '#f6e05e';
-        ctx.fillRect(obstacle.x + 8, obstacle.y - 32, 10, 7);
+        ctx.fillStyle = '#718096';
+        ctx.beginPath();
+        ctx.arc(obstacle.x + 33, obstacle.y - 14, 3, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Small grip on left side
+        ctx.fillStyle = '#2d3748';
+        ctx.fillRect(obstacle.x + 2, obstacle.y - 20, 4, 12);
+        
+        // Rear screen indication
+        ctx.fillStyle = '#4a5568';
+        ctx.fillRect(obstacle.x + 7, obstacle.y - 19, 10, 8);
         break;
         
       case 'tripod':
@@ -228,7 +359,7 @@ export function RunnerWindow() {
     }
 
     // Draw runner
-    drawRunner(ctx, runner);
+    drawRunner(ctx, runner, state.speed);
 
     // Spawn obstacles
     const spawnChance = 0.015 + (state.speed - INITIAL_SPEED) * 0.001;
@@ -349,7 +480,7 @@ export function RunnerWindow() {
     ctx.stroke();
 
     // Draw runner
-    drawRunner(ctx, runnerRef.current);
+    drawRunner(ctx, runnerRef.current, INITIAL_SPEED);
   }, [drawRunner]);
 
   return (
