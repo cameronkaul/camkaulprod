@@ -1,5 +1,5 @@
-import { useRef, useEffect, ReactNode } from 'react';
-import { motion, useDragControls, AnimatePresence } from 'framer-motion';
+import { useRef, useEffect, useState, ReactNode } from 'react';
+import { motion, useDragControls, AnimatePresence, PanInfo } from 'framer-motion';
 import { useWindows, WindowId } from '@/contexts/WindowContext';
 
 interface WindowProps {
@@ -15,12 +15,15 @@ export function Window({ id, children }: WindowProps) {
     minimizeWindow,
     focusWindow,
     updateWindowPosition,
+    updateWindowSize,
     isMobile,
   } = useWindows();
 
   const windowState = windows.find(w => w.id === id);
   const dragControls = useDragControls();
-  const constraintsRef = useRef<HTMLDivElement>(null);
+  const windowRef = useRef<HTMLDivElement>(null);
+  const [isResizing, setIsResizing] = useState(false);
+  const [resizeDirection, setResizeDirection] = useState<string | null>(null);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -37,6 +40,55 @@ export function Window({ id, children }: WindowProps) {
   }
 
   const isActive = activeWindowId === id;
+
+  // Handle resize
+  const handleResizeStart = (direction: string) => (e: React.PointerEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsResizing(true);
+    setResizeDirection(direction);
+
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const startWidth = windowState.size.width;
+    const startHeight = windowState.size.height;
+    const startPosX = windowState.position.x;
+    const startPosY = windowState.position.y;
+
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      const deltaX = moveEvent.clientX - startX;
+      const deltaY = moveEvent.clientY - startY;
+
+      let newWidth = startWidth;
+      let newHeight = startHeight;
+      let newX = startPosX;
+      let newY = startPosY;
+
+      if (direction.includes('e')) newWidth = Math.max(300, startWidth + deltaX);
+      if (direction.includes('w')) {
+        newWidth = Math.max(300, startWidth - deltaX);
+        newX = startPosX + (startWidth - newWidth);
+      }
+      if (direction.includes('s')) newHeight = Math.max(200, startHeight + deltaY);
+      if (direction.includes('n')) {
+        newHeight = Math.max(200, startHeight - deltaY);
+        newY = startPosY + (startHeight - newHeight);
+      }
+
+      updateWindowSize(id, { width: newWidth, height: newHeight });
+      updateWindowPosition(id, { x: newX, y: newY });
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+      setResizeDirection(null);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  };
 
   // Mobile: full screen stacked view
   if (isMobile) {
@@ -82,12 +134,16 @@ export function Window({ id, children }: WindowProps) {
   return (
     <AnimatePresence>
       <motion.div
-        ref={constraintsRef}
         className="fixed inset-0 pointer-events-none"
         style={{ zIndex: windowState.zIndex }}
       >
         <motion.div
-          className={`window-chrome pointer-events-auto absolute ${isActive ? 'ring-1 ring-ring/20' : ''}`}
+          ref={windowRef}
+          className={`window-chrome pointer-events-auto absolute transition-shadow duration-200 ${
+            isActive 
+              ? 'shadow-[0_25px_50px_-12px_hsl(220_30%_10%_/_0.35)] ring-1 ring-ring/20' 
+              : 'shadow-[0_15px_30px_-10px_hsl(220_30%_10%_/_0.2)] opacity-95'
+          }`}
           style={{
             width: windowState.size.width,
             height: windowState.size.height,
@@ -99,22 +155,25 @@ export function Window({ id, children }: WindowProps) {
           dragMomentum={false}
           dragElastic={0}
           dragListener={false}
-          onDragEnd={(_, info) => {
+          onDragEnd={(_, info: PanInfo) => {
             updateWindowPosition(id, {
               x: windowState.position.x + info.offset.x,
               y: windowState.position.y + info.offset.y,
             });
           }}
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          transition={{ duration: 0.2, ease: 'easeOut' }}
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.9, y: 20 }}
+          transition={{ duration: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
           onClick={() => focusWindow(id)}
         >
           {/* Title Bar - Drag Handle */}
           <div
-            className="window-titlebar cursor-grab active:cursor-grabbing"
+            className={`window-titlebar cursor-grab active:cursor-grabbing ${
+              isActive ? '' : 'opacity-80'
+            }`}
             onPointerDown={(e) => {
+              if (isResizing) return;
               focusWindow(id);
               dragControls.start(e);
             }}
@@ -125,20 +184,28 @@ export function Window({ id, children }: WindowProps) {
                   e.stopPropagation();
                   closeWindow(id);
                 }}
-                className="window-control window-control-close"
+                className="window-control window-control-close group relative"
                 aria-label="Close window"
-              />
+              >
+                <span className="opacity-0 group-hover:opacity-100 absolute inset-0 flex items-center justify-center text-[8px] font-bold text-window-close-fg">×</span>
+              </button>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   minimizeWindow(id);
                 }}
-                className="window-control window-control-minimize"
+                className="window-control window-control-minimize group relative"
                 aria-label="Minimize window"
-              />
-              <div className="window-control window-control-maximize" />
+              >
+                <span className="opacity-0 group-hover:opacity-100 absolute inset-0 flex items-center justify-center text-[8px] font-bold text-window-minimize-fg">−</span>
+              </button>
+              <div className="window-control window-control-maximize group relative">
+                <span className="opacity-0 group-hover:opacity-100 absolute inset-0 flex items-center justify-center text-[8px] font-bold text-window-maximize-fg">+</span>
+              </div>
             </div>
-            <span className="absolute left-1/2 -translate-x-1/2 text-sm font-medium text-foreground/80">
+            <span className={`absolute left-1/2 -translate-x-1/2 text-sm font-medium ${
+              isActive ? 'text-foreground/80' : 'text-foreground/50'
+            }`}>
               {windowState.title}
             </span>
           </div>
@@ -150,6 +217,46 @@ export function Window({ id, children }: WindowProps) {
           >
             {children}
           </div>
+
+          {/* Resize Handles */}
+          {/* Right edge */}
+          <div
+            className="absolute right-0 top-11 bottom-0 w-1 cursor-e-resize hover:bg-primary/20"
+            onPointerDown={handleResizeStart('e')}
+          />
+          {/* Bottom edge */}
+          <div
+            className="absolute bottom-0 left-0 right-0 h-1 cursor-s-resize hover:bg-primary/20"
+            onPointerDown={handleResizeStart('s')}
+          />
+          {/* Bottom-right corner */}
+          <div
+            className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize hover:bg-primary/20"
+            onPointerDown={handleResizeStart('se')}
+          />
+          {/* Left edge */}
+          <div
+            className="absolute left-0 top-11 bottom-0 w-1 cursor-w-resize hover:bg-primary/20"
+            onPointerDown={handleResizeStart('w')}
+          />
+          {/* Top edge (below title bar) */}
+          <div
+            className="absolute top-11 left-0 right-0 h-1 cursor-n-resize hover:bg-primary/20"
+            onPointerDown={handleResizeStart('n')}
+          />
+          {/* Corners */}
+          <div
+            className="absolute bottom-0 left-0 w-4 h-4 cursor-sw-resize hover:bg-primary/20"
+            onPointerDown={handleResizeStart('sw')}
+          />
+          <div
+            className="absolute top-11 right-0 w-4 h-4 cursor-ne-resize hover:bg-primary/20"
+            onPointerDown={handleResizeStart('ne')}
+          />
+          <div
+            className="absolute top-11 left-0 w-4 h-4 cursor-nw-resize hover:bg-primary/20"
+            onPointerDown={handleResizeStart('nw')}
+          />
         </motion.div>
       </motion.div>
     </AnimatePresence>
