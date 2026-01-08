@@ -23,22 +23,26 @@ interface Obstacle {
   y: number;
   width: number;
   height: number;
-  type: 'camera' | 'tripod' | 'computer';
+  type: ObstacleType;
 }
+
+type ObstacleType = 'camera' | 'tripod' | 'computer' | 'harddrive' | 'microphone';
 
 const GRAVITY = 0.8;
 const JUMP_FORCE = -14;
 const GROUND_Y = 180;
-const INITIAL_SPEED = 7;  // ~40% faster start (was 5)
-const SPEED_INCREMENT = 0.0008;  // Slightly slower ramp for smoother curve
-const MAX_SPEED = 16;
-const GRACE_PERIOD_MS = 1000;  // 1 second before first obstacle can spawn
+const INITIAL_SPEED = 7;
+const MAX_SPEED = 14;
+const GRACE_PERIOD_MS = 1000;
+// Speed curve: speed = INITIAL_SPEED + (MAX_SPEED - INITIAL_SPEED) * (1 - exp(-SPEED_CURVE_K * timeSeconds))
+const SPEED_CURVE_K = 0.15; // Most ramp happens in first 10-15 seconds
 
 export function RunnerWindow() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>(0);
   const obstaclesRef = useRef<Obstacle[]>([]);
   const gameStartTimeRef = useRef<number>(0);
+  const recentObstaclesRef = useRef<ObstacleType[]>([]); // Track last 2 spawned types
   const runnerRef = useRef<Runner>({
     x: 60,
     y: GROUND_Y,
@@ -79,6 +83,7 @@ export function RunnerWindow() {
       isJumping: false,
     };
     obstaclesRef.current = [];
+    recentObstaclesRef.current = [];
     gameStartTimeRef.current = Date.now();
     setGameState(prev => ({
       ...prev,
@@ -246,7 +251,7 @@ export function RunnerWindow() {
     ctx.restore();
   }, []);
 
-  // Draw obstacle (camera, tripod, or computer)
+  // Draw obstacle (camera, tripod, computer, harddrive, microphone)
   const drawObstacle = useCallback((ctx: CanvasRenderingContext2D, obstacle: Obstacle) => {
     ctx.save();
     
@@ -312,6 +317,59 @@ export function RunnerWindow() {
         ctx.fillRect(obstacle.x + 15, obstacle.y - 15, 10, 10);
         ctx.fillRect(obstacle.x + 10, obstacle.y - 5, 20, 5);
         break;
+        
+      case 'harddrive':
+        // Main body - rectangular block
+        ctx.fillStyle = '#1a202c';
+        ctx.fillRect(obstacle.x + 3, obstacle.y - 18, 28, 14);
+        
+        // Top edge/lid line
+        ctx.fillStyle = '#2d3748';
+        ctx.fillRect(obstacle.x + 3, obstacle.y - 18, 28, 3);
+        
+        // Label block
+        ctx.fillStyle = '#4a5568';
+        ctx.fillRect(obstacle.x + 7, obstacle.y - 13, 14, 6);
+        
+        // Indicator LED dot
+        ctx.fillStyle = '#48bb78';
+        ctx.beginPath();
+        ctx.arc(obstacle.x + 26, obstacle.y - 10, 2, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Cable nub on side
+        ctx.fillStyle = '#2d3748';
+        ctx.fillRect(obstacle.x + 31, obstacle.y - 14, 4, 6);
+        break;
+        
+      case 'microphone':
+        // Handle/body
+        ctx.fillStyle = '#2d3748';
+        ctx.fillRect(obstacle.x + 12, obstacle.y - 25, 10, 22);
+        
+        // Mic head (capsule shape - rounded rectangle effect)
+        ctx.fillStyle = '#1a202c';
+        ctx.fillRect(obstacle.x + 10, obstacle.y - 40, 14, 15);
+        
+        // Rounded top of mic head
+        ctx.beginPath();
+        ctx.arc(obstacle.x + 17, obstacle.y - 40, 7, Math.PI, 0);
+        ctx.fill();
+        
+        // Grille lines
+        ctx.strokeStyle = '#4a5568';
+        ctx.lineWidth = 1;
+        for (let i = 0; i < 4; i++) {
+          ctx.beginPath();
+          ctx.moveTo(obstacle.x + 11, obstacle.y - 38 + i * 3);
+          ctx.lineTo(obstacle.x + 23, obstacle.y - 38 + i * 3);
+          ctx.stroke();
+        }
+        
+        // Small base
+        ctx.fillStyle = '#718096';
+        ctx.fillRect(obstacle.x + 10, obstacle.y - 3, 14, 3);
+        break;
     }
     
     ctx.restore();
@@ -359,23 +417,52 @@ export function RunnerWindow() {
     drawRunner(ctx, runner, state.speed);
 
     // Spawn obstacles (with grace period at start)
-    // ~15% more obstacles, scaling slightly with speed
     const timeSinceStart = Date.now() - gameStartTimeRef.current;
     const pastGracePeriod = timeSinceStart > GRACE_PERIOD_MS;
-    const baseSpawnChance = 0.018; // was 0.015 (~20% increase)
-    const speedBonus = (state.speed - INITIAL_SPEED) * 0.0015; // was 0.001 (50% more scaling)
+    const baseSpawnChance = 0.018;
+    const speedBonus = (state.speed - INITIAL_SPEED) * 0.002;
     const spawnChance = baseSpawnChance + speedBonus;
-    const minGap = 180; // slightly reduced from 200 for more obstacles
     
-    if (pastGracePeriod && Math.random() < spawnChance && (obstaclesRef.current.length === 0 || 
-        obstaclesRef.current[obstaclesRef.current.length - 1].x < canvas.width - minGap)) {
-      const types: ('camera' | 'tripod' | 'computer')[] = ['camera', 'tripod', 'computer'];
-      const type = types[Math.floor(Math.random() * types.length)];
+    // Dynamic gap: wider at high speed to stay fair, with random variance
+    const baseGap = 160;
+    const speedGapBonus = (state.speed - INITIAL_SPEED) * 5;
+    const randomVariance = Math.random() * 40; // 0-40px extra
+    const minGap = baseGap + speedGapBonus + randomVariance;
+    
+    const lastObstacle = obstaclesRef.current[obstaclesRef.current.length - 1];
+    const canSpawn = obstaclesRef.current.length === 0 || (lastObstacle && lastObstacle.x < canvas.width - minGap);
+    
+    if (pastGracePeriod && Math.random() < spawnChance && canSpawn) {
+      // Obstacle selection with variety (no repeats in last 2)
+      const allTypes: ObstacleType[] = ['camera', 'tripod', 'computer', 'harddrive', 'microphone'];
+      const recentTypes = recentObstaclesRef.current;
+      
+      // Filter out types that appeared in last 2 spawns
+      let availableTypes = allTypes.filter(t => !recentTypes.includes(t));
+      if (availableTypes.length === 0) {
+        // Fallback: just avoid immediate repeat
+        availableTypes = allTypes.filter(t => t !== recentTypes[recentTypes.length - 1]);
+      }
+      
+      const type = availableTypes[Math.floor(Math.random() * availableTypes.length)];
+      
+      // Update recent history (keep last 2)
+      recentObstaclesRef.current = [...recentTypes, type].slice(-2);
+      
+      // Hitbox dimensions by type
+      const dimensions: Record<ObstacleType, { width: number; height: number }> = {
+        camera: { width: 35, height: 35 },
+        tripod: { width: 30, height: 55 },
+        computer: { width: 35, height: 45 },
+        harddrive: { width: 35, height: 20 },
+        microphone: { width: 34, height: 45 },
+      };
+      
       obstaclesRef.current.push({
         x: canvas.width,
         y: GROUND_Y,
-        width: type === 'tripod' ? 30 : 35,
-        height: type === 'tripod' ? 55 : type === 'camera' ? 35 : 45,
+        width: dimensions[type].width,
+        height: dimensions[type].height,
         type,
       });
     }
@@ -414,12 +501,15 @@ export function RunnerWindow() {
       }
     }
 
-    // Update score (distance-based: faster = more points) and speed
-    const scoreIncrement = Math.floor(state.speed * 0.5); // Score scales with speed
+    // Update score (distance-based) and speed (exponential curve)
+    const timeSec = timeSinceStart / 1000;
+    const newSpeed = INITIAL_SPEED + (MAX_SPEED - INITIAL_SPEED) * (1 - Math.exp(-SPEED_CURVE_K * timeSec));
+    const scoreIncrement = Math.floor(newSpeed * 0.5);
+    
     setGameState(prev => ({
       ...prev,
       score: prev.score + scoreIncrement,
-      speed: Math.min(prev.speed + SPEED_INCREMENT, MAX_SPEED),
+      speed: newSpeed,
     }));
 
     animationRef.current = requestAnimationFrame(gameLoop);
