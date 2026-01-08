@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { LucideIcon } from 'lucide-react';
 
@@ -7,37 +7,62 @@ interface DesktopIconProps {
   label: string;
   onClick: () => void;
   onDoubleClick: () => void;
+  isSelected?: boolean;
+  onSelect?: () => void;
 }
 
-export function DesktopIcon({ icon: Icon, label, onClick, onDoubleClick }: DesktopIconProps) {
-  const [isSelected, setIsSelected] = useState(false);
+export function DesktopIcon({ 
+  icon: Icon, 
+  label, 
+  onClick, 
+  onDoubleClick,
+  isSelected = false,
+  onSelect,
+}: DesktopIconProps) {
+  const [clickTimeout, setClickTimeout] = useState<NodeJS.Timeout | null>(null);
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsSelected(true);
-    onClick();
+    
+    if (clickTimeout) {
+      clearTimeout(clickTimeout);
+      setClickTimeout(null);
+      onDoubleClick();
+    } else {
+      onSelect?.();
+      onClick();
+      const timeout = setTimeout(() => {
+        setClickTimeout(null);
+      }, 300);
+      setClickTimeout(timeout);
+    }
   };
 
-  const handleDoubleClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onDoubleClick();
-  };
+  useEffect(() => {
+    return () => {
+      if (clickTimeout) clearTimeout(clickTimeout);
+    };
+  }, [clickTimeout]);
 
   return (
-    <motion.button
+    <motion.div
       className={`desktop-icon w-20 ${isSelected ? 'selected' : ''}`}
       onClick={handleClick}
-      onDoubleClick={handleDoubleClick}
-      onBlur={() => setIsSelected(false)}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
-      <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-secondary to-muted flex items-center justify-center shadow-md">
+      <div className={`w-14 h-14 rounded-xl bg-gradient-to-br from-secondary to-muted flex items-center justify-center shadow-lg mx-auto ${
+        isSelected ? 'ring-2 ring-primary/50' : ''
+      }`}>
         <Icon className="w-7 h-7 text-foreground" />
       </div>
-      <span className="text-xs text-center mt-1 text-shadow-sm text-foreground font-medium leading-tight">
+      <span className={`text-xs font-medium text-center mt-1 px-1 py-0.5 rounded block ${
+        isSelected 
+          ? 'bg-primary text-primary-foreground' 
+          : 'text-foreground text-shadow-sm'
+      }`}>
         {label}
       </span>
-    </motion.button>
+    </motion.div>
   );
 }
