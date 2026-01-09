@@ -56,11 +56,14 @@ export function DesktopIcon({
       }`}>
         <Icon className="w-7 h-7 text-foreground" />
       </div>
-      <span className={`text-xs font-medium text-center mt-1 px-1.5 py-0.5 rounded block ${
-        isSelected 
-          ? 'bg-primary text-primary-foreground' 
-          : 'text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]'
-      }`}>
+      <span 
+        className={`text-xs font-medium text-center mt-1 px-2 py-0.5 rounded-md block ${
+          isSelected 
+            ? 'bg-primary text-primary-foreground' 
+            : 'text-white bg-black/30 backdrop-blur-sm'
+        }`}
+        style={{ textShadow: isSelected ? 'none' : '0 1px 3px rgba(0,0,0,0.5)' }}
+      >
         {label}
       </span>
     </motion.div>
