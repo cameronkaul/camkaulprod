@@ -1,33 +1,28 @@
-import { Download, Mail, MapPin, Linkedin } from 'lucide-react';
+import { Mail, MapPin, Linkedin } from 'lucide-react';
 import { resumeData } from '@/data/projects';
 
 export function ResumeWindow() {
   return (
     <div className="p-6 space-y-6 max-w-3xl mx-auto">
       {/* Header */}
-      <div className="flex justify-between items-start border-b border-border pb-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">{resumeData.name}</h1>
-          <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-sm text-muted-foreground">
-            <span className="flex items-center gap-1">
-              <MapPin className="w-3 h-3" /> {resumeData.contact.location}
-            </span>
-            <span className="flex items-center gap-1">
-              <Mail className="w-3 h-3" /> {resumeData.contact.email}
-            </span>
-            <a 
-              href={`https://${resumeData.contact.linkedin}`} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 hover:text-foreground hover:underline transition-colors"
-            >
-              <Linkedin className="w-3 h-3" /> LinkedIn
-            </a>
-          </div>
+      <div className="border-b border-border pb-4">
+        <h1 className="text-2xl font-bold tracking-tight">{resumeData.name}</h1>
+        <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-sm text-muted-foreground">
+          <span className="flex items-center gap-1">
+            <MapPin className="w-3 h-3" /> {resumeData.contact.location}
+          </span>
+          <span className="flex items-center gap-1">
+            <Mail className="w-3 h-3" /> {resumeData.contact.email}
+          </span>
+          <a 
+            href={`https://${resumeData.contact.linkedin}`} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 hover:text-foreground hover:underline transition-colors"
+          >
+            <Linkedin className="w-3 h-3" /> LinkedIn
+          </a>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm hover:opacity-90 transition-opacity">
-          <Download className="w-4 h-4" /> PDF
-        </button>
       </div>
 
       {/* Education */}
