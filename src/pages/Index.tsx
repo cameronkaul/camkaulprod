@@ -11,7 +11,7 @@ import { BootOverlay } from '@/components/desktop/BootOverlay';
 import { PortfolioWindow } from '@/components/windows/PortfolioWindow';
 import { ProjectWindow } from '@/components/windows/ProjectWindow';
 import { AboutWindow } from '@/components/windows/AboutWindow';
-import { ContactWindow } from '@/components/windows/ContactWindow';
+import { ContactWindow, openContactEmail } from '@/components/windows/ContactWindow';
 import { ResumeWindow } from '@/components/windows/ResumeWindow';
 import { TrashWindow } from '@/components/windows/TrashWindow';
 import { RunnerWindow } from '@/components/windows/RunnerWindow';
@@ -112,7 +112,13 @@ function DesktopContent() {
                 isSelected={selectedIconId === item.id}
                 onSelect={() => setSelectedIconId(item.id)}
                 onClick={() => {}}
-                onDoubleClick={() => openWindow(item.id)}
+                onDoubleClick={() => {
+                  if (item.id === 'contact') {
+                    openContactEmail();
+                  } else {
+                    openWindow(item.id);
+                  }
+                }}
               />
             ))}
           </motion.div>

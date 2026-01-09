@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { Folder, User, Mail, FileText, Trash2, Gamepad2 } from 'lucide-react';
 import { useWindows, WindowId } from '@/contexts/WindowContext';
+import { openContactEmail } from '@/components/windows/ContactWindow';
 import {
   ContextMenu,
   ContextMenuContent,
@@ -17,8 +18,8 @@ interface DockItem {
 }
 
 const dockItems: DockItem[] = [
-  { id: 'contact', icon: Mail, label: 'Contact' },
   { id: 'portfolio', icon: Folder, label: 'Portfolio' },
+  { id: 'contact', icon: Mail, label: 'Contact' },
   { id: 'about', icon: User, label: 'About' },
   { id: 'resume', icon: FileText, label: 'Resume' },
   { id: 'runner', icon: Gamepad2, label: 'Runner' },
@@ -82,6 +83,12 @@ export function Dock() {
   }, [hoverEnabled, hasLeftDock]);
 
   const handleClick = (id: WindowId) => {
+    // Contact opens mailto directly
+    if (id === 'contact') {
+      openContactEmail();
+      return;
+    }
+    
     const window = windows.find(w => w.id === id);
     if (window?.isOpen && !window.isMinimized) {
       focusWindow(id);
