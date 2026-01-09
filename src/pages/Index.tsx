@@ -42,7 +42,8 @@ function DesktopContent() {
   const [spotlightOpen, setSpotlightOpen] = useState(false);
   const [selectedIconId, setSelectedIconId] = useState<WindowId | null>(null);
   const [isBooting, setIsBooting] = useState(true);
-  const [showUI, setShowUI] = useState(false);
+  const [showIcons, setShowIcons] = useState(false);
+  const [showChrome, setShowChrome] = useState(false);
   const [wallpaperSharp, setWallpaperSharp] = useState(false);
   const { openWindow } = useWindows();
 
@@ -66,8 +67,10 @@ function DesktopContent() {
     setIsBooting(false);
     // Start sharpening wallpaper immediately
     setWallpaperSharp(true);
-    // Trigger staged UI reveal after brief moment
-    setTimeout(() => setShowUI(true), 100);
+    // Step 1: Desktop icons appear first
+    setTimeout(() => setShowIcons(true), 50);
+    // Step 2: Dock and menu bar rise in after icons
+    setTimeout(() => setShowChrome(true), 250);
   }, []);
 
   return (
@@ -94,21 +97,12 @@ function DesktopContent() {
           {/* Boot Overlay */}
           {isBooting && <BootOverlay onComplete={handleBootComplete} />}
 
-          {/* Menu Bar - fade in + subtle slide down */}
-          <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={showUI ? { opacity: 1, y: 0 } : { opacity: 0, y: -8 }}
-            transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
-          >
-            <MenuBar onSpotlightOpen={() => setSpotlightOpen(true)} />
-          </motion.div>
-
-          {/* Desktop Icons - fade in last with slight delay */}
+          {/* Desktop Icons - appear first */}
           <motion.div 
             className="absolute top-14 left-4 flex flex-col gap-1 z-10"
             initial={{ opacity: 0 }}
-            animate={showUI ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.4, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
+            animate={showIcons ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
           >
             {desktopIcons.map((item) => (
               <DesktopIcon
@@ -123,6 +117,15 @@ function DesktopContent() {
             ))}
           </motion.div>
 
+          {/* Menu Bar - rises from bottom with dock */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={showChrome ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
+          >
+            <MenuBar onSpotlightOpen={() => setSpotlightOpen(true)} />
+          </motion.div>
+
           {/* Windows */}
           <Window id="portfolio"><PortfolioWindow /></Window>
           <Window id="project"><ProjectWindow /></Window>
@@ -132,11 +135,11 @@ function DesktopContent() {
           <Window id="trash"><TrashWindow /></Window>
           <Window id="runner"><RunnerWindow /></Window>
 
-          {/* Dock - fade in + subtle slide up */}
+          {/* Dock - rises from bottom with stronger motion */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={showUI ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-            transition={{ duration: 0.55, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+            initial={{ opacity: 0, y: 50 }}
+            animate={showChrome ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <Dock />
           </motion.div>
