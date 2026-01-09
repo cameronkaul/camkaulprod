@@ -43,6 +43,7 @@ function DesktopContent() {
   const [selectedIconId, setSelectedIconId] = useState<WindowId | null>(null);
   const [isBooting, setIsBooting] = useState(true);
   const [showUI, setShowUI] = useState(false);
+  const [wallpaperSharp, setWallpaperSharp] = useState(false);
   const { openWindow } = useWindows();
 
   useEffect(() => {
@@ -63,8 +64,10 @@ function DesktopContent() {
 
   const handleBootComplete = useCallback(() => {
     setIsBooting(false);
-    // Small delay then trigger staged UI reveal
-    setTimeout(() => setShowUI(true), 50);
+    // Start sharpening wallpaper immediately
+    setWallpaperSharp(true);
+    // Trigger staged UI reveal after brief moment
+    setTimeout(() => setShowUI(true), 100);
   }, []);
 
   return (
@@ -72,32 +75,40 @@ function DesktopContent() {
       <ContextMenuTrigger asChild>
         <div
           className="h-screen w-screen overflow-hidden relative"
-          style={{
-            backgroundImage: `url(${desktopWallpaper})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-          }}
           onClick={handleDesktopClick}
         >
+          {/* Wallpaper with blur transition */}
+          <div
+            className="absolute inset-0 transition-all ease-out"
+            style={{
+              backgroundImage: `url(${desktopWallpaper})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              filter: wallpaperSharp 
+                ? 'blur(0px) brightness(1) saturate(1)' 
+                : 'blur(12px) brightness(1.05) saturate(0.85)',
+              transitionDuration: '600ms',
+            }}
+          />
           {/* Boot Overlay */}
           {isBooting && <BootOverlay onComplete={handleBootComplete} />}
 
-          {/* Menu Bar - slides down */}
+          {/* Menu Bar - fade in + subtle slide down */}
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={showUI ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
+            initial={{ opacity: 0, y: -8 }}
+            animate={showUI ? { opacity: 1, y: 0 } : { opacity: 0, y: -8 }}
+            transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <MenuBar onSpotlightOpen={() => setSpotlightOpen(true)} />
           </motion.div>
 
-          {/* Desktop Icons - Left side, stacked vertically, fade in last */}
+          {/* Desktop Icons - fade in last with slight delay */}
           <motion.div 
             className="absolute top-14 left-4 flex flex-col gap-1 z-10"
             initial={{ opacity: 0 }}
             animate={showUI ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.3, delay: 0.2, ease: 'easeOut' }}
+            transition={{ duration: 0.4, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
           >
             {desktopIcons.map((item) => (
               <DesktopIcon
@@ -121,11 +132,11 @@ function DesktopContent() {
           <Window id="trash"><TrashWindow /></Window>
           <Window id="runner"><RunnerWindow /></Window>
 
-          {/* Dock - slides up */}
+          {/* Dock - fade in + subtle slide up */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={showUI ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.3, delay: 0.1, ease: 'easeOut' }}
+            initial={{ opacity: 0, y: 16 }}
+            animate={showUI ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+            transition={{ duration: 0.55, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <Dock />
           </motion.div>
