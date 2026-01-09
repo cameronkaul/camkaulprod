@@ -133,7 +133,7 @@ export function MenuBar({ onSpotlightOpen }: MenuBarProps) {
                   href="https://www.instagram.com/camkaul.prod/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-foreground transition-colors p-1"
+                  className="hover:text-foreground transition-colors p-1 cursor-pointer"
                 >
                   <Instagram className="w-4 h-4" />
                 </a>
@@ -148,7 +148,7 @@ export function MenuBar({ onSpotlightOpen }: MenuBarProps) {
                   href="https://www.youtube.com/@CamKaul"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-foreground transition-colors p-1"
+                  className="hover:text-foreground transition-colors p-1 cursor-pointer"
                 >
                   <Youtube className="w-4 h-4" />
                 </a>
