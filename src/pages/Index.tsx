@@ -15,6 +15,7 @@ import { ContactWindow, openContactEmail } from '@/components/windows/ContactWin
 import { ResumeWindow } from '@/components/windows/ResumeWindow';
 import { TrashWindow } from '@/components/windows/TrashWindow';
 import { RunnerWindow } from '@/components/windows/RunnerWindow';
+import { DocumentWindow } from '@/components/windows/DocumentWindow';
 import desktopWallpaper from '@/assets/desktop-wallpaper.jpg';
 import {
   ContextMenu,
@@ -141,6 +142,7 @@ function DesktopContent() {
           <Window id="resume"><ResumeWindow /></Window>
           <Window id="trash"><TrashWindow /></Window>
           <Window id="runner"><RunnerWindow /></Window>
+          <Window id="document"><DocumentWindow /></Window>
 
           {/* Dock - rises from bottom with stronger motion */}
           <motion.div
