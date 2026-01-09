@@ -7,6 +7,7 @@ interface GameState {
   score: number;
   highScore: number;
   speed: number;
+  streak: number;
 }
 
 interface Runner {
@@ -24,6 +25,7 @@ interface Obstacle {
   width: number;
   height: number;
   type: ObstacleType;
+  scored: boolean;
 }
 
 type ObstacleType = 'camera' | 'tripod' | 'computer' | 'harddrive' | 'microphone';
@@ -60,6 +62,7 @@ export function RunnerWindow() {
     score: 0,
     highScore: parseInt(localStorage.getItem('runnerHighScore') || '0', 10),
     speed: INITIAL_SPEED,
+    streak: 0,
   });
 
   const gameStateRef = useRef(gameState);
@@ -92,6 +95,7 @@ export function RunnerWindow() {
       isGameOver: false,
       score: 0,
       speed: INITIAL_SPEED,
+      streak: 0,
     }));
   }, []);
 
@@ -467,6 +471,7 @@ export function RunnerWindow() {
         width: dimensions[type].width,
         height: dimensions[type].height,
         type,
+        scored: false,
       });
     }
 
@@ -504,16 +509,40 @@ export function RunnerWindow() {
       }
     }
 
-    // Update score (distance-based) and speed (exponential curve)
+    // Score by obstacles cleared (when obstacle passes behind player)
+    let scoreToAdd = 0;
+    let streakBonus = 0;
+    for (const obstacle of obstaclesRef.current) {
+      if (!obstacle.scored && obstacle.x + obstacle.width < runner.x) {
+        obstacle.scored = true;
+        scoreToAdd += 1;
+      }
+    }
+
+    // Update speed (exponential curve)
     const timeSec = timeSinceStart / 1000;
     const newSpeed = INITIAL_SPEED + (MAX_SPEED - INITIAL_SPEED) * (1 - Math.exp(-SPEED_CURVE_K * timeSec));
-    const scoreIncrement = Math.floor(newSpeed * 0.5);
     
-    setGameState(prev => ({
-      ...prev,
-      score: prev.score + scoreIncrement,
-      speed: newSpeed,
-    }));
+    if (scoreToAdd > 0) {
+      setGameState(prev => {
+        const newStreak = prev.streak + scoreToAdd;
+        // Bonus point every 5 clears
+        if (Math.floor(newStreak / 5) > Math.floor(prev.streak / 5)) {
+          streakBonus = 1;
+        }
+        return {
+          ...prev,
+          score: prev.score + scoreToAdd + streakBonus,
+          speed: newSpeed,
+          streak: newStreak,
+        };
+      });
+    } else {
+      setGameState(prev => ({
+        ...prev,
+        speed: newSpeed,
+      }));
+    }
 
     animationRef.current = requestAnimationFrame(gameLoop);
   }, [drawRunner, drawObstacle, endGame]);
@@ -598,6 +627,13 @@ export function RunnerWindow() {
           onClick={handleTouch}
           onTouchStart={handleTouch}
         />
+
+        {/* Streak indicator */}
+        {gameState.isRunning && gameState.streak >= 5 && (
+          <div className="absolute top-6 left-1/2 -translate-x-1/2 px-3 py-1 bg-primary/90 text-primary-foreground rounded-full text-sm font-bold animate-pulse">
+            🔥 STREAK x{gameState.streak}
+          </div>
+        )}
 
         {/* Start Screen */}
         {!gameState.isRunning && !gameState.isGameOver && (
