@@ -21,13 +21,6 @@ export interface Project {
   }[];
 }
 
-export interface Reel {
-  id: string;
-  title: string;
-  thumbnailUrl: string;
-  videoUrl: string;
-}
-
 // ============================================
 // PROJECTS - Add your projects here
 // ============================================
@@ -134,36 +127,6 @@ export const projects: Project[] = [
       'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&q=80',
       'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&q=80',
     ],
-  },
-];
-
-// ============================================
-// REELS - Highlight videos for the Reels window
-// ============================================
-export const reels: Reel[] = [
-  {
-    id: 'reel-2024',
-    title: '2024 Director Reel',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=400&q=80',
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-  },
-  {
-    id: 'wedding-highlights',
-    title: 'Wedding Highlights',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=400&q=80',
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-  },
-  {
-    id: 'brand-work',
-    title: 'Brand Work Reel',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&q=80',
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-  },
-  {
-    id: 'music-videos',
-    title: 'Music Videos',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&q=80',
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
   },
 ];
 

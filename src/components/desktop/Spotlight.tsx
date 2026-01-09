@@ -36,7 +36,6 @@ export function Spotlight({ isOpen, onClose }: SpotlightProps) {
       { type: 'window', id: 'about', windowId: 'about', title: 'About', subtitle: 'Learn about Cam', icon: User },
       { type: 'window', id: 'contact', windowId: 'contact', title: 'Contact', subtitle: 'Get in touch', icon: Mail },
       { type: 'window', id: 'resume', windowId: 'resume', title: 'Resume', subtitle: 'Experience & skills', icon: FileText },
-      { type: 'window', id: 'reels', windowId: 'reels', title: 'Reels', subtitle: 'Watch highlights', icon: Film },
       { type: 'window', id: 'runner', windowId: 'runner', title: 'Runner', subtitle: 'Play the mini game', icon: Gamepad2 },
     ];
 
