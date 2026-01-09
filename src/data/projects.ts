@@ -164,16 +164,29 @@ export const aboutData = {
     'Event Coverage',
     'Music Videos',
   ],
-  tools: {
-    camera: ['Panasonic Lumix S5IIX'],
-    lenses: ['Panasonic Lumix 50mm f/1.8', 'Panasonic Lumix 20-60mm f/3.5-5.6'],
-    backup: ['Panasonic Lumix G7'],
-    audio: ['Rode Wireless GO', 'Rode VideoMic GO'],
-    stabilization: ['Zhiyun Crane Plus 3-Axis Gimbal'],
-    lighting: ['Portable softbox lighting', 'Compact flash'],
-    software: ['Final Cut Pro', 'Adobe Premiere Pro', 'Adobe Lightroom', 'Adobe Photoshop', 'Adobe Illustrator'],
-    familiar: ['After Effects', 'Apple Motion', 'Logic Pro'],
-  },
+  gear: [
+    'Panasonic Lumix S5IIX',
+    'Panasonic Lumix 50mm f/1.8',
+    'Panasonic Lumix 20-60mm f/3.5-5.6',
+    'Panasonic Lumix G7',
+    'Rode Wireless GO',
+    'Rode VideoMic GO',
+    'Zhiyun Crane Plus 3-Axis Gimbal',
+    'Portable softbox light',
+    'Compact flash',
+  ],
+  software: [
+    'Final Cut Pro',
+    'Adobe Premiere Pro',
+    'Adobe Lightroom',
+    'Adobe Photoshop',
+    'Adobe Illustrator',
+  ],
+  familiar: [
+    'After Effects',
+    'Apple Motion',
+    'Logic Pro',
+  ],
 };
 
 // ============================================

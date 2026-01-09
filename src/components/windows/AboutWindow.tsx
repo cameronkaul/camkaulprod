@@ -1,15 +1,7 @@
 import { aboutData } from '@/data/projects';
-import { MapPin, Wrench } from 'lucide-react';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
+import { MapPin, Camera, Monitor } from 'lucide-react';
 
 export function AboutWindow() {
-  const { tools } = aboutData;
-
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
@@ -37,41 +29,33 @@ export function AboutWindow() {
         </div>
       </div>
 
-      {/* Tools Accordion */}
-      <Accordion type="single" collapsible>
-        <AccordionItem value="tools" className="border-muted">
-          <AccordionTrigger className="hover:no-underline">
-            <span className="flex items-center gap-2 font-semibold">
-              <Wrench className="w-4 h-4" /> Tools
-            </span>
-          </AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-4 pt-2">
-              <ToolSection title="Camera" items={tools.camera} />
-              <ToolSection title="Lenses" items={tools.lenses} />
-              <ToolSection title="Backup" items={tools.backup} />
-              <ToolSection title="Audio" items={tools.audio} />
-              <ToolSection title="Stabilization" items={tools.stabilization} />
-              <ToolSection title="Lighting" items={tools.lighting} />
-              <ToolSection title="Software" items={tools.software} />
-              <ToolSection title="Familiar" items={tools.familiar} />
+      {/* Gear & Software */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <div>
+          <h3 className="font-semibold mb-2 flex items-center gap-2"><Camera className="w-4 h-4" /> Gear</h3>
+          <div className="space-y-1">
+            {aboutData.gear.map(item => (
+              <div key={item} className="text-sm">{item}</div>
+            ))}
+          </div>
+        </div>
+        <div>
+          <h3 className="font-semibold mb-2 flex items-center gap-2"><Monitor className="w-4 h-4" /> Software</h3>
+          <div className="flex flex-wrap gap-2">
+            {aboutData.software.map(s => (
+              <span key={s} className="px-2 py-1 bg-muted rounded text-xs">{s}</span>
+            ))}
+          </div>
+          <div className="mt-3">
+            <span className="text-xs text-muted-foreground">Familiar</span>
+            <div className="flex flex-wrap gap-2 mt-1">
+              {aboutData.familiar.map(s => (
+                <span key={s} className="px-2 py-1 bg-muted/50 rounded text-xs text-muted-foreground">{s}</span>
+              ))}
             </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-    </div>
-  );
-}
-
-function ToolSection({ title, items }: { title: string; items: string[] }) {
-  return (
-    <div>
-      <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">{title}</h4>
-      <ul className="text-sm space-y-0.5">
-        {items.map(item => (
-          <li key={item}>{item}</li>
-        ))}
-      </ul>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
