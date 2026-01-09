@@ -155,7 +155,7 @@ export const aboutData = {
   name: 'Cam Kaul',
   title: 'Videographer & Editor',
   location: 'Waco, Texas',
-  bio: `Hey, I'm Cam. I've been telling stories through video for over 8 years, working with brands, artists, and couples who want their moments captured with intention and artistry. Based in Waco, I bring a cinematic eye to every project, whether it's a 30-second social clip or a full brand documentary. Let's make something beautiful together.`,
+  bio: "Hey, I'm Cam. I make cinematic video for brands and artists who care about taste. I can handle the full process, concept to shoot to edit, or jump in wherever you need help, content, campaigns, socials, design, whatever moves the project forward.",
   services: [
     'Video Production',
     'Post-Production & Editing',
