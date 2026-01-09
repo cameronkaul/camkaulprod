@@ -1,13 +1,18 @@
 import { aboutData } from '@/data/projects';
 import { MapPin, Camera, Monitor } from 'lucide-react';
+import camProfile from '@/assets/cam-profile.jpg';
 
 export function AboutWindow() {
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
       <div className="text-center">
-        <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-primary to-muted flex items-center justify-center text-3xl font-bold text-primary-foreground mb-4">
-          CK
+        <div className="w-24 h-24 mx-auto rounded-full overflow-hidden mb-4">
+          <img 
+            src={camProfile} 
+            alt="Cam Kaul" 
+            className="w-full h-full object-cover object-top"
+          />
         </div>
         <h1 className="text-2xl font-bold">{aboutData.name}</h1>
         <p className="text-muted-foreground">{aboutData.title}</p>
