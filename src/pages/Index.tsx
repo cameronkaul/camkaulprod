@@ -13,6 +13,7 @@ import { ContactWindow } from '@/components/windows/ContactWindow';
 import { ResumeWindow } from '@/components/windows/ResumeWindow';
 import { TrashWindow } from '@/components/windows/TrashWindow';
 import { RunnerWindow } from '@/components/windows/RunnerWindow';
+import desktopWallpaper from '@/assets/desktop-wallpaper.webp';
 import {
   ContextMenu,
   ContextMenuContent,
@@ -67,10 +68,24 @@ function DesktopContent() {
         <div
           className="h-screen w-screen overflow-hidden relative"
           style={{
-            backgroundImage: 'linear-gradient(135deg, hsl(210 40% 80%) 0%, hsl(200 50% 90%) 50%, hsl(180 40% 85%) 100%)',
+            backgroundImage: `url(${desktopWallpaper})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
           }}
           onClick={handleDesktopClick}
         >
+          {/* Dark overlay for readability */}
+          <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+          
+          {/* Vignette overlay */}
+          <div 
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.4) 100%)',
+            }}
+          />
+
           {/* Grain overlay */}
           <div className="grain-overlay" />
 

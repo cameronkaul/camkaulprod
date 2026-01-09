@@ -56,10 +56,10 @@ export function DesktopIcon({
       }`}>
         <Icon className="w-7 h-7 text-foreground" />
       </div>
-      <span className={`text-xs font-medium text-center mt-1 px-1 py-0.5 rounded block ${
+      <span className={`text-xs font-medium text-center mt-1 px-1.5 py-0.5 rounded block ${
         isSelected 
           ? 'bg-primary text-primary-foreground' 
-          : 'text-foreground text-shadow-sm'
+          : 'text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]'
       }`}>
         {label}
       </span>
