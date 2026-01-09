@@ -15,9 +15,14 @@ export function ResumeWindow() {
             <span className="flex items-center gap-1">
               <Mail className="w-3 h-3" /> {resumeData.contact.email}
             </span>
-            <span className="flex items-center gap-1">
-              <Linkedin className="w-3 h-3" /> {resumeData.contact.linkedin}
-            </span>
+            <a 
+              href={`https://${resumeData.contact.linkedin}`} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 hover:text-foreground hover:underline transition-colors"
+            >
+              <Linkedin className="w-3 h-3" /> LinkedIn
+            </a>
           </div>
         </div>
         <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm hover:opacity-90 transition-opacity">
