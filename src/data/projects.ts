@@ -190,6 +190,82 @@ export const aboutData = {
 };
 
 // ============================================
+// RESUME DATA
+// ============================================
+export const resumeData = {
+  name: 'Cameron J. Kaul',
+  contact: {
+    location: 'Waco, TX',
+    email: 'cameronkaul12@gmail.com',
+    phone: '(254) 651-8325',
+    linkedin: 'linkedin.com/in/camkaul',
+  },
+  education: {
+    school: 'Baylor University',
+    location: 'Waco, Texas',
+    degree: 'Bachelor of Business Administration',
+    major: 'Marketing / Entrepreneurship and Corporate Innovation',
+    gpa: '3.49',
+    graduation: 'May 2025',
+    honors: ['Dean\'s List: Fall 2023, Fall 2024'],
+  },
+  experience: [
+    {
+      title: 'Marketing Director',
+      company: 'Allen Samuels Dodge Jeep Chrysler Ram Fiat',
+      dates: 'May 2024 – August 2025',
+      bullets: [
+        'Revitalized social media by increasing organic reach to 110,000+ on Facebook and 12,000+ accounts on Instagram.',
+        'Drove 800,000+ impressions through SEO and targeted advertising campaigns on Google and Microsoft platforms.',
+        'Supported a $40,000 monthly marketing effort budget across sponsorships, campaigns, and promotional events.',
+        'Created wide range of visual assets for internal and external use including advertisements, graphics, and video.',
+      ],
+    },
+    {
+      title: 'Website Designer',
+      company: 'College Baseball Fellowship',
+      dates: 'March 2025',
+      bullets: [
+        'Transformed the nonprofit\'s website into a modern responsive platform aligned with CBF\'s mission.',
+        'Integrated donation capabilities and streamlined navigation to improve supporter engagement.',
+        'Directed all creative elements of the site; layout, design, and graphics to deliver a unified brand experience.',
+      ],
+    },
+    {
+      title: 'Marketing Consultant',
+      company: 'Winnow Wealth Financial Management',
+      dates: 'Aug 2024 – December 2024',
+      bullets: [
+        'Developed and launched 10 targeted Facebook ads, generating >110 conversions and >170 event registrations.',
+        'Collaborated with the team to optimize audience targeting, increasing ad momentum and efficiency.',
+        'Reduced advertising costs while maximizing lead generation.',
+      ],
+    },
+    {
+      title: 'Marketing Intern',
+      company: 'Charity Champions',
+      dates: 'September 2023 – May 2024',
+      bullets: [
+        'Partnered with local non-profits to develop targeted, data-driven marketing strategies.',
+        'Leveraged end-to-end video production skills to create promotional videos, including filming, editing, and delivery.',
+      ],
+    },
+  ],
+  skills: [
+    'Adobe Photoshop', 'Adobe Premiere', 'Adobe Illustrator', 'Final Cut Pro',
+    'Cinematography', 'Video Editing', 'Graphic Design', 'Social Media Marketing',
+  ],
+  certifications: [
+    'Microsoft Office Specialist: Excel 2019 Associate',
+    'Google Ads Search Certified',
+  ],
+  honors: [
+    'Eagle Scout – National Life Saving Medal of Honor',
+    'Business Professionals of America – President, 2nd place individual & 3rd place team nationals',
+  ],
+};
+
+// ============================================
 // SOCIAL LINKS
 // ============================================
 export const socialLinks = {
@@ -197,5 +273,5 @@ export const socialLinks = {
   youtube: 'https://youtube.com/@camkaul',
   vimeo: 'https://vimeo.com/camkaul',
   tiktok: 'https://tiktok.com/@camkaul',
-  email: 'hello@camkaul.com',
+  email: 'cameronkaul12@gmail.com',
 };
