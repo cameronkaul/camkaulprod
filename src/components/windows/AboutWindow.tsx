@@ -11,7 +11,7 @@ export function AboutWindow() {
           <img 
             src={camProfile} 
             alt="Cam Kaul" 
-            className="w-full h-full object-cover object-top"
+            className="w-full h-full object-cover scale-150 object-[center_15%]"
           />
         </div>
         <h1 className="text-2xl font-bold">{aboutData.name}</h1>
