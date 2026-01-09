@@ -28,7 +28,7 @@ interface Obstacle {
   scored: boolean;
 }
 
-type ObstacleType = 'camera' | 'tripod' | 'computer' | 'harddrive' | 'microphone';
+type ObstacleType = 'camera' | 'tripod' | 'computer' | 'clippers';
 
 const GRAVITY = 0.9;
 const JUMP_FORCE = -13;
@@ -257,7 +257,7 @@ export function RunnerWindow() {
     ctx.restore();
   }, []);
 
-  // Draw obstacle (camera, tripod, computer, harddrive, microphone)
+  // Draw obstacle (camera, tripod, computer, clippers)
   const drawObstacle = useCallback((ctx: CanvasRenderingContext2D, obstacle: Obstacle) => {
     ctx.save();
     
@@ -324,57 +324,37 @@ export function RunnerWindow() {
         ctx.fillRect(obstacle.x + 10, obstacle.y - 5, 20, 5);
         break;
         
-      case 'harddrive':
-        // Main body - rectangular block
+      case 'clippers':
+        // Hair clippers - "Action Clippers" themed
+        // Main body
         ctx.fillStyle = '#1a202c';
-        ctx.fillRect(obstacle.x + 3, obstacle.y - 18, 28, 14);
+        ctx.fillRect(obstacle.x + 8, obstacle.y - 28, 18, 24);
         
-        // Top edge/lid line
+        // Top grip ridges
         ctx.fillStyle = '#2d3748';
-        ctx.fillRect(obstacle.x + 3, obstacle.y - 18, 28, 3);
+        ctx.fillRect(obstacle.x + 10, obstacle.y - 26, 14, 3);
+        ctx.fillRect(obstacle.x + 10, obstacle.y - 21, 14, 3);
+        ctx.fillRect(obstacle.x + 10, obstacle.y - 16, 14, 3);
         
-        // Label block
+        // Blade head
         ctx.fillStyle = '#4a5568';
-        ctx.fillRect(obstacle.x + 7, obstacle.y - 13, 14, 6);
+        ctx.fillRect(obstacle.x + 6, obstacle.y - 32, 22, 5);
         
-        // Indicator LED dot
-        ctx.fillStyle = '#48bb78';
-        ctx.beginPath();
-        ctx.arc(obstacle.x + 26, obstacle.y - 10, 2, 0, Math.PI * 2);
-        ctx.fill();
-        
-        // Cable nub on side
-        ctx.fillStyle = '#2d3748';
-        ctx.fillRect(obstacle.x + 31, obstacle.y - 14, 4, 6);
-        break;
-        
-      case 'microphone':
-        // Handle/body
-        ctx.fillStyle = '#2d3748';
-        ctx.fillRect(obstacle.x + 12, obstacle.y - 25, 10, 22);
-        
-        // Mic head (capsule shape - rounded rectangle effect)
-        ctx.fillStyle = '#1a202c';
-        ctx.fillRect(obstacle.x + 10, obstacle.y - 40, 14, 15);
-        
-        // Rounded top of mic head
-        ctx.beginPath();
-        ctx.arc(obstacle.x + 17, obstacle.y - 40, 7, Math.PI, 0);
-        ctx.fill();
-        
-        // Grille lines
-        ctx.strokeStyle = '#4a5568';
-        ctx.lineWidth = 1;
-        for (let i = 0; i < 4; i++) {
-          ctx.beginPath();
-          ctx.moveTo(obstacle.x + 11, obstacle.y - 38 + i * 3);
-          ctx.lineTo(obstacle.x + 23, obstacle.y - 38 + i * 3);
-          ctx.stroke();
+        // Blade teeth (top edge)
+        ctx.fillStyle = '#718096';
+        for (let i = 0; i < 6; i++) {
+          ctx.fillRect(obstacle.x + 8 + i * 3, obstacle.y - 35, 2, 3);
         }
         
-        // Small base
-        ctx.fillStyle = '#718096';
-        ctx.fillRect(obstacle.x + 10, obstacle.y - 3, 14, 3);
+        // Power switch indicator
+        ctx.fillStyle = '#e53e3e';
+        ctx.beginPath();
+        ctx.arc(obstacle.x + 17, obstacle.y - 8, 2, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Cord nub at bottom
+        ctx.fillStyle = '#2d3748';
+        ctx.fillRect(obstacle.x + 14, obstacle.y - 4, 6, 4);
         break;
     }
     
@@ -442,7 +422,7 @@ export function RunnerWindow() {
     
     if (pastGracePeriod && Math.random() < spawnChance && canSpawn) {
       // Obstacle selection with variety (no repeats in last 2)
-      const allTypes: ObstacleType[] = ['camera', 'tripod', 'computer', 'harddrive', 'microphone'];
+      const allTypes: ObstacleType[] = ['camera', 'tripod', 'computer', 'clippers'];
       const recentTypes = recentObstaclesRef.current;
       
       // Filter out types that appeared in last 2 spawns
@@ -457,13 +437,12 @@ export function RunnerWindow() {
       // Update recent history (keep last 2)
       recentObstaclesRef.current = [...recentTypes, type].slice(-2);
       
-      // Hitbox dimensions by type
+      // Hitbox dimensions by type (clippers hitbox slightly smaller than visual for fairness)
       const dimensions: Record<ObstacleType, { width: number; height: number }> = {
         camera: { width: 35, height: 35 },
         tripod: { width: 30, height: 55 },
         computer: { width: 35, height: 45 },
-        harddrive: { width: 35, height: 20 },
-        microphone: { width: 34, height: 45 },
+        clippers: { width: 28, height: 32 },
       };
       
       obstaclesRef.current.push({
