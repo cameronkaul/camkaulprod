@@ -154,8 +154,8 @@ export const deletedScenes = [
 export const aboutData = {
   name: 'Cam Kaul',
   title: 'Videographer & Editor',
-  location: 'Austin, Texas',
-  bio: `Hey, I'm Cam. I've been telling stories through video for over 8 years, working with brands, artists, and couples who want their moments captured with intention and artistry. Based in Austin, I bring a cinematic eye to every project, whether it's a 30-second social clip or a full brand documentary. Let's make something beautiful together.`,
+  location: 'Waco, Texas',
+  bio: `Hey, I'm Cam. I've been telling stories through video for over 8 years, working with brands, artists, and couples who want their moments captured with intention and artistry. Based in Waco, I bring a cinematic eye to every project, whether it's a 30-second social clip or a full brand documentary. Let's make something beautiful together.`,
   services: [
     'Video Production',
     'Post-Production & Editing',
@@ -164,22 +164,16 @@ export const aboutData = {
     'Event Coverage',
     'Music Videos',
   ],
-  gear: [
-    { name: 'Sony FX6', type: 'Camera' },
-    { name: 'Sony A7S III', type: 'Camera' },
-    { name: 'Sony A7R V', type: 'Camera' },
-    { name: 'DJI RS3 Pro', type: 'Stabilizer' },
-    { name: 'DJI Mavic 3 Pro', type: 'Drone' },
-    { name: 'Aputure 600d', type: 'Lighting' },
-  ],
-  software: [
-    'DaVinci Resolve',
-    'Premiere Pro',
-    'After Effects',
-    'Lightroom',
-    'Capture One',
-    'Final Cut Pro',
-  ],
+  tools: {
+    camera: ['Panasonic Lumix S5IIX'],
+    lenses: ['Panasonic Lumix 50mm f/1.8', 'Panasonic Lumix 20-60mm f/3.5-5.6'],
+    backup: ['Panasonic Lumix G7'],
+    audio: ['Rode Wireless GO', 'Rode VideoMic GO'],
+    stabilization: ['Zhiyun Crane Plus 3-Axis Gimbal'],
+    lighting: ['Portable softbox lighting', 'Compact flash'],
+    software: ['Final Cut Pro', 'Adobe Premiere Pro', 'Adobe Lightroom', 'Adobe Photoshop', 'Adobe Illustrator'],
+    familiar: ['After Effects', 'Apple Motion', 'Logic Pro'],
+  },
 };
 
 // ============================================
