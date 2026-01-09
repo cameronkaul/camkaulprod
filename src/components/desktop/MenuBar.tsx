@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Search, Wifi, Volume2, Battery } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Search, Instagram, Youtube } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Calendar } from '@/components/ui/calendar';
 
 interface MenuBarProps {
@@ -122,21 +122,43 @@ export function MenuBar({ onSpotlightOpen }: MenuBarProps) {
         </nav>
       </div>
 
-      {/* Right side - Status icons, search, and time */}
+      {/* Right side - Social links, search, and time */}
       <div className="flex items-center gap-3">
-        {/* Status Icons */}
-        <div className="flex items-center gap-2.5 text-foreground/70">
-          <button className="hover:text-foreground transition-colors p-1">
-            <Volume2 className="w-4 h-4" />
-          </button>
-          <button className="hover:text-foreground transition-colors p-1">
-            <Wifi className="w-4 h-4" />
-          </button>
-          <div className="flex items-center gap-1 hover:text-foreground transition-colors p-1">
-            <Battery className="w-4 h-4" />
-            <span className="text-xs">100%</span>
+        {/* Social Icons */}
+        <TooltipProvider delayDuration={300}>
+          <div className="flex items-center gap-2 text-foreground/70">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <a
+                  href="https://www.instagram.com/camkaul.prod/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-foreground transition-colors p-1"
+                >
+                  <Instagram className="w-4 h-4" />
+                </a>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" className="text-xs">
+                Instagram
+              </TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <a
+                  href="https://www.youtube.com/@CamKaul"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-foreground transition-colors p-1"
+                >
+                  <Youtube className="w-4 h-4" />
+                </a>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" className="text-xs">
+                YouTube
+              </TooltipContent>
+            </Tooltip>
           </div>
-        </div>
+        </TooltipProvider>
 
         {/* Search */}
         <button
