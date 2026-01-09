@@ -133,6 +133,11 @@ export function MenuBar({ onSpotlightOpen }: MenuBarProps) {
                   href="https://www.instagram.com/camkaul.prod/"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    window.open('https://www.instagram.com/camkaul.prod/', '_blank', 'noopener,noreferrer');
+                  }}
+                  aria-label="Instagram"
                   className="hover:text-foreground transition-colors p-1 cursor-pointer"
                 >
                   <Instagram className="w-4 h-4" />
@@ -148,6 +153,11 @@ export function MenuBar({ onSpotlightOpen }: MenuBarProps) {
                   href="https://www.youtube.com/@CamKaul"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    window.open('https://www.youtube.com/@CamKaul', '_blank', 'noopener,noreferrer');
+                  }}
+                  aria-label="YouTube"
                   className="hover:text-foreground transition-colors p-1 cursor-pointer"
                 >
                   <Youtube className="w-4 h-4" />
