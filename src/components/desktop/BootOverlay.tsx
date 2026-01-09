@@ -10,25 +10,25 @@ export function BootOverlay({ onComplete }: BootOverlayProps) {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    const duration = 1800; // 1.8 seconds
+    const duration = 2400; // 2.4 seconds - intentional and premium
     const startTime = Date.now();
     
     const animate = () => {
       const elapsed = Date.now() - startTime;
       const rawProgress = Math.min(elapsed / duration, 1);
       
-      // Ease out cubic for smooth settle
-      const eased = 1 - Math.pow(1 - rawProgress, 3);
+      // Ease out quart for ultra-smooth settle
+      const eased = 1 - Math.pow(1 - rawProgress, 4);
       setProgress(eased * 100);
       
       if (rawProgress < 1) {
         requestAnimationFrame(animate);
       } else {
-        // Wait a tiny moment at 100%, then fade out
+        // Brief pause at 100%, then fade out
         setTimeout(() => {
           setIsVisible(false);
-          setTimeout(onComplete, 300);
-        }, 200);
+          setTimeout(onComplete, 350);
+        }, 250);
       }
     };
     
