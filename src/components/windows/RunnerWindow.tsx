@@ -28,8 +28,9 @@ interface Obstacle {
 
 type ObstacleType = 'camera' | 'tripod' | 'computer' | 'harddrive' | 'microphone';
 
-const GRAVITY = 0.8;
-const JUMP_FORCE = -14;
+const GRAVITY = 0.9;
+const JUMP_FORCE = -13;
+const FALL_MULTIPLIER = 1.6; // Faster descent for snappier feel
 const GROUND_Y = 180;
 const INITIAL_SPEED = 7;
 const MAX_SPEED = 14;
@@ -404,7 +405,9 @@ export function RunnerWindow() {
 
     // Update runner physics
     const runner = runnerRef.current;
-    runner.velocityY += GRAVITY;
+    // Apply fall multiplier when descending for snappier feel
+    const effectiveGravity = runner.velocityY > 0 ? GRAVITY * FALL_MULTIPLIER : GRAVITY;
+    runner.velocityY += effectiveGravity;
     runner.y += runner.velocityY;
     
     if (runner.y >= GROUND_Y) {
