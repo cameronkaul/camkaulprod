@@ -1,11 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Folder, Mail, FolderPlus, Image, ArrowUpDown, LayoutGrid, LucideIcon } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { WindowProvider, useWindows, WindowId } from '@/contexts/WindowContext';
 import { MenuBar } from '@/components/desktop/MenuBar';
 import { Dock } from '@/components/desktop/Dock';
 import { DesktopIcon } from '@/components/desktop/DesktopIcon';
 import { Window } from '@/components/desktop/Window';
 import { Spotlight } from '@/components/desktop/Spotlight';
+import { BootOverlay } from '@/components/desktop/BootOverlay';
 import { PortfolioWindow } from '@/components/windows/PortfolioWindow';
 import { ProjectWindow } from '@/components/windows/ProjectWindow';
 import { AboutWindow } from '@/components/windows/AboutWindow';
@@ -39,12 +41,9 @@ const desktopIcons: DesktopIconConfig[] = [
 function DesktopContent() {
   const [spotlightOpen, setSpotlightOpen] = useState(false);
   const [selectedIconId, setSelectedIconId] = useState<WindowId | null>(null);
+  const [isBooting, setIsBooting] = useState(true);
+  const [showUI, setShowUI] = useState(false);
   const { openWindow } = useWindows();
-
-  // Auto-open Portfolio on first load
-  useEffect(() => {
-    openWindow('portfolio');
-  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -62,6 +61,12 @@ function DesktopContent() {
     setSelectedIconId(null);
   }, []);
 
+  const handleBootComplete = useCallback(() => {
+    setIsBooting(false);
+    // Small delay then trigger staged UI reveal
+    setTimeout(() => setShowUI(true), 50);
+  }, []);
+
   return (
     <ContextMenu>
       <ContextMenuTrigger asChild>
@@ -75,11 +80,25 @@ function DesktopContent() {
           }}
           onClick={handleDesktopClick}
         >
-          {/* Menu Bar */}
-          <MenuBar onSpotlightOpen={() => setSpotlightOpen(true)} />
+          {/* Boot Overlay */}
+          {isBooting && <BootOverlay onComplete={handleBootComplete} />}
 
-          {/* Desktop Icons - Left side, stacked vertically */}
-          <div className="absolute top-14 left-4 flex flex-col gap-1 z-10">
+          {/* Menu Bar - slides down */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={showUI ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+          >
+            <MenuBar onSpotlightOpen={() => setSpotlightOpen(true)} />
+          </motion.div>
+
+          {/* Desktop Icons - Left side, stacked vertically, fade in last */}
+          <motion.div 
+            className="absolute top-14 left-4 flex flex-col gap-1 z-10"
+            initial={{ opacity: 0 }}
+            animate={showUI ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.3, delay: 0.2, ease: 'easeOut' }}
+          >
             {desktopIcons.map((item) => (
               <DesktopIcon
                 key={item.id}
@@ -91,7 +110,7 @@ function DesktopContent() {
                 onDoubleClick={() => openWindow(item.id)}
               />
             ))}
-          </div>
+          </motion.div>
 
           {/* Windows */}
           <Window id="portfolio"><PortfolioWindow /></Window>
@@ -102,8 +121,14 @@ function DesktopContent() {
           <Window id="trash"><TrashWindow /></Window>
           <Window id="runner"><RunnerWindow /></Window>
 
-          {/* Dock */}
-          <Dock />
+          {/* Dock - slides up */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={showUI ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.3, delay: 0.1, ease: 'easeOut' }}
+          >
+            <Dock />
+          </motion.div>
 
           {/* Spotlight */}
           <Spotlight isOpen={spotlightOpen} onClose={() => setSpotlightOpen(false)} />
