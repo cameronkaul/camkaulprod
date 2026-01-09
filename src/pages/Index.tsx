@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Folder, User, Mail, FileText, Film, Gamepad2, FolderPlus, Image, ArrowUpDown, LayoutGrid, LucideIcon } from 'lucide-react';
+import { Folder, Mail, FolderPlus, Image, ArrowUpDown, LayoutGrid, LucideIcon } from 'lucide-react';
 import { WindowProvider, useWindows, WindowId } from '@/contexts/WindowContext';
 import { MenuBar } from '@/components/desktop/MenuBar';
 import { Dock } from '@/components/desktop/Dock';
@@ -11,7 +11,6 @@ import { ProjectWindow } from '@/components/windows/ProjectWindow';
 import { AboutWindow } from '@/components/windows/AboutWindow';
 import { ContactWindow } from '@/components/windows/ContactWindow';
 import { ResumeWindow } from '@/components/windows/ResumeWindow';
-import { ReelsWindow } from '@/components/windows/ReelsWindow';
 import { TrashWindow } from '@/components/windows/TrashWindow';
 import { RunnerWindow } from '@/components/windows/RunnerWindow';
 import {
@@ -33,17 +32,18 @@ interface DesktopIconConfig {
 
 const desktopIcons: DesktopIconConfig[] = [
   { id: 'portfolio', icon: Folder, label: 'Portfolio' },
-  { id: 'about', icon: User, label: 'About' },
   { id: 'contact', icon: Mail, label: 'Contact' },
-  { id: 'resume', icon: FileText, label: 'Resume' },
-  { id: 'reels', icon: Film, label: 'Reels' },
-  { id: 'runner', icon: Gamepad2, label: 'Runner' },
 ];
 
 function DesktopContent() {
   const [spotlightOpen, setSpotlightOpen] = useState(false);
   const [selectedIconId, setSelectedIconId] = useState<WindowId | null>(null);
   const { openWindow } = useWindows();
+
+  // Auto-open Portfolio on first load
+  useEffect(() => {
+    openWindow('portfolio');
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -98,7 +98,6 @@ function DesktopContent() {
           <Window id="about"><AboutWindow /></Window>
           <Window id="contact"><ContactWindow /></Window>
           <Window id="resume"><ResumeWindow /></Window>
-          <Window id="reels"><ReelsWindow /></Window>
           <Window id="trash"><TrashWindow /></Window>
           <Window id="runner"><RunnerWindow /></Window>
 

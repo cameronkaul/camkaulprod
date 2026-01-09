@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { Folder, User, Mail, FileText, Film, Trash2, Gamepad2 } from 'lucide-react';
+import { Folder, User, Mail, FileText, Trash2, Gamepad2 } from 'lucide-react';
 import { useWindows, WindowId } from '@/contexts/WindowContext';
 import {
   ContextMenu,
@@ -19,10 +19,9 @@ interface DockItem {
 const dockItems: DockItem[] = [
   { id: 'portfolio', icon: Folder, label: 'Portfolio' },
   { id: 'about', icon: User, label: 'About' },
-  { id: 'contact', icon: Mail, label: 'Contact' },
   { id: 'resume', icon: FileText, label: 'Resume' },
-  { id: 'reels', icon: Film, label: 'Reels' },
   { id: 'runner', icon: Gamepad2, label: 'Runner' },
+  { id: 'contact', icon: Mail, label: 'Contact' },
   { id: 'trash', icon: Trash2, label: 'Deleted Scenes' },
 ];
 
@@ -69,7 +68,7 @@ export function Dock() {
     >
       <div 
         ref={dockRef}
-        className="dock-container rounded-2xl px-3 py-2 flex items-end gap-1"
+        className="dock-container rounded-3xl px-4 py-3 flex items-end gap-2"
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
@@ -159,16 +158,16 @@ function DockIcon({
     return Math.abs(val - (iconCenter - dockLeft));
   });
 
-  // Magnification based on distance
-  const baseSize = 48;
-  const maxSize = 72;
+  // Magnification based on distance - larger base and max sizes for macOS feel
+  const baseSize = 60;
+  const maxSize = 80;
   const size = useSpring(
-    useTransform(distance, [0, 100, 200], [maxSize, baseSize + 8, baseSize]),
+    useTransform(distance, [0, 100, 200], [maxSize, baseSize + 10, baseSize]),
     { stiffness: 400, damping: 25 }
   );
 
   const translateY = useSpring(
-    useTransform(distance, [0, 100, 200], [-12, -4, 0]),
+    useTransform(distance, [0, 100, 200], [-16, -6, 0]),
     { stiffness: 400, damping: 25 }
   );
 

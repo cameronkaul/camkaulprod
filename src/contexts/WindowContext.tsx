@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 
-export type WindowId = 'portfolio' | 'about' | 'contact' | 'resume' | 'reels' | 'trash' | 'project' | 'runner';
+export type WindowId = 'portfolio' | 'about' | 'contact' | 'resume' | 'trash' | 'project' | 'runner';
 
 export interface WindowState {
   id: WindowId;
@@ -27,14 +27,13 @@ interface WindowContextType {
 }
 
 const defaultWindows: WindowState[] = [
-  { id: 'portfolio', title: 'Portfolio', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 80, y: 60 }, size: { width: 900, height: 600 } },
-  { id: 'about', title: 'About', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 120, y: 80 }, size: { width: 700, height: 550 } },
-  { id: 'contact', title: 'Contact', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 160, y: 100 }, size: { width: 500, height: 500 } },
-  { id: 'resume', title: 'Resume', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 200, y: 120 }, size: { width: 600, height: 700 } },
-  { id: 'reels', title: 'Reels', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 100, y: 70 }, size: { width: 850, height: 550 } },
-  { id: 'trash', title: 'Deleted Scenes', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 140, y: 90 }, size: { width: 600, height: 450 } },
-  { id: 'project', title: 'Project', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 100, y: 50 }, size: { width: 800, height: 650 } },
-  { id: 'runner', title: 'Runner', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 150, y: 80 }, size: { width: 650, height: 380 } },
+  { id: 'portfolio', title: 'Portfolio', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 80, y: 60 }, size: { width: 1000, height: 680 } },
+  { id: 'about', title: 'About', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 120, y: 80 }, size: { width: 800, height: 600 } },
+  { id: 'contact', title: 'Contact', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 160, y: 100 }, size: { width: 600, height: 550 } },
+  { id: 'resume', title: 'Resume', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 200, y: 120 }, size: { width: 700, height: 750 } },
+  { id: 'trash', title: 'Deleted Scenes', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 140, y: 90 }, size: { width: 700, height: 500 } },
+  { id: 'project', title: 'Project', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 100, y: 50 }, size: { width: 900, height: 700 } },
+  { id: 'runner', title: 'Runner', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 150, y: 80 }, size: { width: 700, height: 420 } },
 ];
 
 const WindowContext = createContext<WindowContextType | undefined>(undefined);
