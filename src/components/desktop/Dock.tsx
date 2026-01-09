@@ -23,7 +23,7 @@ const dockItems: DockItem[] = [
   { id: 'about', icon: User, label: 'About' },
   { id: 'resume', icon: FileText, label: 'Resume' },
   { id: 'runner', icon: Gamepad2, label: 'Runner' },
-  { id: 'trash', icon: Trash2, label: 'Deleted Scenes' },
+  { id: 'trash', icon: Trash2, label: 'Trash' },
 ];
 
 export function Dock() {
