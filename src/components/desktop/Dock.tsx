@@ -17,11 +17,11 @@ interface DockItem {
 }
 
 const dockItems: DockItem[] = [
+  { id: 'contact', icon: Mail, label: 'Contact' },
   { id: 'portfolio', icon: Folder, label: 'Portfolio' },
   { id: 'about', icon: User, label: 'About' },
   { id: 'resume', icon: FileText, label: 'Resume' },
   { id: 'runner', icon: Gamepad2, label: 'Runner' },
-  { id: 'contact', icon: Mail, label: 'Contact' },
   { id: 'trash', icon: Trash2, label: 'Deleted Scenes' },
 ];
 
