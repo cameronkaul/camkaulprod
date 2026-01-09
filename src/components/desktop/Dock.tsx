@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { Folder, User, Mail, FileText, Trash2, Gamepad2 } from 'lucide-react';
 import { useWindows, WindowId } from '@/contexts/WindowContext';
@@ -29,20 +29,57 @@ export function Dock() {
   const { openWindow, windows, focusWindow, closeWindow } = useWindows();
   const [bouncingId, setBouncingId] = useState<WindowId | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [hoverEnabled, setHoverEnabled] = useState(false);
+  const [hasLeftDock, setHasLeftDock] = useState(false);
   const dockRef = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0);
+  const mouseX = useMotionValue(-1000); // Start offscreen
 
+  // Enable hover only after pointer has left dock area once
   const handleMouseMove = (e: React.MouseEvent) => {
+    if (!hoverEnabled) return;
     if (dockRef.current) {
       const rect = dockRef.current.getBoundingClientRect();
       mouseX.set(e.clientX - rect.left);
     }
   };
 
+  const handleMouseEnter = () => {
+    // Only enable magnification if we've left the dock at least once
+    if (hasLeftDock && !hoverEnabled) {
+      setHoverEnabled(true);
+    }
+  };
+
   const handleMouseLeave = () => {
     mouseX.set(-1000);
     setHoveredIndex(null);
+    if (!hasLeftDock) {
+      setHasLeftDock(true);
+    }
   };
+
+  // Listen for pointer movement outside dock to enable hover
+  useEffect(() => {
+    const handleGlobalPointerMove = (e: PointerEvent) => {
+      if (!dockRef.current || hoverEnabled) return;
+      
+      const rect = dockRef.current.getBoundingClientRect();
+      const isInsideDock = (
+        e.clientX >= rect.left &&
+        e.clientX <= rect.right &&
+        e.clientY >= rect.top &&
+        e.clientY <= rect.bottom
+      );
+      
+      // If pointer is moving outside dock, mark as left
+      if (!isInsideDock && !hasLeftDock) {
+        setHasLeftDock(true);
+      }
+    };
+
+    window.addEventListener('pointermove', handleGlobalPointerMove);
+    return () => window.removeEventListener('pointermove', handleGlobalPointerMove);
+  }, [hoverEnabled, hasLeftDock]);
 
   const handleClick = (id: WindowId) => {
     const window = windows.find(w => w.id === id);
@@ -68,8 +105,9 @@ export function Dock() {
     >
       <div 
         ref={dockRef}
-        className="dock-container rounded-3xl px-4 py-3 flex items-end gap-2"
+        className={`dock-container rounded-3xl px-4 py-3 flex items-end gap-2 ${hoverEnabled ? 'dock-ready' : ''}`}
         onMouseMove={handleMouseMove}
+        onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         {dockItems.map((item, index) => {
@@ -93,6 +131,7 @@ export function Dock() {
                   setHoveredIndex={setHoveredIndex}
                   onClick={() => handleClick(item.id)}
                   totalItems={dockItems.length}
+                  hoverEnabled={hoverEnabled}
                 />
               </ContextMenuTrigger>
               <ContextMenuContent className="min-w-[160px] bg-popover/95 backdrop-blur-xl border border-border/50">
@@ -132,6 +171,7 @@ interface DockIconProps {
   setHoveredIndex: (index: number | null) => void;
   onClick: () => void;
   totalItems: number;
+  hoverEnabled: boolean;
 }
 
 function DockIcon({ 
@@ -145,29 +185,30 @@ function DockIcon({
   hoveredIndex,
   setHoveredIndex,
   onClick,
-  totalItems 
+  totalItems,
+  hoverEnabled
 }: DockIconProps) {
   const ref = useRef<HTMLButtonElement>(null);
+  const baseSize = 60;
+  const maxSize = 80;
   
   // Calculate distance from mouse for magnification
   const distance = useTransform(mouseX, (val: number) => {
-    if (!ref.current) return 150;
+    if (!ref.current || !hoverEnabled) return 1000; // Far away = no magnification
     const rect = ref.current.getBoundingClientRect();
     const iconCenter = rect.left + rect.width / 2;
     const dockLeft = ref.current.parentElement?.getBoundingClientRect().left || 0;
     return Math.abs(val - (iconCenter - dockLeft));
   });
 
-  // Magnification based on distance - larger base and max sizes for macOS feel
-  const baseSize = 60;
-  const maxSize = 80;
+  // Magnification based on distance - only when hover enabled
   const size = useSpring(
-    useTransform(distance, [0, 100, 200], [maxSize, baseSize + 10, baseSize]),
+    useTransform(distance, [0, 100, 200], hoverEnabled ? [maxSize, baseSize + 10, baseSize] : [baseSize, baseSize, baseSize]),
     { stiffness: 400, damping: 25 }
   );
 
   const translateY = useSpring(
-    useTransform(distance, [0, 100, 200], [-16, -6, 0]),
+    useTransform(distance, [0, 100, 200], hoverEnabled ? [-16, -6, 0] : [0, 0, 0]),
     { stiffness: 400, damping: 25 }
   );
 
