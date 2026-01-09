@@ -34,11 +34,12 @@ const GRAVITY = 0.9;
 const JUMP_FORCE = -13;
 const FALL_MULTIPLIER = 1.6; // Faster descent for snappier feel
 const GROUND_Y = 180;
-const INITIAL_SPEED = 7;
+const INITIAL_SPEED = 5.5; // Slightly slower start (~20% reduction)
 const MAX_SPEED = 14;
 const GRACE_PERIOD_MS = 1000;
-// Speed curve: speed = INITIAL_SPEED + (MAX_SPEED - INITIAL_SPEED) * (1 - exp(-SPEED_CURVE_K * timeSeconds))
-const SPEED_CURVE_K = 0.15; // Most ramp happens in first 10-15 seconds
+// Two-phase speed curve: gentle warmup for first few seconds, then normal ramp
+const WARMUP_DURATION = 4; // seconds of gentle acceleration
+const SPEED_CURVE_K = 0.12; // Normal ramp rate after warmup
 
 export function RunnerWindow() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -519,9 +520,20 @@ export function RunnerWindow() {
       }
     }
 
-    // Update speed (exponential curve)
+    // Update speed (two-phase curve: gentle warmup, then normal ramp)
     const timeSec = timeSinceStart / 1000;
-    const newSpeed = INITIAL_SPEED + (MAX_SPEED - INITIAL_SPEED) * (1 - Math.exp(-SPEED_CURVE_K * timeSec));
+    let newSpeed: number;
+    if (timeSec < WARMUP_DURATION) {
+      // Phase 1: Gentle warmup - slow linear increase
+      const warmupProgress = timeSec / WARMUP_DURATION;
+      const warmupTarget = INITIAL_SPEED + 1.5; // Only gain 1.5 speed during warmup
+      newSpeed = INITIAL_SPEED + (warmupTarget - INITIAL_SPEED) * warmupProgress;
+    } else {
+      // Phase 2: Normal exponential ramp from warmup end point
+      const adjustedTime = timeSec - WARMUP_DURATION;
+      const warmupEndSpeed = INITIAL_SPEED + 1.5;
+      newSpeed = warmupEndSpeed + (MAX_SPEED - warmupEndSpeed) * (1 - Math.exp(-SPEED_CURVE_K * adjustedTime));
+    }
     
     if (scoreToAdd > 0) {
       setGameState(prev => {
