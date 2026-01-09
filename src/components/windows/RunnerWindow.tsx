@@ -28,7 +28,7 @@ interface Obstacle {
   scored: boolean;
 }
 
-type ObstacleType = 'camera' | 'tripod' | 'computer' | 'clippers';
+type ObstacleType = 'camera' | 'tripod' | 'computer' | 'clapperboard';
 
 const GRAVITY = 0.9;
 const JUMP_FORCE = -13;
@@ -324,37 +324,38 @@ export function RunnerWindow() {
         ctx.fillRect(obstacle.x + 10, obstacle.y - 5, 20, 5);
         break;
         
-      case 'clippers':
-        // Hair clippers - "Action Clippers" themed
-        // Main body
+      case 'clapperboard':
+        // Movie clapperboard / slate
+        // Main board (white/light section)
+        ctx.fillStyle = '#f7fafc';
+        ctx.fillRect(obstacle.x + 2, obstacle.y - 28, 30, 24);
+        
+        // Board border
+        ctx.strokeStyle = '#2d3748';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(obstacle.x + 2, obstacle.y - 28, 30, 24);
+        
+        // Top clapper bar (striped section) - attached at hinge, slightly angled
         ctx.fillStyle = '#1a202c';
-        ctx.fillRect(obstacle.x + 8, obstacle.y - 28, 18, 24);
+        ctx.fillRect(obstacle.x + 2, obstacle.y - 38, 30, 10);
         
-        // Top grip ridges
-        ctx.fillStyle = '#2d3748';
-        ctx.fillRect(obstacle.x + 10, obstacle.y - 26, 14, 3);
-        ctx.fillRect(obstacle.x + 10, obstacle.y - 21, 14, 3);
-        ctx.fillRect(obstacle.x + 10, obstacle.y - 16, 14, 3);
-        
-        // Blade head
-        ctx.fillStyle = '#4a5568';
-        ctx.fillRect(obstacle.x + 6, obstacle.y - 32, 22, 5);
-        
-        // Blade teeth (top edge)
-        ctx.fillStyle = '#718096';
-        for (let i = 0; i < 6; i++) {
-          ctx.fillRect(obstacle.x + 8 + i * 3, obstacle.y - 35, 2, 3);
+        // Diagonal stripes on clapper bar
+        ctx.fillStyle = '#f7fafc';
+        for (let i = 0; i < 4; i++) {
+          ctx.fillRect(obstacle.x + 6 + i * 8, obstacle.y - 38, 4, 10);
         }
         
-        // Power switch indicator
-        ctx.fillStyle = '#e53e3e';
+        // Hinge circles
+        ctx.fillStyle = '#718096';
         ctx.beginPath();
-        ctx.arc(obstacle.x + 17, obstacle.y - 8, 2, 0, Math.PI * 2);
+        ctx.arc(obstacle.x + 6, obstacle.y - 28, 3, 0, Math.PI * 2);
         ctx.fill();
         
-        // Cord nub at bottom
+        // Simple text lines (representing production info)
         ctx.fillStyle = '#2d3748';
-        ctx.fillRect(obstacle.x + 14, obstacle.y - 4, 6, 4);
+        ctx.fillRect(obstacle.x + 6, obstacle.y - 22, 22, 2);
+        ctx.fillRect(obstacle.x + 6, obstacle.y - 16, 18, 2);
+        ctx.fillRect(obstacle.x + 6, obstacle.y - 10, 20, 2);
         break;
     }
     
@@ -422,7 +423,7 @@ export function RunnerWindow() {
     
     if (pastGracePeriod && Math.random() < spawnChance && canSpawn) {
       // Obstacle selection with variety (no repeats in last 2)
-      const allTypes: ObstacleType[] = ['camera', 'tripod', 'computer', 'clippers'];
+      const allTypes: ObstacleType[] = ['camera', 'tripod', 'computer', 'clapperboard'];
       const recentTypes = recentObstaclesRef.current;
       
       // Filter out types that appeared in last 2 spawns
@@ -437,12 +438,12 @@ export function RunnerWindow() {
       // Update recent history (keep last 2)
       recentObstaclesRef.current = [...recentTypes, type].slice(-2);
       
-      // Hitbox dimensions by type (clippers hitbox slightly smaller than visual for fairness)
+      // Hitbox dimensions by type (clapperboard hitbox slightly smaller for fairness)
       const dimensions: Record<ObstacleType, { width: number; height: number }> = {
         camera: { width: 35, height: 35 },
         tripod: { width: 30, height: 55 },
         computer: { width: 35, height: 45 },
-        clippers: { width: 28, height: 32 },
+        clapperboard: { width: 30, height: 36 },
       };
       
       obstaclesRef.current.push({
