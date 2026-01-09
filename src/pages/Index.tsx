@@ -13,7 +13,7 @@ import { ContactWindow } from '@/components/windows/ContactWindow';
 import { ResumeWindow } from '@/components/windows/ResumeWindow';
 import { TrashWindow } from '@/components/windows/TrashWindow';
 import { RunnerWindow } from '@/components/windows/RunnerWindow';
-import desktopWallpaper from '@/assets/desktop-wallpaper.webp';
+import desktopWallpaper from '@/assets/desktop-wallpaper.jpg';
 import {
   ContextMenu,
   ContextMenuContent,
@@ -75,20 +75,6 @@ function DesktopContent() {
           }}
           onClick={handleDesktopClick}
         >
-          {/* Dark overlay for readability */}
-          <div className="absolute inset-0 bg-black/20 pointer-events-none" />
-          
-          {/* Vignette overlay */}
-          <div 
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.4) 100%)',
-            }}
-          />
-
-          {/* Grain overlay */}
-          <div className="grain-overlay" />
-
           {/* Menu Bar */}
           <MenuBar onSpotlightOpen={() => setSpotlightOpen(true)} />
 
