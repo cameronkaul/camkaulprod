@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 
-export type WindowId = 'portfolio' | 'about' | 'contact' | 'resume' | 'trash' | 'project' | 'runner';
+export type WindowId = 'portfolio' | 'about' | 'contact' | 'resume' | 'trash' | 'project' | 'runner' | 'document';
 
 export interface WindowState {
   id: WindowId;
@@ -31,9 +31,10 @@ const defaultWindows: WindowState[] = [
   { id: 'about', title: 'About', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 120, y: 80 }, size: { width: 800, height: 600 } },
   { id: 'contact', title: 'Contact', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 160, y: 100 }, size: { width: 600, height: 550 } },
   { id: 'resume', title: 'Resume', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 250, y: 60 }, size: { width: 680, height: 580 } },
-  { id: 'trash', title: 'Deleted Scenes', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 140, y: 90 }, size: { width: 700, height: 500 } },
+  { id: 'trash', title: 'Trash', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 200, y: 120 }, size: { width: 400, height: 300 } },
   { id: 'project', title: 'Project', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 100, y: 50 }, size: { width: 900, height: 700 } },
   { id: 'runner', title: 'Runner', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 150, y: 80 }, size: { width: 700, height: 420 } },
+  { id: 'document', title: 'Nothing Important.doc', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 180, y: 70 }, size: { width: 650, height: 550 } },
 ];
 
 const WindowContext = createContext<WindowContextType | undefined>(undefined);
