@@ -216,7 +216,7 @@ export const projects: Project[] = [
     role: 'Videographer, Editor',
     tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
     videoUrl: 'https://www.loom.com/embed/0b4dcebc6225432fab45da628da79ecd',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=800&q=80',
+    thumbnailUrl: '/thumbnails/ato-fb-champ-1.jpg',
     galleryUrls: [],
   },
   {
@@ -229,7 +229,7 @@ export const projects: Project[] = [
     role: 'Videographer, Editor',
     tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
     videoUrl: 'https://www.loom.com/embed/885b68b426d8444e84ac5fd275f7c1fe',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=800&q=80',
+    thumbnailUrl: '/thumbnails/ato-fb-champ-2.jpg',
     galleryUrls: [],
   },
   {
@@ -242,7 +242,7 @@ export const projects: Project[] = [
     role: 'Videographer, Editor',
     tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
     videoUrl: 'https://www.loom.com/embed/d97bf6262f47420d99eb547606cc93ef',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800&q=80',
+    thumbnailUrl: '/thumbnails/rush-ato-lr.jpg',
     galleryUrls: [],
   },
   {
@@ -255,7 +255,7 @@ export const projects: Project[] = [
     role: 'Videographer, Editor',
     tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
     videoUrl: 'https://www.loom.com/embed/181df640ebe642028fb40d2d6c489526',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800&q=80',
+    thumbnailUrl: '/thumbnails/rush-ato-2-lr.jpg',
     galleryUrls: [],
   },
 ];
