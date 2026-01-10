@@ -187,7 +187,7 @@ export const projects: Project[] = [
     role: 'Videographer, Editor',
     tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
     videoUrl: 'https://www.loom.com/embed/7935f6b170b14a4785bed14273c1b746',
-    thumbnailUrl: 'https://cdn.loom.com/sessions/thumbnails/7935f6b170b14a4785bed14273c1b746-291762084ac08ddb.jpg',
+    thumbnailUrl: '/thumbnails/midway-fb-hype-5.jpg?v=2',
     galleryUrls: [],
   },
   {
@@ -216,7 +216,7 @@ export const projects: Project[] = [
     role: 'Videographer, Editor',
     tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
     videoUrl: 'https://www.loom.com/embed/0b4dcebc6225432fab45da628da79ecd',
-    thumbnailUrl: '/thumbnails/ato-fb-champ-1.jpg',
+    thumbnailUrl: '/thumbnails/ato-fb-champ-1.jpg?v=2',
     galleryUrls: [],
   },
   {
@@ -229,7 +229,7 @@ export const projects: Project[] = [
     role: 'Videographer, Editor',
     tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
     videoUrl: 'https://www.loom.com/embed/885b68b426d8444e84ac5fd275f7c1fe',
-    thumbnailUrl: '/thumbnails/ato-fb-champ-2.jpg',
+    thumbnailUrl: '/thumbnails/ato-fb-champ-2.jpg?v=2',
     galleryUrls: [],
   },
   {
@@ -242,7 +242,7 @@ export const projects: Project[] = [
     role: 'Videographer, Editor',
     tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
     videoUrl: 'https://www.loom.com/embed/d97bf6262f47420d99eb547606cc93ef',
-    thumbnailUrl: '/thumbnails/rush-ato-lr.jpg',
+    thumbnailUrl: '/thumbnails/rush-ato-lr.jpg?v=2',
     galleryUrls: [],
   },
   {
@@ -255,7 +255,7 @@ export const projects: Project[] = [
     role: 'Videographer, Editor',
     tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
     videoUrl: 'https://www.loom.com/embed/181df640ebe642028fb40d2d6c489526',
-    thumbnailUrl: '/thumbnails/rush-ato-2-lr.jpg',
+    thumbnailUrl: '/thumbnails/rush-ato-2-lr.jpg?v=2',
     galleryUrls: [],
   },
 ];
