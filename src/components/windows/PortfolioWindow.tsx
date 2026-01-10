@@ -9,6 +9,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
+const FALLBACK_THUMBNAIL = 'https://images.unsplash.com/photo-1566577739112-5180d4bf9390?w=800&q=80';
+
 const categories = ['All', 'Brand', 'Weddings', 'Music', 'Social', 'Photo', 'Other'];
 
 type ViewMode = 'grid' | 'list';
@@ -156,6 +158,7 @@ export function PortfolioWindow() {
                       src={project.thumbnailUrl}
                       alt={project.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      onError={(e) => { e.currentTarget.src = FALLBACK_THUMBNAIL; }}
                     />
                   </div>
                   <p className="text-sm font-medium truncate">{project.title}</p>
@@ -182,6 +185,7 @@ export function PortfolioWindow() {
                       src={project.thumbnailUrl}
                       alt={project.title}
                       className="w-full h-full object-cover"
+                      onError={(e) => { e.currentTarget.src = FALLBACK_THUMBNAIL; }}
                     />
                   </div>
                   <span className="flex-1 text-sm font-medium truncate group-hover:text-primary transition-colors">

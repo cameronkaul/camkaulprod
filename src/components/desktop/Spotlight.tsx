@@ -4,6 +4,8 @@ import { Search, Folder, Film, User, Mail, FileText, Gamepad2 } from 'lucide-rea
 import { projects } from '@/data/projects';
 import { useWindows, WindowId } from '@/contexts/WindowContext';
 
+const FALLBACK_THUMBNAIL = 'https://images.unsplash.com/photo-1566577739112-5180d4bf9390?w=800&q=80';
+
 interface SpotlightProps {
   isOpen: boolean;
   onClose: () => void;
@@ -186,6 +188,7 @@ export function Spotlight({ isOpen, onClose }: SpotlightProps) {
                           src={result.thumbnailUrl}
                           alt={result.title}
                           className="w-10 h-10 rounded-lg object-cover"
+                          onError={(e) => { e.currentTarget.src = FALLBACK_THUMBNAIL; }}
                         />
                       ) : (
                         <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
