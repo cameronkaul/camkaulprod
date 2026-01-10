@@ -216,7 +216,7 @@ export const projects: Project[] = [
     role: 'Videographer, Editor',
     tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
     videoUrl: 'https://www.loom.com/embed/0b4dcebc6225432fab45da628da79ecd',
-    thumbnailUrl: 'https://cdn.loom.com/sessions/thumbnails/0b4dcebc6225432fab45da628da79ecd-b01feaf5ef329b0d.jpg',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=800&q=80',
     galleryUrls: [],
   },
   {
@@ -229,7 +229,7 @@ export const projects: Project[] = [
     role: 'Videographer, Editor',
     tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
     videoUrl: 'https://www.loom.com/embed/885b68b426d8444e84ac5fd275f7c1fe',
-    thumbnailUrl: 'https://cdn.loom.com/sessions/thumbnails/885b68b426d8444e84ac5fd275f7c1fe-bb92886ac6893291.jpg',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=800&q=80',
     galleryUrls: [],
   },
   {
@@ -242,7 +242,7 @@ export const projects: Project[] = [
     role: 'Videographer, Editor',
     tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
     videoUrl: 'https://www.loom.com/embed/d97bf6262f47420d99eb547606cc93ef',
-    thumbnailUrl: 'https://cdn.loom.com/sessions/thumbnails/d97bf6262f47420d99eb547606cc93ef-de7a704030186f3f.jpg',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800&q=80',
     galleryUrls: [],
   },
   {
@@ -255,7 +255,7 @@ export const projects: Project[] = [
     role: 'Videographer, Editor',
     tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
     videoUrl: 'https://www.loom.com/embed/181df640ebe642028fb40d2d6c489526',
-    thumbnailUrl: 'https://cdn.loom.com/sessions/thumbnails/181df640ebe642028fb40d2d6c489526-55496050b7452830.jpg',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800&q=80',
     galleryUrls: [],
   },
 ];
