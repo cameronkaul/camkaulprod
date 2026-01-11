@@ -80,24 +80,26 @@ export function MenuBar({ onSpotlightOpen }: MenuBarProps) {
     { label: 'Help', items: helpMenuItems },
   ];
 
-  // Mobile: iPhone-style status bar
+  // Mobile: iPhone-style status bar with Dynamic Island
   if (isMobile) {
     return (
-      <header className="menu-bar h-11 flex items-center justify-between px-4 text-sm select-none fixed top-0 left-0 right-0 z-[9998] pt-1">
+      <header className="menu-bar h-11 flex items-center justify-between px-6 text-sm select-none fixed top-0 left-0 right-0 z-[9998] pt-1">
         {/* Left side - Time */}
         <div className="text-foreground/90 font-semibold text-[15px]">
           {formatTime(currentTime)}
         </div>
 
-        {/* Center - Branding */}
-        <div className="flex items-center gap-1.5">
-          <div className="w-4 h-4 rounded-[4px] bg-foreground/80 flex items-center justify-center">
-            <span className="text-background text-[9px] font-semibold leading-none">CK</span>
+        {/* Center - Dynamic Island style pill */}
+        <div className="absolute left-1/2 -translate-x-1/2 top-1">
+          <div className="bg-black rounded-full px-4 py-1.5 flex items-center gap-1.5 min-w-[90px] justify-center">
+            <div className="w-3.5 h-3.5 rounded-[3px] bg-white/90 flex items-center justify-center">
+              <span className="text-black text-[8px] font-bold leading-none">CK</span>
+            </div>
           </div>
         </div>
 
-        {/* Right side - Social + Search */}
-        <div className="flex items-center gap-3">
+        {/* Right side - Social icons */}
+        <div className="flex items-center gap-2">
           <a
             href="https://www.instagram.com/camkaul.prod/"
             target="_blank"
