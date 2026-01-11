@@ -6,13 +6,14 @@
 export interface Project {
   id: string;
   title: string;
-  category: 'brand' | 'weddings' | 'music' | 'social' | 'photo' | 'other';
+  category: 'brand' | 'weddings' | 'music' | 'social' | 'photo' | 'sports' | 'documentary' | 'events';
+  collection?: string; // Group projects into folders
   year: number;
   description: string;
   longDescription: string;
   role: string;
   tools: string[];
-  videoUrl?: string; // YouTube or Vimeo embed URL
+  videoUrl?: string;
   thumbnailUrl: string;
   galleryUrls: string[];
   externalLinks?: {
@@ -21,18 +22,46 @@ export interface Project {
   }[];
 }
 
+// Collection definitions for folder display
+export const collections = {
+  'dvlvd-murals': {
+    name: 'DVLVD Murals',
+    description: 'Documentary-style videos for DVLVD Murals',
+    icon: '🎨',
+  },
+  'midway-football': {
+    name: 'Midway Football',
+    description: 'Hype videos and highlights for Midway High School Football',
+    icon: '🏈',
+  },
+  'ato-greek-life': {
+    name: 'ATO Greek Life',
+    description: 'Fraternity recruitment and championship videos',
+    icon: '🏛️',
+  },
+  'baylor-hockey': {
+    name: 'Baylor Hockey',
+    description: 'Highlight videos for Baylor University Hockey',
+    icon: '🏒',
+  },
+  'allen-samuels': {
+    name: 'Allen Samuels',
+    description: 'Dealership promotional content',
+    icon: '🚗',
+  },
+};
+
 // ============================================
-// PROJECTS - Add your projects here
+// PROJECTS - Organized by collection
 // ============================================
 export const projects: Project[] = [
-  // Loom thumbnail workflow (use this whenever we add new Loom videos):
-  // 1) Copy VIDEO_ID from videoUrl (the part after "/embed/")
-  // 2) Open https://www.loom.com/embed/VIDEO_ID
-  // 3) Inspect the poster image URL (format: https://cdn.loom.com/sessions/thumbnails/VIDEO_ID-HASH.jpg)
-  // 4) Use that exact CDN URL as thumbnailUrl (no query params - Loom CDN doesn't support them)
+  // ============================================
+  // DVLVD MURALS COLLECTION
+  // ============================================
   {
     id: 'dvlvd-dr-pepper-mural',
-    title: 'DVLVD - Dr. Pepper Mural',
+    title: 'Dr. Pepper Mural',
+    collection: 'dvlvd-murals',
     category: 'brand',
     year: 2024,
     description: 'DVLVD Murals documentary video for Dr. Pepper mural project',
@@ -45,7 +74,8 @@ export const projects: Project[] = [
   },
   {
     id: 'dvlvd-austin-parque-zaragoza',
-    title: 'DVLVD - Austin Parque Zaragoza',
+    title: 'Austin Parque Zaragoza',
+    collection: 'dvlvd-murals',
     category: 'brand',
     year: 2024,
     description: 'DVLVD Murals documentary video for Austin Parque Zaragoza project',
@@ -58,7 +88,8 @@ export const projects: Project[] = [
   },
   {
     id: 'dvlvd-painting-frames',
-    title: 'DVLVD - Painting Frames',
+    title: 'Painting Frames',
+    collection: 'dvlvd-murals',
     category: 'brand',
     year: 2024,
     description: 'DVLVD Murals behind-the-scenes painting frames video',
@@ -69,10 +100,163 @@ export const projects: Project[] = [
     thumbnailUrl: '/thumbnails/dvlvd-painting-frames.jpg',
     galleryUrls: [],
   },
+
+  // ============================================
+  // MIDWAY FOOTBALL COLLECTION
+  // ============================================
+  {
+    id: 'midway-football-captains',
+    title: 'Team Captains',
+    collection: 'midway-football',
+    category: 'sports',
+    year: 2024,
+    description: 'Midway Football team captains highlight video',
+    longDescription: 'A highlight video showcasing the Midway Football team captains. Captured the leadership, dedication, and team spirit of the captains both on and off the field.',
+    role: 'Videographer, Editor',
+    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
+    videoUrl: 'https://www.loom.com/embed/82084a8f09c4453580927e390018628c',
+    thumbnailUrl: 'https://cdn.loom.com/sessions/thumbnails/82084a8f09c4453580927e390018628c-9989a7b9ff8aa4e4.jpg',
+    galleryUrls: [],
+  },
+  {
+    id: 'midway-fb-hype-1',
+    title: 'Hype Vid 1',
+    collection: 'midway-football',
+    category: 'sports',
+    year: 2024,
+    description: 'Midway Football hype video',
+    longDescription: 'High-energy hype video for Midway Football, designed to pump up the team and fans before game day.',
+    role: 'Videographer, Editor',
+    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
+    videoUrl: 'https://www.loom.com/embed/6312d86d70ab446993b828c402f1f9e2',
+    thumbnailUrl: '/thumbnails/midway-fb-hype-1.jpg',
+    galleryUrls: [],
+  },
+  {
+    id: 'midway-fb-hype-2',
+    title: 'Hype Vid 2',
+    collection: 'midway-football',
+    category: 'sports',
+    year: 2024,
+    description: 'Midway Football hype video',
+    longDescription: 'High-energy hype video for Midway Football, designed to pump up the team and fans before game day.',
+    role: 'Videographer, Editor',
+    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
+    videoUrl: 'https://www.loom.com/embed/c72caeaeb0384b8ea69e3159918b76ba',
+    thumbnailUrl: '/thumbnails/midway-fb-hype-2.jpg',
+    galleryUrls: [],
+  },
+  {
+    id: 'midway-fb-hype-3',
+    title: 'Hype Vid 3',
+    collection: 'midway-football',
+    category: 'sports',
+    year: 2024,
+    description: 'Midway Football hype video',
+    longDescription: 'High-energy hype video for Midway Football, designed to pump up the team and fans before game day.',
+    role: 'Videographer, Editor',
+    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
+    videoUrl: 'https://www.loom.com/embed/fefc325627364a40826b7b2165ba9c38',
+    thumbnailUrl: '/thumbnails/midway-fb-hype-3.jpg',
+    galleryUrls: [],
+  },
+  {
+    id: 'midway-fb-hype-4',
+    title: 'Hype Vid 4',
+    collection: 'midway-football',
+    category: 'sports',
+    year: 2024,
+    description: 'Midway Football hype video',
+    longDescription: 'High-energy hype video for Midway Football, designed to pump up the team and fans before game day.',
+    role: 'Videographer, Editor',
+    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
+    videoUrl: 'https://www.loom.com/embed/8a3275fdc3fa4f4dbcaa6284dcda4de1',
+    thumbnailUrl: 'https://cdn.loom.com/sessions/thumbnails/8a3275fdc3fa4f4dbcaa6284dcda4de1-407e6fdf920cac2e.jpg',
+    galleryUrls: [],
+  },
+  {
+    id: 'midway-fb-hype-5',
+    title: 'Hype Vid 5',
+    collection: 'midway-football',
+    category: 'sports',
+    year: 2024,
+    description: 'Midway Football hype video',
+    longDescription: 'High-energy hype video for Midway Football, designed to pump up the team and fans before game day.',
+    role: 'Videographer, Editor',
+    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
+    videoUrl: 'https://www.loom.com/embed/7935f6b170b14a4785bed14273c1b746',
+    thumbnailUrl: '/thumbnails/midway-fb-hype-5-v2.jpg',
+    galleryUrls: [],
+  },
+
+  // ============================================
+  // ATO GREEK LIFE COLLECTION
+  // ============================================
+  {
+    id: 'ato-fb-champ-1',
+    title: 'FB Championship 1',
+    collection: 'ato-greek-life',
+    category: 'sports',
+    year: 2024,
+    description: 'ATO vs KOT fraternity flag football championship video',
+    longDescription: 'Exciting fraternity flag football championship game coverage featuring ATO vs KOT. Captured the intensity and brotherhood on the field.',
+    role: 'Videographer, Editor',
+    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
+    videoUrl: 'https://www.loom.com/embed/0b4dcebc6225432fab45da628da79ecd',
+    thumbnailUrl: '/thumbnails/ato-fb-champ-1.jpg',
+    galleryUrls: [],
+  },
+  {
+    id: 'ato-fb-champ-2',
+    title: 'FB Championship 2',
+    collection: 'ato-greek-life',
+    category: 'sports',
+    year: 2024,
+    description: 'ATO fraternity flag football championship video',
+    longDescription: 'Part two of the fraternity flag football championship coverage, showcasing ATO\'s competitive spirit and team dynamics.',
+    role: 'Videographer, Editor',
+    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
+    videoUrl: 'https://www.loom.com/embed/885b68b426d8444e84ac5fd275f7c1fe',
+    thumbnailUrl: '/thumbnails/ato-fb-champ-2-v2.jpg',
+    galleryUrls: [],
+  },
+  {
+    id: 'rush-ato-lr',
+    title: 'Rush Video 1',
+    collection: 'ato-greek-life',
+    category: 'brand',
+    year: 2024,
+    description: 'ATO fraternity rush recruitment video',
+    longDescription: 'Rush recruitment video for Alpha Tau Omega fraternity, highlighting the brotherhood, values, and unity of great men.',
+    role: 'Videographer, Editor',
+    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
+    videoUrl: 'https://www.loom.com/embed/d97bf6262f47420d99eb547606cc93ef',
+    thumbnailUrl: '/thumbnails/rush-ato.jpg',
+    galleryUrls: [],
+  },
+  {
+    id: 'rush-ato-2-lr',
+    title: 'Rush Video 2',
+    collection: 'ato-greek-life',
+    category: 'brand',
+    year: 2024,
+    description: 'ATO fraternity rush recruitment video',
+    longDescription: 'Second rush recruitment video for Alpha Tau Omega fraternity, showcasing the chapter\'s achievements and the bonds of brotherhood.',
+    role: 'Videographer, Editor',
+    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
+    videoUrl: 'https://www.loom.com/embed/181df640ebe642028fb40d2d6c489526',
+    thumbnailUrl: '/thumbnails/rush-ato-2.jpg',
+    galleryUrls: [],
+  },
+
+  // ============================================
+  // BAYLOR HOCKEY COLLECTION
+  // ============================================
   {
     id: 'baylor-hockey-1',
-    title: 'Baylor Hockey 1',
-    category: 'other',
+    title: 'Highlights 1',
+    collection: 'baylor-hockey',
+    category: 'sports',
     year: 2024,
     description: 'Baylor University hockey highlight video',
     longDescription: 'High-energy highlight video capturing the action and intensity of Baylor University hockey, showcasing the team\'s skills and competitive spirit on the ice.',
@@ -84,8 +268,9 @@ export const projects: Project[] = [
   },
   {
     id: 'baylor-hockey-2',
-    title: 'Baylor Hockey 2',
-    category: 'other',
+    title: 'Highlights 2',
+    collection: 'baylor-hockey',
+    category: 'sports',
     year: 2024,
     description: 'Baylor University hockey highlight video',
     longDescription: 'Second highlight video capturing the excitement and celebration of Baylor University hockey, featuring the team\'s victories and fan energy at the arena.',
@@ -95,9 +280,14 @@ export const projects: Project[] = [
     thumbnailUrl: '/thumbnails/baylor-hockey-2.jpg',
     galleryUrls: [],
   },
+
+  // ============================================
+  // ALLEN SAMUELS COLLECTION
+  // ============================================
   {
     id: 'allen-samuels-bronco-reel',
-    title: 'Allen Samuels - Bronco Reel',
+    title: 'Bronco Reel',
+    collection: 'allen-samuels',
     category: 'brand',
     year: 2024,
     description: 'Ford Bronco promotional reel for Allen Samuels dealership',
@@ -110,7 +300,8 @@ export const projects: Project[] = [
   },
   {
     id: 'allen-samuels-starting-lineup',
-    title: 'Allen Samuels Starting Lineup',
+    title: 'Starting Lineup',
+    collection: 'allen-samuels',
     category: 'brand',
     year: 2024,
     description: 'Fun team video for Allen Samuels dealership staff',
@@ -121,9 +312,13 @@ export const projects: Project[] = [
     thumbnailUrl: '/thumbnails/allen-samuels-starting-lineup.jpg',
     galleryUrls: [],
   },
+
+  // ============================================
+  // STANDALONE PROJECTS (No Collection)
+  // ============================================
   {
     id: 'bolaji-lavish-music-video',
-    title: 'Bōlají - Lavish Official Music Video',
+    title: 'Bōlají - Lavish',
     category: 'music',
     year: 2023,
     description: 'Official music video for Bōlají\'s "Lavish"',
@@ -136,7 +331,7 @@ export const projects: Project[] = [
   },
   {
     id: 'reyna-reyes-real-estate',
-    title: 'Reyna Reyes Real Estate Walkthrough',
+    title: 'Reyna Reyes Real Estate',
     category: 'brand',
     year: 2024,
     description: 'Real estate property walkthrough video for Reyna Reyes',
@@ -150,7 +345,7 @@ export const projects: Project[] = [
   {
     id: 'india-short',
     title: 'India Short',
-    category: 'other',
+    category: 'documentary',
     year: 2024,
     description: 'Documentary short film from India',
     longDescription: 'Cinematic short documentary capturing intimate moments and community gatherings in India, featuring beautiful natural lighting and authentic cultural representation.',
@@ -163,7 +358,7 @@ export const projects: Project[] = [
   {
     id: 'clase-event-promo',
     title: 'Clase Event Promo',
-    category: 'other',
+    category: 'events',
     year: 2024,
     description: 'Clase event promotional video',
     longDescription: 'Promotional video for a Clase event, capturing the atmosphere and energy of the occasion.',
@@ -171,136 +366,6 @@ export const projects: Project[] = [
     tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
     videoUrl: 'https://www.loom.com/embed/9d745ee20b844cb0ad078ecd38bcda99',
     thumbnailUrl: '/thumbnails/clase-event-promo.jpg',
-    galleryUrls: [],
-  },
-  {
-    id: 'midway-football-captains',
-    title: 'Midway Football Captains',
-    category: 'other',
-    year: 2024,
-    description: 'Midway Football team captains highlight video',
-    longDescription: 'A highlight video showcasing the Midway Football team captains. Captured the leadership, dedication, and team spirit of the captains both on and off the field.',
-    role: 'Videographer, Editor',
-    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
-    videoUrl: 'https://www.loom.com/embed/82084a8f09c4453580927e390018628c',
-    thumbnailUrl: 'https://cdn.loom.com/sessions/thumbnails/82084a8f09c4453580927e390018628c-9989a7b9ff8aa4e4.jpg',
-    galleryUrls: [],
-  },
-  {
-    id: 'midway-fb-hype-1',
-    title: 'Midway FB Hype Vid 1',
-    category: 'other',
-    year: 2024,
-    description: 'Midway Football hype video',
-    longDescription: 'High-energy hype video for Midway Football, designed to pump up the team and fans before game day.',
-    role: 'Videographer, Editor',
-    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
-    videoUrl: 'https://www.loom.com/embed/6312d86d70ab446993b828c402f1f9e2',
-    thumbnailUrl: '/thumbnails/midway-fb-hype-1.jpg',
-    galleryUrls: [],
-  },
-  {
-    id: 'midway-fb-hype-2',
-    title: 'Midway FB Hype Vid 2',
-    category: 'other',
-    year: 2024,
-    description: 'Midway Football hype video',
-    longDescription: 'High-energy hype video for Midway Football, designed to pump up the team and fans before game day.',
-    role: 'Videographer, Editor',
-    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
-    videoUrl: 'https://www.loom.com/embed/c72caeaeb0384b8ea69e3159918b76ba',
-    thumbnailUrl: '/thumbnails/midway-fb-hype-2.jpg',
-    galleryUrls: [],
-  },
-  {
-    id: 'midway-fb-hype-3',
-    title: 'Midway FB Hype Vid 3',
-    category: 'other',
-    year: 2024,
-    description: 'Midway Football hype video',
-    longDescription: 'High-energy hype video for Midway Football, designed to pump up the team and fans before game day.',
-    role: 'Videographer, Editor',
-    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
-    videoUrl: 'https://www.loom.com/embed/fefc325627364a40826b7b2165ba9c38',
-    thumbnailUrl: '/thumbnails/midway-fb-hype-3.jpg',
-    galleryUrls: [],
-  },
-  {
-    id: 'midway-fb-hype-4',
-    title: 'Midway FB Hype Vid 4',
-    category: 'other',
-    year: 2024,
-    description: 'Midway Football hype video',
-    longDescription: 'High-energy hype video for Midway Football, designed to pump up the team and fans before game day.',
-    role: 'Videographer, Editor',
-    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
-    videoUrl: 'https://www.loom.com/embed/8a3275fdc3fa4f4dbcaa6284dcda4de1',
-    thumbnailUrl: 'https://cdn.loom.com/sessions/thumbnails/8a3275fdc3fa4f4dbcaa6284dcda4de1-407e6fdf920cac2e.jpg',
-    galleryUrls: [],
-  },
-  {
-    id: 'midway-fb-hype-5',
-    title: 'Midway FB Hype Vid 5',
-    category: 'other',
-    year: 2024,
-    description: 'Midway Football hype video',
-    longDescription: 'High-energy hype video for Midway Football, designed to pump up the team and fans before game day.',
-    role: 'Videographer, Editor',
-    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
-    videoUrl: 'https://www.loom.com/embed/7935f6b170b14a4785bed14273c1b746',
-    thumbnailUrl: '/thumbnails/midway-fb-hype-5-v2.jpg',
-    galleryUrls: [],
-  },
-  {
-    id: 'ato-fb-champ-1',
-    title: 'ATO FB Champ 1',
-    category: 'other',
-    year: 2024,
-    description: 'ATO vs KOT fraternity flag football championship video',
-    longDescription: 'Exciting fraternity flag football championship game coverage featuring ATO vs KOT. Captured the intensity and brotherhood on the field.',
-    role: 'Videographer, Editor',
-    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
-    videoUrl: 'https://www.loom.com/embed/0b4dcebc6225432fab45da628da79ecd',
-    thumbnailUrl: '/thumbnails/ato-fb-champ-1.jpg',
-    galleryUrls: [],
-  },
-  {
-    id: 'ato-fb-champ-2',
-    title: 'ATO FB Champ 2',
-    category: 'other',
-    year: 2024,
-    description: 'ATO fraternity flag football championship video',
-    longDescription: 'Part two of the fraternity flag football championship coverage, showcasing ATO\'s competitive spirit and team dynamics.',
-    role: 'Videographer, Editor',
-    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
-    videoUrl: 'https://www.loom.com/embed/885b68b426d8444e84ac5fd275f7c1fe',
-    thumbnailUrl: '/thumbnails/ato-fb-champ-2-v2.jpg',
-    galleryUrls: [],
-  },
-  {
-    id: 'rush-ato-lr',
-    title: 'Rush ATO L&R',
-    category: 'other',
-    year: 2024,
-    description: 'ATO fraternity rush recruitment video',
-    longDescription: 'Rush recruitment video for Alpha Tau Omega fraternity, highlighting the brotherhood, values, and unity of great men.',
-    role: 'Videographer, Editor',
-    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
-    videoUrl: 'https://www.loom.com/embed/d97bf6262f47420d99eb547606cc93ef',
-    thumbnailUrl: '/thumbnails/rush-ato.jpg',
-    galleryUrls: [],
-  },
-  {
-    id: 'rush-ato-2-lr',
-    title: 'Rush ATO 2 L&R',
-    category: 'other',
-    year: 2024,
-    description: 'ATO fraternity rush recruitment video',
-    longDescription: 'Second rush recruitment video for Alpha Tau Omega fraternity, showcasing the chapter\'s achievements and the bonds of brotherhood.',
-    role: 'Videographer, Editor',
-    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
-    videoUrl: 'https://www.loom.com/embed/181df640ebe642028fb40d2d6c489526',
-    thumbnailUrl: '/thumbnails/rush-ato-2.jpg',
     galleryUrls: [],
   },
 ];
