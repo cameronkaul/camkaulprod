@@ -82,13 +82,10 @@ export function MenuBar({ onSpotlightOpen }: MenuBarProps) {
     <header className="menu-bar h-7 flex items-center justify-between px-4 text-sm select-none fixed top-0 left-0 right-0 z-[9998]">
       {/* Left side - Logo and menus */}
       <div className="flex items-center gap-4">
-        {/* Logo/Brand */}
-        <div className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground text-xs font-bold">CK</span>
-          </div>
-          <span className="font-semibold text-foreground">Cam Kaul Productions</span>
-        </div>
+        {/* Logo/Brand - Apple-style text logo */}
+        <span className="font-semibold text-foreground tracking-tight">
+          Cam Kaul Productions
+        </span>
 
         {/* Menu Items with Dropdowns */}
         <nav className="flex items-center">
