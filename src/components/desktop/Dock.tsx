@@ -27,7 +27,7 @@ const dockItems: DockItem[] = [
 ];
 
 export function Dock() {
-  const { openWindow, windows, focusWindow, closeWindow } = useWindows();
+  const { openWindow, windows, focusWindow, closeWindow, isMobile } = useWindows();
   const [bouncingId, setBouncingId] = useState<WindowId | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [hoverEnabled, setHoverEnabled] = useState(false);
@@ -35,9 +35,9 @@ export function Dock() {
   const dockRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(-1000); // Start offscreen
 
-  // Enable hover only after pointer has left dock area once
+  // Enable hover only after pointer has left dock area once (desktop only)
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!hoverEnabled) return;
+    if (!hoverEnabled || isMobile) return;
     if (dockRef.current) {
       const rect = dockRef.current.getBoundingClientRect();
       mouseX.set(e.clientX - rect.left);
@@ -103,21 +103,28 @@ export function Dock() {
   // Check if trash has content (for full/empty state)
   const trashHasContent = true; // Placeholder - would check deleted scenes
 
+  // Mobile dock items (fewer items for cleaner look)
+  const mobileDockItems = dockItems.filter(item => 
+    ['portfolio', 'contact', 'about', 'resume'].includes(item.id)
+  );
+
+  const displayItems = isMobile ? mobileDockItems : dockItems;
+
   return (
     <motion.div
-      className="fixed bottom-4 left-0 right-0 flex justify-center z-[9997]"
+      className={`fixed ${isMobile ? 'bottom-6' : 'bottom-4'} left-0 right-0 flex justify-center z-[9997]`}
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.3, type: 'spring', stiffness: 200, damping: 20 }}
     >
       <div 
         ref={dockRef}
-        className={`dock-container rounded-3xl px-4 py-3 flex items-end gap-2 ${hoverEnabled ? 'dock-ready' : ''}`}
+        className={`dock-container rounded-3xl ${isMobile ? 'px-3 py-2.5' : 'px-4 py-3'} flex items-end ${isMobile ? 'gap-3' : 'gap-2'} ${hoverEnabled && !isMobile ? 'dock-ready' : ''}`}
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {dockItems.map((item, index) => {
+        {displayItems.map((item, index) => {
           const windowState = windows.find(w => w.id === item.id);
           const isOpen = windowState?.isOpen && !windowState.isMinimized;
           const isBouncing = bouncingId === item.id;
@@ -137,8 +144,9 @@ export function Dock() {
                   hoveredIndex={hoveredIndex}
                   setHoveredIndex={setHoveredIndex}
                   onClick={() => handleClick(item.id)}
-                  totalItems={dockItems.length}
+                  totalItems={displayItems.length}
                   hoverEnabled={hoverEnabled}
+                  isMobile={isMobile}
                 />
               </ContextMenuTrigger>
               <ContextMenuContent className="min-w-[160px] bg-popover/95 backdrop-blur-xl border border-border/50">
@@ -179,6 +187,7 @@ interface DockIconProps {
   onClick: () => void;
   totalItems: number;
   hoverEnabled: boolean;
+  isMobile: boolean;
 }
 
 function DockIcon({ 
@@ -193,29 +202,30 @@ function DockIcon({
   setHoveredIndex,
   onClick,
   totalItems,
-  hoverEnabled
+  hoverEnabled,
+  isMobile
 }: DockIconProps) {
   const ref = useRef<HTMLButtonElement>(null);
-  const baseSize = 60;
-  const maxSize = 80;
+  const baseSize = isMobile ? 50 : 60;
+  const maxSize = isMobile ? 50 : 80; // No magnification on mobile
   
-  // Calculate distance from mouse for magnification
+  // Calculate distance from mouse for magnification (desktop only)
   const distance = useTransform(mouseX, (val: number) => {
-    if (!ref.current || !hoverEnabled) return 1000; // Far away = no magnification
+    if (!ref.current || !hoverEnabled || isMobile) return 1000;
     const rect = ref.current.getBoundingClientRect();
     const iconCenter = rect.left + rect.width / 2;
     const dockLeft = ref.current.parentElement?.getBoundingClientRect().left || 0;
     return Math.abs(val - (iconCenter - dockLeft));
   });
 
-  // Magnification based on distance - only when hover enabled
+  // Magnification based on distance - only when hover enabled and not mobile
   const size = useSpring(
-    useTransform(distance, [0, 100, 200], hoverEnabled ? [maxSize, baseSize + 10, baseSize] : [baseSize, baseSize, baseSize]),
+    useTransform(distance, [0, 100, 200], hoverEnabled && !isMobile ? [maxSize, baseSize + 10, baseSize] : [baseSize, baseSize, baseSize]),
     { stiffness: 400, damping: 25 }
   );
 
   const translateY = useSpring(
-    useTransform(distance, [0, 100, 200], hoverEnabled ? [-16, -6, 0] : [0, 0, 0]),
+    useTransform(distance, [0, 100, 200], hoverEnabled && !isMobile ? [-16, -6, 0] : [0, 0, 0]),
     { stiffness: 400, damping: 25 }
   );
 
@@ -224,12 +234,12 @@ function DockIcon({
       ref={ref}
       className="dock-icon flex flex-col items-center group relative"
       onClick={onClick}
-      onMouseEnter={() => setHoveredIndex(index)}
-      onMouseLeave={() => setHoveredIndex(null)}
-      style={{ y: translateY }}
+      onMouseEnter={() => !isMobile && setHoveredIndex(index)}
+      onMouseLeave={() => !isMobile && setHoveredIndex(null)}
+      style={{ y: isMobile ? 0 : translateY }}
       animate={isBouncing ? {
-        y: [0, -30, 0, -15, 0],
-        transition: { duration: 0.6, ease: 'easeOut' }
+        y: [0, -20, 0, -10, 0],
+        transition: { duration: 0.5, ease: 'easeOut' }
       } : {}}
     >
       {/* Tooltip */}
