@@ -46,7 +46,7 @@ function DesktopContent() {
   const [showIcons, setShowIcons] = useState(false);
   const [showChrome, setShowChrome] = useState(false);
   const [wallpaperSharp, setWallpaperSharp] = useState(false);
-  const { openWindow } = useWindows();
+  const { openWindow, isMobile } = useWindows();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -98,31 +98,33 @@ function DesktopContent() {
           {/* Boot Overlay */}
           {isBooting && <BootOverlay onComplete={handleBootComplete} />}
 
-          {/* Desktop Icons - appear first */}
-          <motion.div 
-            className="absolute top-14 left-4 flex flex-col gap-1 z-10"
-            initial={{ opacity: 0 }}
-            animate={showIcons ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-          >
-            {desktopIcons.map((item) => (
-              <DesktopIcon
-                key={item.id}
-                icon={item.icon}
-                label={item.label}
-                isSelected={selectedIconId === item.id}
-                onSelect={() => setSelectedIconId(item.id)}
-                onClick={() => {}}
-                onDoubleClick={() => {
-                  if (item.id === 'contact') {
-                    openContactEmail();
-                  } else {
-                    openWindow(item.id);
-                  }
-                }}
-              />
-            ))}
-          </motion.div>
+          {/* Desktop Icons - appear first (hidden on mobile) */}
+          {!isMobile && (
+            <motion.div 
+              className="absolute top-14 left-4 flex flex-col gap-1 z-10"
+              initial={{ opacity: 0 }}
+              animate={showIcons ? { opacity: 1 } : { opacity: 0 }}
+              transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+            >
+              {desktopIcons.map((item) => (
+                <DesktopIcon
+                  key={item.id}
+                  icon={item.icon}
+                  label={item.label}
+                  isSelected={selectedIconId === item.id}
+                  onSelect={() => setSelectedIconId(item.id)}
+                  onClick={() => {}}
+                  onDoubleClick={() => {
+                    if (item.id === 'contact') {
+                      openContactEmail();
+                    } else {
+                      openWindow(item.id);
+                    }
+                  }}
+                />
+              ))}
+            </motion.div>
+          )}
 
           {/* Menu Bar - slides down into place with dock */}
           <motion.div

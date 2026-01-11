@@ -10,6 +10,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Calendar } from '@/components/ui/calendar';
+import { useWindows } from '@/contexts/WindowContext';
 
 interface MenuBarProps {
   onSpotlightOpen: () => void;
@@ -18,6 +19,7 @@ interface MenuBarProps {
 export function MenuBar({ onSpotlightOpen }: MenuBarProps) {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [calendarOpen, setCalendarOpen] = useState(false);
+  const { isMobile } = useWindows();
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -78,6 +80,48 @@ export function MenuBar({ onSpotlightOpen }: MenuBarProps) {
     { label: 'Help', items: helpMenuItems },
   ];
 
+  // Mobile: iPhone-style status bar
+  if (isMobile) {
+    return (
+      <header className="menu-bar h-11 flex items-center justify-between px-4 text-sm select-none fixed top-0 left-0 right-0 z-[9998] pt-1">
+        {/* Left side - Time */}
+        <div className="text-foreground/90 font-semibold text-[15px]">
+          {formatTime(currentTime)}
+        </div>
+
+        {/* Center - Branding */}
+        <div className="flex items-center gap-1.5">
+          <div className="w-4 h-4 rounded-[4px] bg-foreground/80 flex items-center justify-center">
+            <span className="text-background text-[9px] font-semibold leading-none">CK</span>
+          </div>
+        </div>
+
+        {/* Right side - Social + Search */}
+        <div className="flex items-center gap-3">
+          <a
+            href="https://www.instagram.com/camkaul.prod/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+            className="text-foreground/70 p-1"
+          >
+            <Instagram className="w-4 h-4" />
+          </a>
+          <a
+            href="https://www.youtube.com/@CamKaul"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="YouTube"
+            className="text-foreground/70 p-1"
+          >
+            <Youtube className="w-4 h-4" />
+          </a>
+        </div>
+      </header>
+    );
+  }
+
+  // Desktop: Full menu bar
   return (
     <header className="menu-bar h-7 flex items-center justify-between px-4 text-sm select-none fixed top-0 left-0 right-0 z-[9998]">
       {/* Left side - Logo and menus */}

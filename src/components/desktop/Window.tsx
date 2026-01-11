@@ -90,41 +90,39 @@ export function Window({ id, children }: WindowProps) {
     document.addEventListener('mouseup', handleMouseUp);
   };
 
-  // Mobile: full screen stacked view
+  // Mobile: full screen with easy close
   if (isMobile) {
     return (
       <AnimatePresence>
         <motion.div
-          className="fixed inset-0 z-50 bg-card"
-          initial={{ opacity: 0, y: 20 }}
+          className="fixed inset-0 z-50 bg-card flex flex-col"
+          initial={{ opacity: 0, y: '100%' }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
+          exit={{ opacity: 0, y: '100%' }}
+          transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           onClick={() => focusWindow(id)}
         >
-          {/* Mobile Title Bar */}
-          <div className="window-titlebar">
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => closeWindow(id)}
-                className="window-control window-control-close"
-                aria-label="Close window"
-              />
-              <button
-                onClick={() => minimizeWindow(id)}
-                className="window-control window-control-minimize"
-                aria-label="Minimize window"
-              />
-              <div className="window-control window-control-maximize" />
-            </div>
-            <span className="absolute left-1/2 -translate-x-1/2 text-sm font-medium text-foreground/80">
+          {/* Mobile Title Bar - iOS style */}
+          <div className="flex items-center justify-between px-4 py-3 bg-card/95 backdrop-blur-xl border-b border-border/30">
+            <button
+              onClick={() => closeWindow(id)}
+              className="text-primary font-medium text-sm"
+            >
+              Close
+            </button>
+            <span className="text-sm font-semibold text-foreground">
               {windowState.title}
             </span>
+            <div className="w-12" /> {/* Spacer for balance */}
           </div>
 
           {/* Content */}
-          <div className="h-[calc(100%-2.75rem)] overflow-auto custom-scrollbar bg-card">
+          <div className="flex-1 overflow-auto custom-scrollbar bg-card">
             {children}
           </div>
+
+          {/* Bottom safe area for iOS */}
+          <div className="h-6 bg-card" />
         </motion.div>
       </AnimatePresence>
     );
