@@ -383,7 +383,7 @@ export const projects: Project[] = [
   },
   {
     id: 'movement-of-everything',
-    title: 'The Movement of Everything',
+    title: 'The Movement of Everything - Video Essay',
     category: 'documentary',
     year: 2024,
     description: 'Video essay exploring motion and interconnectedness',
