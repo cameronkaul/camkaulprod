@@ -31,6 +31,19 @@ export const projects: Project[] = [
   // 3) Inspect the poster image URL (format: https://cdn.loom.com/sessions/thumbnails/VIDEO_ID-HASH.jpg)
   // 4) Use that exact CDN URL as thumbnailUrl (no query params - Loom CDN doesn't support them)
   {
+    id: 'dvlvd-dr-pepper-mural',
+    title: 'DVLVD - Dr. Pepper Mural',
+    category: 'brand',
+    year: 2024,
+    description: 'DVLVD Murals documentary video for Dr. Pepper mural project',
+    longDescription: 'Documentary-style video capturing the creation of a Dr. Pepper mural by DVLVD Murals, showcasing the artistic process and the final result in an urban setting.',
+    role: 'Videographer, Editor',
+    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
+    videoUrl: 'https://www.loom.com/embed/4788fea6356144ff8209e98c95116ccb',
+    thumbnailUrl: '/thumbnails/dvlvd-dr-pepper-mural.jpg',
+    galleryUrls: [],
+  },
+  {
     id: 'clase-event-promo',
     title: 'Clase Event Promo',
     category: 'other',
