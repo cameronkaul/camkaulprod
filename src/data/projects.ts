@@ -381,6 +381,19 @@ export const projects: Project[] = [
     thumbnailUrl: '/thumbnails/alone-video-essay.png',
     galleryUrls: [],
   },
+  {
+    id: 'movement-of-everything',
+    title: 'The Movement of Everything',
+    category: 'documentary',
+    year: 2024,
+    description: 'Video essay exploring motion and interconnectedness',
+    longDescription: 'A contemplative video essay examining the constant motion that defines our world and the interconnectedness of all things. Features evocative imagery and philosophical narration.',
+    role: 'Writer, Director, Editor',
+    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
+    videoUrl: 'https://www.loom.com/embed/577ff1ea60da4fc0af39d491e7032d6f',
+    thumbnailUrl: '/thumbnails/movement-of-everything.png',
+    galleryUrls: [],
+  },
 ];
 
 // ============================================
