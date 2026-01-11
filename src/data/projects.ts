@@ -31,6 +31,19 @@ export const projects: Project[] = [
   // 3) Inspect the poster image URL (format: https://cdn.loom.com/sessions/thumbnails/VIDEO_ID-HASH.jpg)
   // 4) Use that exact CDN URL as thumbnailUrl (no query params - Loom CDN doesn't support them)
   {
+    id: 'clase-event-promo',
+    title: 'Clase Event Promo',
+    category: 'other',
+    year: 2024,
+    description: 'Clase event promotional video',
+    longDescription: 'Promotional video for a Clase event, capturing the atmosphere and energy of the occasion.',
+    role: 'Videographer, Editor',
+    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
+    videoUrl: 'https://www.loom.com/embed/9d745ee20b844cb0ad078ecd38bcda99',
+    thumbnailUrl: '/thumbnails/clase-event-promo.jpg',
+    galleryUrls: [],
+  },
+  {
     id: 'midway-football-captains',
     title: 'Midway Football Captains',
     category: 'other',
