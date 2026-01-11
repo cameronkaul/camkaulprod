@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { Search, Instagram, Youtube } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Search } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,7 +8,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Calendar } from '@/components/ui/calendar';
 import { useWindows } from '@/contexts/WindowContext';
 
@@ -98,27 +97,8 @@ export function MenuBar({ onSpotlightOpen }: MenuBarProps) {
           </div>
         </div>
 
-        {/* Right side - Social icons */}
-        <div className="flex items-center gap-2">
-          <a
-            href="https://www.instagram.com/camkaul.prod/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Instagram"
-            className="text-foreground/70 p-1"
-          >
-            <Instagram className="w-4 h-4" />
-          </a>
-          <a
-            href="https://www.youtube.com/@CamKaul"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="YouTube"
-            className="text-foreground/70 p-1"
-          >
-            <Youtube className="w-4 h-4" />
-          </a>
-        </div>
+        {/* Right side - empty spacer for balance */}
+        <div className="w-8" />
       </header>
     );
   }
@@ -168,54 +148,8 @@ export function MenuBar({ onSpotlightOpen }: MenuBarProps) {
         </nav>
       </div>
 
-      {/* Right side - Social links, search, and time */}
+      {/* Right side - search and time */}
       <div className="flex items-center gap-3">
-        {/* Social Icons */}
-        <TooltipProvider delayDuration={300}>
-          <div className="flex items-center gap-2 text-foreground/70">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <a
-                  href="https://www.instagram.com/camkaul.prod/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    window.open('https://www.instagram.com/camkaul.prod/', '_blank', 'noopener,noreferrer');
-                  }}
-                  aria-label="Instagram"
-                  className="hover:text-foreground transition-colors p-1 cursor-pointer"
-                >
-                  <Instagram className="w-4 h-4" />
-                </a>
-              </TooltipTrigger>
-              <TooltipContent side="bottom" className="text-xs">
-                Instagram
-              </TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <a
-                  href="https://www.youtube.com/@CamKaul"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    window.open('https://www.youtube.com/@CamKaul', '_blank', 'noopener,noreferrer');
-                  }}
-                  aria-label="YouTube"
-                  className="hover:text-foreground transition-colors p-1 cursor-pointer"
-                >
-                  <Youtube className="w-4 h-4" />
-                </a>
-              </TooltipTrigger>
-              <TooltipContent side="bottom" className="text-xs">
-                YouTube
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        </TooltipProvider>
-
         {/* Search */}
         <button
           onClick={onSpotlightOpen}

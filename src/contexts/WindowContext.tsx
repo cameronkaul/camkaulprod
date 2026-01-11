@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 
-export type WindowId = 'portfolio' | 'about' | 'contact' | 'resume' | 'trash' | 'project' | 'runner' | 'document';
+export type WindowId = 'portfolio' | 'about' | 'contact' | 'resume' | 'trash' | 'project' | 'runner' | 'document' | 'instagram' | 'youtube';
 
 export interface WindowState {
   id: WindowId;
@@ -35,6 +35,8 @@ const defaultWindows: WindowState[] = [
   { id: 'project', title: 'Project', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 100, y: 50 }, size: { width: 900, height: 700 } },
   { id: 'runner', title: 'Runner', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 150, y: 80 }, size: { width: 700, height: 420 } },
   { id: 'document', title: 'Nothing Important.doc', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 180, y: 70 }, size: { width: 650, height: 550 } },
+  { id: 'instagram', title: 'Instagram', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 200, y: 80 }, size: { width: 400, height: 350 } },
+  { id: 'youtube', title: 'YouTube', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 220, y: 100 }, size: { width: 400, height: 350 } },
 ];
 
 const WindowContext = createContext<WindowContextType | undefined>(undefined);

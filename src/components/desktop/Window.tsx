@@ -19,6 +19,8 @@ const windowTitles: Record<WindowId, string> = {
   trash: 'Trash',
   project: 'Project',
   document: 'Document',
+  instagram: 'Instagram',
+  youtube: 'YouTube',
 };
 
 export function Window({ id, children }: WindowProps) {
