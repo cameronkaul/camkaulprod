@@ -8,6 +8,7 @@ import { DesktopIcon } from '@/components/desktop/DesktopIcon';
 import { Window } from '@/components/desktop/Window';
 import { Spotlight } from '@/components/desktop/Spotlight';
 import { BootOverlay } from '@/components/desktop/BootOverlay';
+import { MobileHomeScreen } from '@/components/mobile/MobileHomeScreen';
 import { PortfolioWindow } from '@/components/windows/PortfolioWindow';
 import { ProjectWindow } from '@/components/windows/ProjectWindow';
 import { AboutWindow } from '@/components/windows/AboutWindow';
@@ -126,6 +127,17 @@ function DesktopContent() {
             </motion.div>
           )}
 
+          {/* Mobile Home Screen - iOS-style app grid */}
+          {isMobile && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={showIcons ? { opacity: 1 } : { opacity: 0 }}
+              transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+            >
+              <MobileHomeScreen />
+            </motion.div>
+          )}
+
           {/* Menu Bar - slides down into place with dock */}
           <motion.div
             initial={{ opacity: 0, y: -12 }}
@@ -146,14 +158,16 @@ function DesktopContent() {
           <Window id="runner"><RunnerWindow /></Window>
           <Window id="document"><DocumentWindow /></Window>
 
-          {/* Dock - rises from bottom with stronger motion */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={showChrome ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-          >
-            <Dock />
-          </motion.div>
+          {/* Dock - rises from bottom with stronger motion (desktop only) */}
+          {!isMobile && (
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={showChrome ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+              transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+            >
+              <Dock />
+            </motion.div>
+          )}
 
           {/* Spotlight */}
           <Spotlight isOpen={spotlightOpen} onClose={() => setSpotlightOpen(false)} />
