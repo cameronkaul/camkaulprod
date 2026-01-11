@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState, ReactNode } from 'react';
 import { motion, useDragControls, AnimatePresence, PanInfo } from 'framer-motion';
 import { useWindows, WindowId } from '@/contexts/WindowContext';
+import { X } from 'lucide-react';
 
 interface WindowProps {
   id: WindowId;
@@ -102,18 +103,24 @@ export function Window({ id, children }: WindowProps) {
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           onClick={() => focusWindow(id)}
         >
+          {/* Drag handle indicator */}
+          <div className="flex justify-center pt-2 pb-1 bg-card/95 backdrop-blur-xl">
+            <div className="w-10 h-1 rounded-full bg-foreground/30" />
+          </div>
+          
           {/* Mobile Title Bar - iOS style */}
-          <div className="flex items-center justify-between px-4 py-3 bg-card/95 backdrop-blur-xl border-b border-border/30">
+          <div className="flex items-center justify-between px-3 py-2 bg-card/95 backdrop-blur-xl border-b border-border/30">
             <button
               onClick={() => closeWindow(id)}
-              className="text-primary font-medium text-sm"
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-muted/80 hover:bg-muted active:scale-95 transition-all"
+              aria-label="Close window"
             >
-              Close
+              <X className="w-5 h-5 text-foreground" />
             </button>
             <span className="text-sm font-semibold text-foreground">
               {windowState.title}
             </span>
-            <div className="w-12" /> {/* Spacer for balance */}
+            <div className="w-10" /> {/* Spacer for balance */}
           </div>
 
           {/* Content */}
