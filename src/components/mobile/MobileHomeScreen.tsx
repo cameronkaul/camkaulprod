@@ -11,6 +11,8 @@ const mainApps: AppItem[] = [
   { id: 'portfolio', type: 'portfolio' },
   { id: 'contact', type: 'contact' },
   { id: 'about', type: 'about' },
+  { id: 'instagram', type: 'instagram' },
+  { id: 'youtube', type: 'youtube' },
 ];
 
 const dockApps: AppItem[] = [
@@ -30,21 +32,43 @@ export function MobileHomeScreen() {
     }
   };
 
+  // Split main apps into rows of 3
+  const firstRow = mainApps.slice(0, 3);
+  const secondRow = mainApps.slice(3);
+
   return (
     <>
       {/* App Grid - Main apps */}
       <div className="absolute inset-x-0 top-16 bottom-24 flex flex-col items-center pt-12 px-8">
-        <div className="grid grid-cols-3 gap-8">
-          {mainApps.map((app) => (
-            <AppIcon
-              key={app.id}
-              type={app.type}
-              size={64}
-              showLabel={true}
-              onClick={() => handleAppClick(app.id)}
-              labelClassName="mt-1"
-            />
-          ))}
+        <div className="flex flex-col gap-8">
+          {/* First row */}
+          <div className="grid grid-cols-3 gap-8">
+            {firstRow.map((app) => (
+              <AppIcon
+                key={app.id}
+                type={app.type}
+                size={64}
+                showLabel={true}
+                onClick={() => handleAppClick(app.id)}
+                labelClassName="mt-1"
+              />
+            ))}
+          </div>
+          {/* Second row */}
+          {secondRow.length > 0 && (
+            <div className="grid grid-cols-3 gap-8">
+              {secondRow.map((app) => (
+                <AppIcon
+                  key={app.id}
+                  type={app.type}
+                  size={64}
+                  showLabel={true}
+                  onClick={() => handleAppClick(app.id)}
+                  labelClassName="mt-1"
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
