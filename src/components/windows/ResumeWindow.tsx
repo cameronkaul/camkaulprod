@@ -34,20 +34,20 @@ ${resumeData.skills.join(', ')}
   };
 
   return (
-    <div className="flex flex-col h-full bg-[hsl(220,15%,8%)]">
+    <div className="flex flex-col h-full bg-white">
       {/* Docs-style Toolbar */}
-      <div className="h-12 border-b border-border/30 flex items-center justify-between px-4 bg-[hsl(220,15%,10%)]">
+      <div className="h-12 border-b border-gray-200 flex items-center justify-between px-4 bg-gray-50 flex-shrink-0">
         {/* Left: Document title */}
         <div className="flex items-center gap-3">
-          <span className="text-sm font-medium text-foreground">Resume.pdf</span>
-          <span className="text-xs text-muted-foreground">Cameron Kaul</span>
+          <span className="text-sm font-medium text-gray-900">Resume.pdf</span>
+          <span className="text-xs text-gray-500">Cameron Kaul</span>
         </div>
 
         {/* Right: Actions */}
         <div className="flex items-center gap-2">
           <button
             onClick={handleDownload}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
           >
             <Download className="w-4 h-4" />
             Download
@@ -56,7 +56,7 @@ ${resumeData.skills.join(', ')}
             href={`https://${resumeData.contact.linkedin}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-muted hover:bg-muted/80 text-foreground rounded-md transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md transition-colors"
           >
             <Linkedin className="w-4 h-4" />
             LinkedIn
@@ -65,15 +65,10 @@ ${resumeData.skills.join(', ')}
         </div>
       </div>
 
-      {/* Document Viewer Area */}
-      <div className="flex-1 overflow-auto p-8 flex justify-center bg-[hsl(220,15%,6%)]">
+      {/* Document Viewer Area - Clean white */}
+      <div className="flex-1 overflow-auto p-4 sm:p-8 flex justify-center bg-white">
         {/* Paper Document */}
-        <div 
-          className="w-full max-w-[700px] min-h-[900px] bg-white shadow-2xl rounded-sm p-10"
-          style={{
-            boxShadow: '0 8px 40px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2)'
-          }}
-        >
+        <div className="w-full max-w-[700px] bg-white p-6 sm:p-10">
           {/* Header */}
           <div className="border-b-2 border-gray-200 pb-4 mb-6">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900">{resumeData.name}</h1>

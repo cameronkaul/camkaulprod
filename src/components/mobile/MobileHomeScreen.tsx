@@ -1,5 +1,4 @@
 import { useWindows, WindowId } from '@/contexts/WindowContext';
-import { openContactEmail } from '@/components/windows/ContactWindow';
 import { AppIcon, AppIconType } from '@/components/icons/AppIcon';
 
 interface AppItem {
@@ -9,10 +8,9 @@ interface AppItem {
 
 const mainApps: AppItem[] = [
   { id: 'portfolio', type: 'portfolio' },
-  { id: 'contact', type: 'contact' },
+  { id: 'mail', type: 'mail' },
   { id: 'about', type: 'about' },
   { id: 'instagram', type: 'instagram' },
-  { id: 'youtube', type: 'youtube' },
 ];
 
 const dockApps: AppItem[] = [
@@ -25,11 +23,7 @@ export function MobileHomeScreen() {
   const { openWindow } = useWindows();
 
   const handleAppClick = (id: WindowId) => {
-    if (id === 'contact') {
-      openContactEmail();
-    } else {
-      openWindow(id);
-    }
+    openWindow(id);
   };
 
   // Split main apps into rows of 3

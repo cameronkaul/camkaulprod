@@ -1,18 +1,16 @@
 import { motion } from 'framer-motion';
 import { 
-  Camera, 
-  User, 
   FileText, 
   Trash2, 
   Gamepad2,
   StickyNote,
   Aperture,
   Instagram,
-  Play
+  Mail
 } from 'lucide-react';
 import { WindowId } from '@/contexts/WindowContext';
 
-export type AppIconType = 'portfolio' | 'contact' | 'about' | 'resume' | 'runner' | 'trash' | 'instagram' | 'youtube';
+export type AppIconType = 'portfolio' | 'mail' | 'about' | 'resume' | 'runner' | 'trash' | 'instagram';
 
 interface AppIconConfig {
   gradient: string;
@@ -28,14 +26,10 @@ const iconConfigs: Record<AppIconType, AppIconConfig> = {
     label: 'Photos',
     accentColor: 'hsl(0, 75%, 55%)',
   },
-  contact: {
+  mail: {
     gradient: 'linear-gradient(145deg, #7DD3FC 0%, #38BDF8 50%, #0EA5E9 100%)',
-    glyph: (
-      <div className="w-1/2 h-1/2 flex items-center justify-center">
-        <User className="w-full h-full text-white drop-shadow-sm" strokeWidth={1.5} fill="rgba(255,255,255,0.3)" />
-      </div>
-    ),
-    label: 'Contacts',
+    glyph: <Mail className="w-1/2 h-1/2 text-white drop-shadow-sm" strokeWidth={1.5} />,
+    label: 'Mail',
     accentColor: 'hsl(199, 89%, 48%)',
   },
   about: {
@@ -67,12 +61,6 @@ const iconConfigs: Record<AppIconType, AppIconConfig> = {
     glyph: <Instagram className="w-1/2 h-1/2 text-white drop-shadow-sm" strokeWidth={1.5} />,
     label: 'Instagram',
     accentColor: 'hsl(326, 70%, 50%)',
-  },
-  youtube: {
-    gradient: 'linear-gradient(145deg, #FF6B6B 0%, #FF0000 50%, #CC0000 100%)',
-    glyph: <Play className="w-1/2 h-1/2 text-white drop-shadow-sm" strokeWidth={1.5} fill="rgba(255,255,255,0.8)" />,
-    label: 'YouTube',
-    accentColor: 'hsl(0, 100%, 50%)',
   },
 };
 
@@ -173,13 +161,12 @@ export function getAppConfig(type: AppIconType) {
 export function windowIdToIconType(id: WindowId): AppIconType | null {
   const mapping: Record<string, AppIconType> = {
     portfolio: 'portfolio',
-    contact: 'contact',
+    mail: 'mail',
     about: 'about',
     resume: 'resume',
     runner: 'runner',
     trash: 'trash',
     instagram: 'instagram',
-    youtube: 'youtube',
   };
   return mapping[id] || null;
 }
@@ -207,13 +194,12 @@ export function HeaderIcon({ type, size = 16 }: HeaderIconProps) {
     >
       <div className="w-[60%] h-[60%] text-white flex items-center justify-center">
         {type === 'portfolio' && <Aperture className="w-full h-full" strokeWidth={2} />}
-        {type === 'contact' && <User className="w-full h-full" strokeWidth={2} />}
+        {type === 'mail' && <Mail className="w-full h-full" strokeWidth={2} />}
         {type === 'about' && <StickyNote className="w-full h-full" strokeWidth={2} />}
         {type === 'resume' && <FileText className="w-full h-full" strokeWidth={2} />}
         {type === 'runner' && <Gamepad2 className="w-full h-full" strokeWidth={2} />}
         {type === 'trash' && <Trash2 className="w-full h-full" strokeWidth={2} />}
         {type === 'instagram' && <Instagram className="w-full h-full" strokeWidth={2} />}
-        {type === 'youtube' && <Play className="w-full h-full" strokeWidth={2} />}
       </div>
     </div>
   );

@@ -12,7 +12,7 @@ interface WindowProps {
 // App-specific window titles
 const windowTitles: Record<WindowId, string> = {
   portfolio: 'Photos',
-  contact: 'Contacts',
+  mail: 'Mail',
   about: 'Notes',
   resume: 'Docs',
   runner: 'Runner',
@@ -20,7 +20,6 @@ const windowTitles: Record<WindowId, string> = {
   project: 'Project',
   document: 'Document',
   instagram: 'Instagram',
-  youtube: 'YouTube',
 };
 
 export function Window({ id, children }: WindowProps) {

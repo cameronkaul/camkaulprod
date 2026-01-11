@@ -12,13 +12,12 @@ import { MobileHomeScreen } from '@/components/mobile/MobileHomeScreen';
 import { PortfolioWindow } from '@/components/windows/PortfolioWindow';
 import { ProjectWindow } from '@/components/windows/ProjectWindow';
 import { AboutWindow } from '@/components/windows/AboutWindow';
-import { ContactWindow, openContactEmail } from '@/components/windows/ContactWindow';
+import { MailWindow } from '@/components/windows/MailWindow';
 import { ResumeWindow } from '@/components/windows/ResumeWindow';
 import { TrashWindow } from '@/components/windows/TrashWindow';
 import { RunnerWindow } from '@/components/windows/RunnerWindow';
 import { DocumentWindow } from '@/components/windows/DocumentWindow';
 import { InstagramWindow } from '@/components/windows/InstagramWindow';
-import { YouTubeWindow } from '@/components/windows/YouTubeWindow';
 import desktopWallpaper from '@/assets/desktop-wallpaper.jpg';
 import {
   ContextMenu,
@@ -41,7 +40,7 @@ interface DesktopIconConfig {
 
 const desktopIcons: DesktopIconConfig[] = [
   { id: 'portfolio', type: 'portfolio', label: 'Photos' },
-  { id: 'contact', type: 'contact', label: 'Contacts' },
+  { id: 'instagram', type: 'instagram', label: 'Instagram' },
 ];
 
 function DesktopContent() {
@@ -119,13 +118,7 @@ function DesktopContent() {
                   isSelected={selectedIconId === item.id}
                   onSelect={() => setSelectedIconId(item.id)}
                   onClick={() => {}}
-                  onDoubleClick={() => {
-                    if (item.id === 'contact') {
-                      openContactEmail();
-                    } else {
-                      openWindow(item.id);
-                    }
-                  }}
+                  onDoubleClick={() => openWindow(item.id)}
                 />
               ))}
             </motion.div>
@@ -156,12 +149,11 @@ function DesktopContent() {
           <Window id="portfolio"><PortfolioWindow /></Window>
           <Window id="project"><ProjectWindow /></Window>
           <Window id="about"><AboutWindow /></Window>
-          <Window id="contact"><ContactWindow /></Window>
+          <Window id="mail"><MailWindow /></Window>
           <Window id="resume"><ResumeWindow /></Window>
           <Window id="trash"><TrashWindow /></Window>
           <Window id="runner"><RunnerWindow /></Window>
           <Window id="instagram"><InstagramWindow /></Window>
-          <Window id="youtube"><YouTubeWindow /></Window>
           <Window id="document"><DocumentWindow /></Window>
 
           {/* Dock - rises from bottom with stronger motion (desktop only) */}

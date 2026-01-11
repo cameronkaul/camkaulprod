@@ -90,10 +90,8 @@ export function MenuBar({ onSpotlightOpen }: MenuBarProps) {
 
         {/* Center - Dynamic Island style pill */}
         <div className="absolute left-1/2 -translate-x-1/2 top-1">
-          <div className="bg-black rounded-full px-4 py-1.5 flex items-center gap-1.5 min-w-[90px] justify-center">
-            <div className="w-3.5 h-3.5 rounded-[3px] bg-white/90 flex items-center justify-center">
-              <span className="text-black text-[8px] font-bold leading-none">CK</span>
-            </div>
+          <div className="bg-black rounded-full px-5 py-2 flex items-center justify-center min-w-[160px]">
+            <span className="text-white text-[11px] font-medium tracking-wide">Cam Kaul Productions</span>
           </div>
         </div>
 
