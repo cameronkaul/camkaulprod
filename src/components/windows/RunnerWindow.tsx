@@ -603,75 +603,93 @@ export function RunnerWindow() {
   }, [drawRunner]);
 
   return (
-    <div className="h-full flex flex-col bg-gradient-to-b from-slate-100 to-slate-200">
-      {/* Instructions */}
-      <div className="px-4 py-2 text-center text-sm text-muted-foreground border-b border-border/30">
-        <span className="font-medium">How to play:</span> Space or ↑ to jump • R to restart • ESC to close
+    <div className="h-full flex flex-col bg-[hsl(263,30%,8%)]">
+      {/* Game Header - Dark game launcher style */}
+      <div className="px-4 py-3 flex items-center justify-between border-b border-purple-500/20 bg-[hsl(263,30%,10%)]">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center shadow-lg">
+            <span className="text-white text-lg">🎮</span>
+          </div>
+          <div>
+            <h1 className="text-lg font-bold text-white">Runner</h1>
+            <p className="text-xs text-purple-300/70">Avoid the obstacles</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="text-right">
+            <p className="text-xs text-purple-300/50 uppercase tracking-wide">High Score</p>
+            <p className="text-xl font-bold text-purple-400">{gameState.highScore}</p>
+          </div>
+        </div>
       </div>
 
-      {/* Game Canvas */}
-      <div className="flex-1 relative flex items-center justify-center p-4">
-        <canvas
-          ref={canvasRef}
-          width={600}
-          height={220}
-          className="rounded-lg shadow-inner border border-border/30 bg-slate-100 max-w-full cursor-pointer"
-          onClick={handleTouch}
-          onTouchStart={handleTouch}
-        />
-
-        {/* Streak indicator */}
-        {gameState.isRunning && gameState.streak >= 5 && (
-          <div className="absolute top-6 left-1/2 -translate-x-1/2 px-3 py-1 bg-primary/90 text-primary-foreground rounded-full text-sm font-bold animate-pulse">
-            🔥 STREAK x{gameState.streak}
-          </div>
-        )}
-
-        {/* Start Screen */}
-        {!gameState.isRunning && !gameState.isGameOver && (
-          <div 
-            className="absolute inset-0 flex items-center justify-center bg-background/60 backdrop-blur-sm cursor-pointer m-4"
+      {/* Game Canvas Area */}
+      <div className="flex-1 relative flex items-center justify-center p-6 bg-gradient-to-b from-[hsl(263,30%,8%)] to-[hsl(263,25%,6%)]">
+        <div className="relative">
+          <canvas
+            ref={canvasRef}
+            width={600}
+            height={220}
+            className="rounded-xl shadow-2xl border border-purple-500/20 max-w-full cursor-pointer"
+            style={{ boxShadow: '0 0 60px rgba(139, 92, 246, 0.15)' }}
             onClick={handleTouch}
-          >
-            <div className="text-center">
-              <h2 className="text-2xl font-bold mb-2">Runner</h2>
-              <p className="text-muted-foreground mb-4">Avoid the obstacles!</p>
-              <p className="text-sm text-muted-foreground">Press Space or Tap to Start</p>
-              {gameState.highScore > 0 && (
-                <p className="mt-2 text-sm text-primary">High Score: {gameState.highScore}</p>
-              )}
-            </div>
-          </div>
-        )}
+            onTouchStart={handleTouch}
+          />
 
-        {/* Game Over Screen */}
-        {gameState.isGameOver && (
-          <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm m-4">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold text-destructive mb-2">Game Over</h2>
-              <p className="text-xl mb-1">Score: {gameState.score}</p>
-              <p className="text-lg text-muted-foreground mb-4">High Score: {gameState.highScore}</p>
-              <button
-                onClick={startGame}
-                className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
-              >
-                Play Again
-              </button>
-              <p className="text-xs text-muted-foreground mt-3">Press R to restart</p>
+          {/* Streak indicator */}
+          {gameState.isRunning && gameState.streak >= 5 && (
+            <div className="absolute top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full text-sm font-bold animate-pulse shadow-lg">
+              🔥 STREAK x{gameState.streak}
             </div>
-          </div>
-        )}
+          )}
+
+          {/* Start Screen */}
+          {!gameState.isRunning && !gameState.isGameOver && (
+            <div 
+              className="absolute inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm cursor-pointer rounded-xl"
+              onClick={handleTouch}
+            >
+              <div className="text-center">
+                <h2 className="text-3xl font-bold text-white mb-2">Ready?</h2>
+                <button className="px-8 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg font-semibold shadow-lg hover:from-purple-500 hover:to-purple-600 transition-all">
+                  Start Game
+                </button>
+                <p className="text-xs text-purple-300/60 mt-3">Space / Tap to jump</p>
+              </div>
+            </div>
+          )}
+
+          {/* Game Over Screen */}
+          {gameState.isGameOver && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm rounded-xl">
+              <div className="text-center">
+                <h2 className="text-3xl font-bold text-red-400 mb-2">Game Over</h2>
+                <p className="text-4xl font-bold text-white mb-1">{gameState.score}</p>
+                <p className="text-sm text-purple-300/60 mb-4">
+                  {gameState.score >= gameState.highScore ? '🎉 New High Score!' : `Best: ${gameState.highScore}`}
+                </p>
+                <button
+                  onClick={startGame}
+                  className="px-8 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg font-semibold shadow-lg hover:from-purple-500 hover:to-purple-600 transition-all"
+                >
+                  Play Again
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Score Display */}
-      <div className="px-4 py-3 border-t border-border/30 flex justify-between items-center bg-muted/30">
-        <div className="text-sm">
-          <span className="text-muted-foreground">Score: </span>
-          <span className="font-bold">{gameState.score}</span>
+      {/* Bottom Controls Bar */}
+      <div className="px-4 py-3 border-t border-purple-500/20 flex justify-between items-center bg-[hsl(263,30%,10%)]">
+        <div className="text-sm text-purple-300/60">
+          <kbd className="px-2 py-0.5 bg-purple-500/20 rounded text-xs mr-1">SPACE</kbd> Jump
+          <span className="mx-2">•</span>
+          <kbd className="px-2 py-0.5 bg-purple-500/20 rounded text-xs mr-1">R</kbd> Restart
         </div>
         <div className="text-sm">
-          <span className="text-muted-foreground">High Score: </span>
-          <span className="font-bold text-primary">{gameState.highScore}</span>
+          <span className="text-purple-300/50">Score: </span>
+          <span className="font-bold text-white">{gameState.score}</span>
         </div>
       </div>
     </div>

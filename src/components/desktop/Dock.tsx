@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { Folder, User, Mail, FileText, Trash2, Gamepad2 } from 'lucide-react';
 import { useWindows, WindowId } from '@/contexts/WindowContext';
 import { openContactEmail } from '@/components/windows/ContactWindow';
+import { AppIcon, AppIconType, windowIdToIconType } from '@/components/icons/AppIcon';
 import {
   ContextMenu,
   ContextMenuContent,
@@ -13,77 +13,25 @@ import {
 
 interface DockItem {
   id: WindowId;
-  icon: React.ElementType;
-  label: string;
+  type: AppIconType;
 }
 
 const dockItems: DockItem[] = [
-  { id: 'portfolio', icon: Folder, label: 'Portfolio' },
-  { id: 'contact', icon: Mail, label: 'Contact' },
-  { id: 'about', icon: User, label: 'About' },
-  { id: 'resume', icon: FileText, label: 'Resume' },
-  { id: 'runner', icon: Gamepad2, label: 'Runner' },
-  { id: 'trash', icon: Trash2, label: 'Trash' },
+  { id: 'portfolio', type: 'portfolio' },
+  { id: 'contact', type: 'contact' },
+  { id: 'about', type: 'about' },
+  { id: 'resume', type: 'resume' },
+  { id: 'runner', type: 'runner' },
+  { id: 'trash', type: 'trash' },
 ];
 
 export function Dock() {
   const { openWindow, windows, focusWindow, closeWindow, isMobile } = useWindows();
   const [bouncingId, setBouncingId] = useState<WindowId | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [hoverEnabled, setHoverEnabled] = useState(false);
-  const [hasLeftDock, setHasLeftDock] = useState(false);
   const dockRef = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(-1000); // Start offscreen
-
-  // Enable hover only after pointer has left dock area once (desktop only)
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!hoverEnabled || isMobile) return;
-    if (dockRef.current) {
-      const rect = dockRef.current.getBoundingClientRect();
-      mouseX.set(e.clientX - rect.left);
-    }
-  };
-
-  const handleMouseEnter = () => {
-    // Only enable magnification if we've left the dock at least once
-    if (hasLeftDock && !hoverEnabled) {
-      setHoverEnabled(true);
-    }
-  };
-
-  const handleMouseLeave = () => {
-    mouseX.set(-1000);
-    setHoveredIndex(null);
-    if (!hasLeftDock) {
-      setHasLeftDock(true);
-    }
-  };
-
-  // Listen for pointer movement outside dock to enable hover
-  useEffect(() => {
-    const handleGlobalPointerMove = (e: PointerEvent) => {
-      if (!dockRef.current || hoverEnabled) return;
-      
-      const rect = dockRef.current.getBoundingClientRect();
-      const isInsideDock = (
-        e.clientX >= rect.left &&
-        e.clientX <= rect.right &&
-        e.clientY >= rect.top &&
-        e.clientY <= rect.bottom
-      );
-      
-      // If pointer is moving outside dock, mark as left
-      if (!isInsideDock && !hasLeftDock) {
-        setHasLeftDock(true);
-      }
-    };
-
-    window.addEventListener('pointermove', handleGlobalPointerMove);
-    return () => window.removeEventListener('pointermove', handleGlobalPointerMove);
-  }, [hoverEnabled, hasLeftDock]);
 
   const handleClick = (id: WindowId) => {
-    // Contact opens mailto directly
     if (id === 'contact') {
       openContactEmail();
       return;
@@ -93,17 +41,12 @@ export function Dock() {
     if (window?.isOpen && !window.isMinimized) {
       focusWindow(id);
     } else {
-      // Trigger bounce animation
       setBouncingId(id);
       setTimeout(() => setBouncingId(null), 600);
       openWindow(id);
     }
   };
 
-  // Check if trash has content (for full/empty state)
-  const trashHasContent = true; // Placeholder - would check deleted scenes
-
-  // Mobile dock items (fewer items for cleaner look)
   const mobileDockItems = dockItems.filter(item => 
     ['portfolio', 'contact', 'about', 'resume'].includes(item.id)
   );
@@ -119,35 +62,61 @@ export function Dock() {
     >
       <div 
         ref={dockRef}
-        className={`dock-container rounded-3xl ${isMobile ? 'px-3 py-2.5' : 'px-4 py-3'} flex items-end ${isMobile ? 'gap-3' : 'gap-2'} ${hoverEnabled && !isMobile ? 'dock-ready' : ''}`}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        className={`dock-container rounded-3xl ${isMobile ? 'px-4 py-3' : 'px-5 py-3'} flex items-end ${isMobile ? 'gap-4' : 'gap-3'}`}
       >
         {displayItems.map((item, index) => {
           const windowState = windows.find(w => w.id === item.id);
           const isOpen = windowState?.isOpen && !windowState.isMinimized;
           const isBouncing = bouncingId === item.id;
-          const isTrash = item.id === 'trash';
 
           return (
             <ContextMenu key={item.id}>
               <ContextMenuTrigger asChild>
-                <DockIcon
-                  item={item}
-                  index={index}
-                  mouseX={mouseX}
-                  isOpen={isOpen}
-                  isBouncing={isBouncing}
-                  isTrash={isTrash}
-                  trashHasContent={trashHasContent}
-                  hoveredIndex={hoveredIndex}
-                  setHoveredIndex={setHoveredIndex}
-                  onClick={() => handleClick(item.id)}
-                  totalItems={displayItems.length}
-                  hoverEnabled={hoverEnabled}
-                  isMobile={isMobile}
-                />
+                <motion.div
+                  className="relative flex flex-col items-center"
+                  onMouseEnter={() => !isMobile && setHoveredIndex(index)}
+                  onMouseLeave={() => !isMobile && setHoveredIndex(null)}
+                  animate={isBouncing ? {
+                    y: [0, -20, 0, -10, 0],
+                    transition: { duration: 0.5, ease: 'easeOut' }
+                  } : {}}
+                  whileHover={!isMobile ? { y: -8 } : {}}
+                >
+                  {/* Tooltip */}
+                  <AnimatePresence>
+                    {hoveredIndex === index && !isMobile && (
+                      <motion.div 
+                        className="absolute -top-10 bg-foreground text-background text-xs px-2 py-1 rounded whitespace-nowrap pointer-events-none z-10"
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 5 }}
+                        transition={{ duration: 0.15 }}
+                      >
+                        {item.type.charAt(0).toUpperCase() + item.type.slice(1)}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  <AppIcon
+                    type={item.type}
+                    size={isMobile ? 52 : 56}
+                    showLabel={false}
+                    onClick={() => handleClick(item.id)}
+                  />
+
+                  {/* Open Indicator */}
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        className="absolute -bottom-1.5 w-1 h-1 rounded-full bg-foreground/70"
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0, opacity: 0 }}
+                        transition={{ duration: 0.15 }}
+                      />
+                    )}
+                  </AnimatePresence>
+                </motion.div>
               </ContextMenuTrigger>
               <ContextMenuContent className="min-w-[160px] bg-popover/95 backdrop-blur-xl border border-border/50">
                 <ContextMenuItem onClick={() => handleClick(item.id)}>
@@ -161,125 +130,11 @@ export function Dock() {
                     </ContextMenuItem>
                   </>
                 )}
-                <ContextMenuSeparator />
-                <ContextMenuItem disabled>
-                  Options
-                </ContextMenuItem>
               </ContextMenuContent>
             </ContextMenu>
           );
         })}
       </div>
     </motion.div>
-  );
-}
-
-interface DockIconProps {
-  item: DockItem;
-  index: number;
-  mouseX: ReturnType<typeof useMotionValue>;
-  isOpen: boolean;
-  isBouncing: boolean;
-  isTrash: boolean;
-  trashHasContent: boolean;
-  hoveredIndex: number | null;
-  setHoveredIndex: (index: number | null) => void;
-  onClick: () => void;
-  totalItems: number;
-  hoverEnabled: boolean;
-  isMobile: boolean;
-}
-
-function DockIcon({ 
-  item, 
-  index, 
-  mouseX, 
-  isOpen, 
-  isBouncing, 
-  isTrash,
-  trashHasContent,
-  hoveredIndex,
-  setHoveredIndex,
-  onClick,
-  totalItems,
-  hoverEnabled,
-  isMobile
-}: DockIconProps) {
-  const ref = useRef<HTMLButtonElement>(null);
-  const baseSize = isMobile ? 50 : 60;
-  const maxSize = isMobile ? 50 : 80; // No magnification on mobile
-  
-  // Calculate distance from mouse for magnification (desktop only)
-  const distance = useTransform(mouseX, (val: number) => {
-    if (!ref.current || !hoverEnabled || isMobile) return 1000;
-    const rect = ref.current.getBoundingClientRect();
-    const iconCenter = rect.left + rect.width / 2;
-    const dockLeft = ref.current.parentElement?.getBoundingClientRect().left || 0;
-    return Math.abs(val - (iconCenter - dockLeft));
-  });
-
-  // Magnification based on distance - only when hover enabled and not mobile
-  const size = useSpring(
-    useTransform(distance, [0, 100, 200], hoverEnabled && !isMobile ? [maxSize, baseSize + 10, baseSize] : [baseSize, baseSize, baseSize]),
-    { stiffness: 400, damping: 25 }
-  );
-
-  const translateY = useSpring(
-    useTransform(distance, [0, 100, 200], hoverEnabled && !isMobile ? [-16, -6, 0] : [0, 0, 0]),
-    { stiffness: 400, damping: 25 }
-  );
-
-  return (
-    <motion.button
-      ref={ref}
-      className="dock-icon flex flex-col items-center group relative"
-      onClick={onClick}
-      onMouseEnter={() => !isMobile && setHoveredIndex(index)}
-      onMouseLeave={() => !isMobile && setHoveredIndex(null)}
-      style={{ y: isMobile ? 0 : translateY }}
-      animate={isBouncing ? {
-        y: [0, -20, 0, -10, 0],
-        transition: { duration: 0.5, ease: 'easeOut' }
-      } : {}}
-    >
-      {/* Tooltip */}
-      <AnimatePresence>
-        {hoveredIndex === index && (
-          <motion.div 
-            className="absolute -top-10 bg-primary text-primary-foreground text-xs px-2 py-1 rounded whitespace-nowrap pointer-events-none z-10"
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 5 }}
-            transition={{ duration: 0.15 }}
-          >
-            {item.label}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Icon */}
-      <motion.div 
-        className="rounded-xl bg-gradient-to-br from-secondary to-muted flex items-center justify-center shadow-lg border border-border/50 overflow-hidden"
-        style={{ width: size, height: size }}
-      >
-      <item.icon 
-          className="text-foreground w-1/2 h-1/2"
-          strokeWidth={2}
-        />
-      </motion.div>
-
-      {/* Open Indicator Dot */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            className="absolute -bottom-1.5 w-1 h-1 rounded-full bg-foreground/70"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{ duration: 0.15 }}
-          />
-        )}
-      </AnimatePresence>
-    </motion.button>
   );
 }
