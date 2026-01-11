@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { aboutData } from '@/data/projects';
-import { MapPin, Camera, Monitor, Briefcase, GraduationCap } from 'lucide-react';
+import { MapPin, Camera, Monitor, Briefcase, GraduationCap, ChevronLeft } from 'lucide-react';
 import camProfile from '@/assets/cam-profile.jpg';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { motion, AnimatePresence } from 'framer-motion';
 
 type NoteId = 'about' | 'services' | 'gear' | 'education';
 
@@ -20,9 +22,24 @@ const notes: Note[] = [
 ];
 
 export function AboutWindow() {
-  const [selectedNote, setSelectedNote] = useState<NoteId>('about');
+  const [selectedNote, setSelectedNote] = useState<NoteId | null>('about');
+  const [showDetail, setShowDetail] = useState(false);
+  const isMobile = useIsMobile();
+
+  const handleSelectNote = (noteId: NoteId) => {
+    setSelectedNote(noteId);
+    if (isMobile) {
+      setShowDetail(true);
+    }
+  };
+
+  const handleBack = () => {
+    setShowDetail(false);
+  };
 
   const renderNoteContent = () => {
+    if (!selectedNote) return null;
+    
     switch (selectedNote) {
       case 'about':
         return (
@@ -132,6 +149,92 @@ export function AboutWindow() {
     }
   };
 
+  // Mobile Layout - Stacked navigation
+  if (isMobile) {
+    return (
+      <div className="flex flex-col h-full bg-[hsl(220,15%,8%)] overflow-hidden">
+        <AnimatePresence mode="wait">
+          {!showDetail ? (
+            // Notes List Screen
+            <motion.div 
+              key="list"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.2 }}
+              className="flex-1 flex flex-col"
+            >
+              {/* Search bar placeholder */}
+              <div className="p-3 border-b border-border/30">
+                <div className="px-3 py-2 bg-muted/30 rounded-lg text-sm text-muted-foreground">
+                  Search Notes
+                </div>
+              </div>
+
+              {/* Notes List */}
+              <div className="flex-1 overflow-auto">
+                {notes.map((note) => (
+                  <button
+                    key={note.id}
+                    onClick={() => handleSelectNote(note.id)}
+                    className="w-full text-left p-4 border-b border-border/20 transition-colors hover:bg-muted/30 active:bg-muted/50"
+                  >
+                    <p className="text-base font-medium text-foreground">
+                      {note.title}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-0.5">{note.date}</p>
+                    <p className="text-sm text-muted-foreground/70 truncate mt-1">{note.preview}</p>
+                  </button>
+                ))}
+              </div>
+
+              {/* Notes count */}
+              <div className="p-3 border-t border-border/30 text-center">
+                <span className="text-xs text-muted-foreground">{notes.length} Notes</span>
+              </div>
+            </motion.div>
+          ) : (
+            // Note Detail Screen
+            <motion.div 
+              key="detail"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.2 }}
+              className="flex-1 flex flex-col"
+            >
+              {/* Detail Header with Back */}
+              <div className="flex items-center gap-2 px-2 py-3 border-b border-border/30 bg-[hsl(220,15%,10%)]">
+                <button
+                  onClick={handleBack}
+                  className="flex items-center gap-1 px-2 py-1 text-primary hover:bg-muted/50 rounded-md transition-colors"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                  <span className="text-sm font-medium">Notes</span>
+                </button>
+                <div className="flex-1" />
+                <span className="text-sm font-medium text-foreground pr-2">
+                  {notes.find(n => n.id === selectedNote)?.title}
+                </span>
+              </div>
+
+              {/* Note content */}
+              <div 
+                className="flex-1 overflow-auto p-4"
+                style={{
+                  background: 'linear-gradient(180deg, hsl(220, 15%, 11%) 0%, hsl(220, 15%, 9%) 100%)',
+                }}
+              >
+                {renderNoteContent()}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    );
+  }
+
+  // Desktop Layout - Two columns
   return (
     <div className="flex h-full bg-[hsl(220,15%,8%)]">
       {/* Notes-style Left Column - Note List */}
@@ -148,7 +251,7 @@ export function AboutWindow() {
           {notes.map((note) => (
             <button
               key={note.id}
-              onClick={() => setSelectedNote(note.id)}
+              onClick={() => handleSelectNote(note.id)}
               className={`w-full text-left p-3 border-b border-border/20 transition-colors ${
                 selectedNote === note.id 
                   ? 'bg-primary/20' 
