@@ -221,7 +221,7 @@ export const projects: Project[] = [
     role: 'Videographer, Editor',
     tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
     videoUrl: 'https://www.loom.com/embed/0b4dcebc6225432fab45da628da79ecd',
-    thumbnailUrl: 'https://cdn.loom.com/sessions/thumbnails/0b4dcebc6225432fab45da628da79ecd-b01feaf5ef329b0d.jpg',
+    thumbnailUrl: '/thumbnails/ato-fb-champ-1.jpg',
     galleryUrls: [],
   },
   {
