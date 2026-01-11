@@ -96,7 +96,7 @@ export function Window({ id, children }: WindowProps) {
     return (
       <AnimatePresence>
         <motion.div
-          className="fixed inset-0 z-50 bg-card flex flex-col"
+          className="fixed inset-x-0 top-7 bottom-0 z-50 bg-card flex flex-col rounded-t-xl overflow-hidden"
           initial={{ opacity: 0, y: '100%' }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: '100%' }}
