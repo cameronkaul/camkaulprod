@@ -79,7 +79,7 @@ export const projects: Project[] = [
     role: 'Videographer, Editor',
     tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
     videoUrl: 'https://www.loom.com/embed/fefc325627364a40826b7b2165ba9c38',
-    thumbnailUrl: 'https://cdn.loom.com/sessions/thumbnails/fefc325627364a40826b7b2165ba9c38-0c41511c2bf6eec0.jpg',
+    thumbnailUrl: '/thumbnails/midway-fb-hype-3.jpg',
     galleryUrls: [],
   },
   {
