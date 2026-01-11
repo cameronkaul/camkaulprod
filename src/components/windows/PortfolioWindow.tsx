@@ -27,12 +27,15 @@ export function PortfolioWindow() {
   // Get unique collections from projects
   const projectCollections = useMemo(() => {
     const collectionIds = [...new Set(projects.filter(p => p.collection).map(p => p.collection!))];
-    return collectionIds.map(id => ({
-      id,
-      ...collections[id as keyof typeof collections],
-      projectCount: projects.filter(p => p.collection === id).length,
-      thumbnail: projects.find(p => p.collection === id)?.thumbnailUrl || FALLBACK_THUMBNAIL,
-    }));
+    return collectionIds.map(id => {
+      const collection = collections[id as keyof typeof collections];
+      return {
+        id,
+        ...collection,
+        projectCount: projects.filter(p => p.collection === id).length,
+        thumbnail: (collection as any).coverImage || projects.find(p => p.collection === id)?.thumbnailUrl || FALLBACK_THUMBNAIL,
+      };
+    });
   }, []);
 
   // Get standalone projects (no collection)

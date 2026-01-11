@@ -48,6 +48,7 @@ export const collections = {
     name: 'Allen Samuels',
     description: 'Dealership promotional content',
     icon: '🚗',
+    coverImage: '/thumbnails/allen-samuels-starting-lineup.jpg',
   },
 };
 
