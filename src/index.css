@@ -10,28 +10,28 @@
 
 @layer base {
   :root {
-/* Core Colors - Soft, premium feel */
-    --background: 220 20% 97%;
-    --foreground: 220 25% 10%;
+    /* Core Colors - Dark mode */
+    --background: 220 20% 8%;
+    --foreground: 220 10% 95%;
 
-    /* Window Chrome - Frosted glass */
-    --card: 0 0% 100%;
-    --card-foreground: 220 25% 10%;
+    /* Window Chrome - Dark frosted glass */
+    --card: 220 15% 12%;
+    --card-foreground: 220 10% 95%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 25% 10%;
+    --popover: 220 15% 12%;
+    --popover-foreground: 220 10% 95%;
 
-    /* Primary - Deep slate blue */
-    --primary: 220 30% 20%;
-    --primary-foreground: 0 0% 100%;
+    /* Primary - Soft blue accent */
+    --primary: 220 60% 60%;
+    --primary-foreground: 220 20% 8%;
 
-    /* Secondary - Soft gray */
-    --secondary: 220 15% 94%;
-    --secondary-foreground: 220 25% 20%;
+    /* Secondary - Dark gray */
+    --secondary: 220 15% 18%;
+    --secondary-foreground: 220 10% 85%;
 
-    /* Muted - Subtle backgrounds */
-    --muted: 220 15% 92%;
-    --muted-foreground: 220 10% 45%;
+    /* Muted - Subtle dark backgrounds */
+    --muted: 220 15% 15%;
+    --muted-foreground: 220 10% 55%;
 
     /* Accent - Warm amber */
     --accent: 35 90% 55%;
@@ -50,34 +50,34 @@
     --window-maximize-fg: 140 60% 15%;
 
     /* Borders & Inputs */
-    --border: 220 15% 88%;
-    --input: 220 15% 92%;
-    --ring: 220 30% 50%;
+    --border: 220 15% 20%;
+    --input: 220 15% 15%;
+    --ring: 220 50% 50%;
 
     --radius: 0.75rem;
 
-    /* Glass Effect - increased opacity for readability */
-    --glass-bg: 0 0% 100% / 0.88;
-    --glass-border: 0 0% 100% / 0.6;
+    /* Glass Effect - dark glass */
+    --glass-bg: 220 15% 12% / 0.88;
+    --glass-border: 220 15% 25% / 0.6;
 
     /* Dock */
-    --dock-bg: 220 15% 20% / 0.4;
+    --dock-bg: 220 15% 8% / 0.6;
 
     /* Shadows */
-    --shadow-window: 0 25px 50px -12px hsl(220 30% 10% / 0.25);
-    --shadow-window-active: 0 30px 60px -15px hsl(220 30% 10% / 0.35);
-    --shadow-dock: 0 8px 32px hsl(220 30% 10% / 0.3);
-    --shadow-icon: 0 4px 12px hsl(220 30% 10% / 0.15);
+    --shadow-window: 0 25px 50px -12px hsl(220 30% 2% / 0.5);
+    --shadow-window-active: 0 30px 60px -15px hsl(220 30% 2% / 0.6);
+    --shadow-dock: 0 8px 32px hsl(220 30% 2% / 0.5);
+    --shadow-icon: 0 4px 12px hsl(220 30% 2% / 0.3);
 
     /* Sidebar (for Finder-style windows) */
-    --sidebar-background: 220 15% 96%;
-    --sidebar-foreground: 220 15% 30%;
-    --sidebar-primary: 220 30% 20%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 15% 92%;
-    --sidebar-accent-foreground: 220 25% 15%;
-    --sidebar-border: 220 15% 88%;
-    --sidebar-ring: 220 30% 50%;
+    --sidebar-background: 220 15% 10%;
+    --sidebar-foreground: 220 10% 75%;
+    --sidebar-primary: 220 60% 60%;
+    --sidebar-primary-foreground: 220 20% 8%;
+    --sidebar-accent: 220 15% 18%;
+    --sidebar-accent-foreground: 220 10% 90%;
+    --sidebar-border: 220 15% 20%;
+    --sidebar-ring: 220 50% 50%;
   }
 }
 
@@ -111,7 +111,7 @@
 
   .window-titlebar {
     @apply h-11 flex items-center px-4 border-b border-border/50;
-    background: linear-gradient(180deg, hsl(220 15% 98%) 0%, hsl(220 15% 95%) 100%);
+    background: linear-gradient(180deg, hsl(220 15% 16%) 0%, hsl(220 15% 12%) 100%);
   }
 
   .window-control {
@@ -176,12 +176,12 @@
     box-shadow: var(--shadow-window);
   }
 
-  /* Menu Bar - subtle and semi-transparent */
+  /* Menu Bar - dark and semi-transparent */
   .menu-bar {
-    background: hsl(0 0% 100% / 0.7);
+    background: hsl(220 15% 8% / 0.8);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border-bottom: 1px solid hsl(0 0% 100% / 0.3);
+    border-bottom: 1px solid hsl(220 15% 20% / 0.5);
   }
 
   /* Subtle Grain Texture */
@@ -205,12 +205,12 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: hsl(220 15% 70%);
+    background: hsl(220 15% 30%);
     border-radius: 4px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: hsl(220 15% 60%);
+    background: hsl(220 15% 40%);
   }
 }
 
