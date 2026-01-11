@@ -368,6 +368,19 @@ export const projects: Project[] = [
     thumbnailUrl: '/thumbnails/clase-event-promo.jpg',
     galleryUrls: [],
   },
+  {
+    id: 'alone-video-essay',
+    title: 'Alone - Video Essay',
+    category: 'documentary',
+    year: 2024,
+    description: 'Personal video essay exploring solitude and self-reflection',
+    longDescription: 'A personal video essay exploring themes of solitude, self-reflection, and the human experience of being alone. Features thoughtful narration and cinematic visuals.',
+    role: 'Writer, Director, Editor',
+    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
+    videoUrl: 'https://www.loom.com/embed/a6f06f631fb344a3afb72136771629c3',
+    thumbnailUrl: '/thumbnails/alone-video-essay.png',
+    galleryUrls: [],
+  },
 ];
 
 // ============================================
