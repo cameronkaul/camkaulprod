@@ -16,7 +16,7 @@ const mainApps: AppIcon[] = [
   { id: 'about', icon: User, label: 'About' },
 ];
 
-const folderApps: AppIcon[] = [
+const dockApps: AppIcon[] = [
   { id: 'resume', icon: FileText, label: 'Resume' },
   { id: 'trash', icon: Trash2, label: 'Trash' },
   { id: 'runner', icon: Gamepad2, label: 'Runner' },
@@ -34,23 +34,11 @@ export function MobileHomeScreen() {
     }
   };
 
-  const handleFolderAppClick = (id: WindowId) => {
-    setFolderOpen(false);
-    setTimeout(() => {
-      if (id === 'contact') {
-        openContactEmail();
-      } else {
-        openWindow(id);
-      }
-    }, 200);
-  };
-
   return (
     <>
-      {/* App Grid */}
-      <div className="absolute inset-x-0 top-16 bottom-0 flex flex-col items-center pt-8 px-8">
+      {/* App Grid - Main apps only */}
+      <div className="absolute inset-x-0 top-16 bottom-24 flex flex-col items-center pt-8 px-8">
         <div className="grid grid-cols-3 gap-6">
-          {/* Main Apps */}
           {mainApps.map((app) => (
             <button
               key={app.id}
@@ -63,81 +51,28 @@ export function MobileHomeScreen() {
               <span className="text-xs text-foreground/90 font-medium">{app.label}</span>
             </button>
           ))}
-
-          {/* Folder */}
-          <button
-            onClick={() => setFolderOpen(true)}
-            className="flex flex-col items-center gap-1.5 active:scale-95 transition-transform"
-          >
-            <div className="w-16 h-16 rounded-2xl bg-muted/60 backdrop-blur-sm flex items-center justify-center shadow-lg border border-border/50 p-1.5">
-              {/* Mini icons grid inside folder */}
-              <div className="grid grid-cols-2 gap-0.5 w-full h-full">
-                {folderApps.slice(0, 4).map((app) => (
-                  <div
-                    key={app.id}
-                    className="rounded-md bg-gradient-to-br from-secondary/80 to-muted flex items-center justify-center"
-                  >
-                    <app.icon className="w-3 h-3 text-foreground/80" strokeWidth={2} />
-                  </div>
-                ))}
-              </div>
-            </div>
-            <span className="text-xs text-foreground/90 font-medium">More</span>
-          </button>
         </div>
       </div>
 
-      {/* Folder Overlay */}
-      <AnimatePresence>
-        {folderOpen && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9990]"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setFolderOpen(false)}
-            />
-
-            {/* Folder Content */}
-            <motion.div
-              className="fixed inset-x-6 top-1/3 z-[9991] bg-muted/90 backdrop-blur-xl rounded-3xl p-5 border border-border/50"
-              initial={{ opacity: 0, scale: 0.8, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.8, y: 20 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            >
-              {/* Folder header */}
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-semibold text-foreground">More</h3>
-                <button
-                  onClick={() => setFolderOpen(false)}
-                  className="w-7 h-7 rounded-full bg-foreground/10 flex items-center justify-center"
-                >
-                  <X className="w-4 h-4 text-foreground/70" />
-                </button>
-              </div>
-
-              {/* Folder apps grid */}
-              <div className="grid grid-cols-3 gap-4">
-                {folderApps.map((app) => (
-                  <button
-                    key={app.id}
-                    onClick={() => handleFolderAppClick(app.id)}
-                    className="flex flex-col items-center gap-1.5 active:scale-95 transition-transform"
-                  >
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-secondary to-muted flex items-center justify-center shadow-lg border border-border/50">
-                      <app.icon className="w-7 h-7 text-foreground" strokeWidth={1.5} />
-                    </div>
-                    <span className="text-xs text-foreground/90 font-medium">{app.label}</span>
-                  </button>
-                ))}
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+      {/* iPhone-style Dock at bottom */}
+      <div className="fixed bottom-6 inset-x-4 z-[9995]">
+        <div className="bg-muted/60 backdrop-blur-xl rounded-3xl px-6 py-3 border border-border/30 shadow-lg">
+          <div className="flex items-center justify-around">
+            {dockApps.map((app) => (
+              <button
+                key={app.id}
+                onClick={() => handleAppClick(app.id)}
+                className="flex flex-col items-center gap-1 active:scale-95 transition-transform"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-secondary to-muted flex items-center justify-center shadow-md border border-border/50">
+                  <app.icon className="w-7 h-7 text-foreground" strokeWidth={1.5} />
+                </div>
+                <span className="text-[10px] text-foreground/80 font-medium">{app.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
     </>
   );
 }
