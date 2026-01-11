@@ -260,7 +260,7 @@ export const projects: Project[] = [
     role: 'Videographer, Editor',
     tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
     videoUrl: 'https://www.loom.com/embed/181df640ebe642028fb40d2d6c489526',
-    thumbnailUrl: 'https://cdn.loom.com/sessions/thumbnails/181df640ebe642028fb40d2d6c489526-55496050b7452830.jpg',
+    thumbnailUrl: '/thumbnails/rush-ato-2.jpg',
     galleryUrls: [],
   },
 ];
