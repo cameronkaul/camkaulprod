@@ -2,11 +2,24 @@ import { useRef, useEffect, useState, ReactNode } from 'react';
 import { motion, useDragControls, AnimatePresence, PanInfo } from 'framer-motion';
 import { useWindows, WindowId } from '@/contexts/WindowContext';
 import { X } from 'lucide-react';
+import { HeaderIcon, windowIdToIconType, getAppConfig, AppIconType } from '@/components/icons/AppIcon';
 
 interface WindowProps {
   id: WindowId;
   children: ReactNode;
 }
+
+// App-specific window titles
+const windowTitles: Record<WindowId, string> = {
+  portfolio: 'Photos',
+  contact: 'Contacts',
+  about: 'Notes',
+  resume: 'Docs',
+  runner: 'Runner',
+  trash: 'Trash',
+  project: 'Project',
+  document: 'Document',
+};
 
 export function Window({ id, children }: WindowProps) {
   const {
@@ -26,6 +39,9 @@ export function Window({ id, children }: WindowProps) {
   const [isResizing, setIsResizing] = useState(false);
   const [resizeDirection, setResizeDirection] = useState<string | null>(null);
 
+  const iconType = windowIdToIconType(id);
+  const appConfig = iconType ? getAppConfig(iconType) : null;
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && activeWindowId === id) {
@@ -41,6 +57,7 @@ export function Window({ id, children }: WindowProps) {
   }
 
   const isActive = activeWindowId === id;
+  const displayTitle = id === 'project' ? windowState.title : windowTitles[id] || windowState.title;
 
   // Handle resize
   const handleResizeStart = (direction: string) => (e: React.PointerEvent) => {
@@ -108,8 +125,15 @@ export function Window({ id, children }: WindowProps) {
             <div className="w-10 h-1 rounded-full bg-foreground/30" />
           </div>
           
-          {/* Mobile Title Bar - iOS style */}
-          <div className="flex items-center justify-between px-3 py-2 bg-card/95 backdrop-blur-xl border-b border-border/30">
+          {/* Mobile Title Bar - iOS style with app icon */}
+          <div 
+            className="flex items-center justify-between px-3 py-2 backdrop-blur-xl border-b border-border/30"
+            style={{
+              background: appConfig 
+                ? `linear-gradient(180deg, ${appConfig.accentColor}15 0%, transparent 100%)`
+                : 'hsl(var(--card) / 0.95)',
+            }}
+          >
             <button
               onClick={() => closeWindow(id)}
               className="flex items-center justify-center w-10 h-10 rounded-full bg-muted/80 hover:bg-muted active:scale-95 transition-all"
@@ -117,9 +141,12 @@ export function Window({ id, children }: WindowProps) {
             >
               <X className="w-5 h-5 text-foreground" />
             </button>
-            <span className="text-sm font-semibold text-foreground">
-              {windowState.title}
-            </span>
+            <div className="flex items-center gap-2">
+              {iconType && <HeaderIcon type={iconType} size={20} />}
+              <span className="text-sm font-semibold text-foreground">
+                {displayTitle}
+              </span>
+            </div>
             <div className="w-10" /> {/* Spacer for balance */}
           </div>
 
@@ -172,17 +199,23 @@ export function Window({ id, children }: WindowProps) {
           transition={{ duration: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
           onClick={() => focusWindow(id)}
         >
-          {/* Title Bar - Drag Handle */}
+          {/* Title Bar - Drag Handle with app-specific styling */}
           <div
             className={`window-titlebar cursor-grab active:cursor-grabbing ${
               isActive ? '' : 'opacity-80'
             }`}
+            style={{
+              background: appConfig 
+                ? `linear-gradient(180deg, ${appConfig.accentColor}20 0%, hsl(220 15% 14%) 100%)`
+                : undefined,
+            }}
             onPointerDown={(e) => {
               if (isResizing) return;
               focusWindow(id);
               dragControls.start(e);
             }}
           >
+            {/* Traffic lights */}
             <div className="flex items-center gap-2">
               <button
                 onClick={(e) => {
@@ -208,11 +241,16 @@ export function Window({ id, children }: WindowProps) {
                 <span className="opacity-0 group-hover:opacity-100 absolute inset-0 flex items-center justify-center text-[8px] font-bold text-window-maximize-fg">+</span>
               </div>
             </div>
-            <span className={`absolute left-1/2 -translate-x-1/2 text-sm font-medium ${
-              isActive ? 'text-foreground/80' : 'text-foreground/50'
-            }`}>
-              {windowState.title}
-            </span>
+
+            {/* App icon and title - left aligned after traffic lights */}
+            <div className="flex items-center gap-2 ml-4">
+              {iconType && <HeaderIcon type={iconType} size={16} />}
+              <span className={`text-sm font-medium ${
+                isActive ? 'text-foreground/90' : 'text-foreground/50'
+              }`}>
+                {displayTitle}
+              </span>
+            </div>
           </div>
 
           {/* Content */}

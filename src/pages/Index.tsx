@@ -29,15 +29,17 @@ import {
   ContextMenuTrigger,
 } from '@/components/ui/context-menu';
 
+import { AppIconType } from '@/components/icons/AppIcon';
+
 interface DesktopIconConfig {
   id: WindowId;
-  icon: LucideIcon;
+  type: AppIconType;
   label: string;
 }
 
 const desktopIcons: DesktopIconConfig[] = [
-  { id: 'portfolio', icon: Folder, label: 'Portfolio' },
-  { id: 'contact', icon: Mail, label: 'Contact' },
+  { id: 'portfolio', type: 'portfolio', label: 'Photos' },
+  { id: 'contact', type: 'contact', label: 'Contacts' },
 ];
 
 function DesktopContent() {
@@ -110,7 +112,7 @@ function DesktopContent() {
               {desktopIcons.map((item) => (
                 <DesktopIcon
                   key={item.id}
-                  icon={item.icon}
+                  type={item.type}
                   label={item.label}
                   isSelected={selectedIconId === item.id}
                   onSelect={() => setSelectedIconId(item.id)}
