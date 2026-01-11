@@ -1,8 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useWindows, WindowId } from '@/contexts/WindowContext';
-import { openContactEmail } from '@/components/windows/ContactWindow';
-import { AppIcon, AppIconType, windowIdToIconType } from '@/components/icons/AppIcon';
+import { AppIcon, AppIconType } from '@/components/icons/AppIcon';
 import {
   ContextMenu,
   ContextMenuContent,
@@ -18,7 +17,8 @@ interface DockItem {
 
 const dockItems: DockItem[] = [
   { id: 'portfolio', type: 'portfolio' },
-  { id: 'contact', type: 'contact' },
+  { id: 'instagram', type: 'instagram' },
+  { id: 'mail', type: 'mail' },
   { id: 'about', type: 'about' },
   { id: 'resume', type: 'resume' },
   { id: 'runner', type: 'runner' },
@@ -32,11 +32,6 @@ export function Dock() {
   const dockRef = useRef<HTMLDivElement>(null);
 
   const handleClick = (id: WindowId) => {
-    if (id === 'contact') {
-      openContactEmail();
-      return;
-    }
-    
     const window = windows.find(w => w.id === id);
     if (window?.isOpen && !window.isMinimized) {
       focusWindow(id);
@@ -48,7 +43,7 @@ export function Dock() {
   };
 
   const mobileDockItems = dockItems.filter(item => 
-    ['portfolio', 'contact', 'about', 'resume'].includes(item.id)
+    ['portfolio', 'mail', 'about', 'resume'].includes(item.id)
   );
 
   const displayItems = isMobile ? mobileDockItems : dockItems;
