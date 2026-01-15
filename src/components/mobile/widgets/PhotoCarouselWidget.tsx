@@ -130,7 +130,7 @@ export function PhotoCarouselWidget() {
           /* Placeholder state */
           <div className="absolute inset-0 bg-gradient-to-br from-purple-500/30 via-pink-500/30 to-orange-500/30 backdrop-blur-xl flex flex-col items-center justify-center">
             <Images className="w-8 h-8 text-white/60 mb-2" />
-            <p className="text-white/80 text-xs font-medium">Photos coming soon</p>
+            <p className="text-white/80 text-xs font-medium">Gallery coming soon</p>
           </div>
         )}
       </motion.div>
@@ -154,7 +154,7 @@ export function PhotoCarouselWidget() {
                 <ChevronLeft className="w-5 h-5" />
                 <span>Back</span>
               </button>
-              <h2 className="text-white text-lg font-semibold">Photo Portfolio</h2>
+              <h2 className="text-white text-lg font-semibold">Gallery</h2>
               <button
                 onClick={() => setIsModalOpen(false)}
                 className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center"

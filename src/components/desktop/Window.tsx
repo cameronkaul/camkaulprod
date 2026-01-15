@@ -11,7 +11,7 @@ interface WindowProps {
 
 // App-specific window titles
 const windowTitles: Record<WindowId, string> = {
-  portfolio: 'Photos',
+  portfolio: 'Portfolio',
   mail: 'Mail',
   about: 'Notes',
   resume: 'Docs',
