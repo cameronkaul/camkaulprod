@@ -48,7 +48,6 @@ interface DesktopIconConfig {
 const desktopIconConfigs: DesktopIconConfig[] = [
   { id: 'portfolio', type: 'portfolio', label: 'Portfolio' },
   { id: 'mail', type: 'mail', label: 'Mail' },
-  { id: 'instagram', type: 'instagram', label: 'Instagram' },
 ];
 
 // Widget size: ~15% larger than before (was 180px, now 210px)
@@ -214,9 +213,13 @@ function DesktopContent() {
             </motion.div>
           )}
 
-          {/* Widget Windows - desktop only */}
-          {!isMobile && (
-            <>
+          {/* Widget Windows - desktop only, animate in with boot */}
+          {!isMobile && showChrome && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+            >
               <WidgetWindow id="videoWidget" title="Featured Work">
                 <div className="w-full h-full">
                   <VideoCarouselWidget />
@@ -227,7 +230,18 @@ function DesktopContent() {
                   <PhotoCarouselWidget />
                 </div>
               </WidgetWindow>
-            </>
+            </motion.div>
+          )}
+
+          {/* Mobile Menu Bar - always visible on home screen */}
+          {isMobile && !hasOpenMobileWindow && (
+            <motion.div
+              initial={{ opacity: 0, y: -12 }}
+              animate={showChrome ? { opacity: 1, y: 0 } : { opacity: 0, y: -12 }}
+              transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+            >
+              <MenuBar onSpotlightOpen={() => setSpotlightOpen(true)} />
+            </motion.div>
           )}
 
           {/* Mobile Home Screen - iOS-style app grid (hidden when app is open) */}
@@ -238,15 +252,6 @@ function DesktopContent() {
               transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
               className="h-full"
             >
-              {/* Menu Bar - iOS status bar style */}
-              <motion.div
-                initial={{ opacity: 0, y: -12 }}
-                animate={showChrome ? { opacity: 1, y: 0 } : { opacity: 0, y: -12 }}
-                transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-              >
-                <MenuBar onSpotlightOpen={() => setSpotlightOpen(true)} />
-              </motion.div>
-              
               <MobileHomeScreen />
             </motion.div>
           )}
