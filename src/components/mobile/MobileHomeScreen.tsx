@@ -1,5 +1,5 @@
 import { useWindows, WindowId } from '@/contexts/WindowContext';
-import { AppIcon, AppIconType } from '@/components/icons/AppIcon';
+import { AppIcon } from '@/components/icons/AppIcon';
 import { PhotoCarouselWidget } from './widgets/PhotoCarouselWidget';
 import { VideoCarouselWidget } from './widgets/VideoCarouselWidget';
 
@@ -19,69 +19,55 @@ export function MobileHomeScreen() {
 
   return (
     <>
-      {/* Main content area - iOS-style mixed grid */}
-      <div className="absolute inset-x-0 top-14 bottom-28 px-5 pt-6 overflow-hidden flex flex-col">
-        {/* Top section: 4-column grid with apps and photo widget */}
-        <div 
-          className="grid gap-4 flex-1"
-          style={{
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gridTemplateRows: 'repeat(2, 1fr)',
-          }}
-        >
-          {/* Portfolio icon - row 1, col 1 */}
-          <div className="flex items-center justify-center">
-            <AppIcon
-              type="portfolio"
-              size={56}
-              showLabel={true}
-              onClick={() => handleAppClick('portfolio')}
-              labelClassName="mt-1 text-[10px]"
-              customLabel="Portfolio"
-            />
-          </div>
+      {/* Main content area - iOS-style widget layout */}
+      <div className="absolute inset-x-0 top-14 bottom-28 px-5 pt-6 overflow-hidden flex flex-col gap-4">
+        {/* Top: Large rectangular video widget spanning full width */}
+        <div className="w-full" style={{ height: '160px' }}>
+          <VideoCarouselWidget isRectangular />
+        </div>
 
-          {/* Mail icon - row 1, col 2 */}
-          <div className="flex items-center justify-center">
-            <AppIcon
-              type="mail"
-              size={56}
-              showLabel={true}
-              onClick={() => handleAppClick('mail')}
-              labelClassName="mt-1 text-[10px]"
-              customLabel="Mail"
-            />
-          </div>
-
-          {/* PhotoCarouselWidget - rows 1-2, cols 3-4 (2x2 square) */}
-          <div 
-            className="w-full h-full"
-            style={{ gridArea: '1 / 3 / 3 / 5' }}
-          >
+        {/* Bottom section: Square photo widget on left, app icons on right */}
+        <div className="flex gap-4 flex-1">
+          {/* Photo widget - square, 2x2 grid equivalent */}
+          <div className="aspect-square h-full max-h-[180px]">
             <PhotoCarouselWidget />
           </div>
 
-          {/* Notes icon - row 2, col 1 */}
-          <div className="flex items-center justify-center">
-            <AppIcon
-              type="about"
-              size={56}
-              showLabel={true}
-              onClick={() => handleAppClick('about')}
-              labelClassName="mt-1 text-[10px]"
-              customLabel="Notes"
-            />
+          {/* App icons grid - 2x2 on the right */}
+          <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-2">
+            <div className="flex items-center justify-center">
+              <AppIcon
+                type="portfolio"
+                size={56}
+                showLabel={true}
+                onClick={() => handleAppClick('portfolio')}
+                labelClassName="mt-1 text-[10px]"
+                customLabel="Portfolio"
+              />
+            </div>
+            <div className="flex items-center justify-center">
+              <AppIcon
+                type="mail"
+                size={56}
+                showLabel={true}
+                onClick={() => handleAppClick('mail')}
+                labelClassName="mt-1 text-[10px]"
+                customLabel="Mail"
+              />
+            </div>
+            <div className="flex items-center justify-center">
+              <AppIcon
+                type="about"
+                size={56}
+                showLabel={true}
+                onClick={() => handleAppClick('about')}
+                labelClassName="mt-1 text-[10px]"
+                customLabel="Notes"
+              />
+            </div>
+            {/* Empty slot for clean look */}
+            <div className="flex items-center justify-center" />
           </div>
-
-          {/* Empty slot - row 2, col 2 */}
-          <div className="flex items-center justify-center">
-            {/* Empty for clean look */}
-          </div>
-        </div>
-
-        {/* Bottom section: Wide rectangular video widget spanning full width */}
-        <div className="mt-4 w-full" style={{ height: '140px' }}>
-          <VideoCarouselWidget isRectangular />
         </div>
       </div>
 
