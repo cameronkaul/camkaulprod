@@ -17,13 +17,24 @@ interface DockItem {
 
 const dockItems: DockItem[] = [
   { id: 'portfolio', type: 'portfolio' },
-  { id: 'instagram', type: 'instagram' },
   { id: 'mail', type: 'mail' },
   { id: 'about', type: 'about' },
   { id: 'resume', type: 'resume' },
   { id: 'runner', type: 'runner' },
   { id: 'trash', type: 'trash' },
 ];
+
+const dockLabels: Record<WindowId, string> = {
+  portfolio: 'Portfolio',
+  mail: 'Mail',
+  about: 'Notes',
+  resume: 'Docs',
+  runner: 'Runner',
+  trash: 'Trash',
+  instagram: 'Instagram',
+  project: 'Project',
+  document: 'Document',
+};
 
 export function Dock() {
   const { openWindow, windows, focusWindow, closeWindow, isMobile } = useWindows();
@@ -87,7 +98,7 @@ export function Dock() {
                         exit={{ opacity: 0, y: 5 }}
                         transition={{ duration: 0.15 }}
                       >
-                        {item.type.charAt(0).toUpperCase() + item.type.slice(1)}
+                        {dockLabels[item.id] || item.type.charAt(0).toUpperCase() + item.type.slice(1)}
                       </motion.div>
                     )}
                   </AnimatePresence>
