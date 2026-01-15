@@ -20,7 +20,8 @@ import { TrashWindow } from '@/components/windows/TrashWindow';
 import { RunnerWindow } from '@/components/windows/RunnerWindow';
 import { DocumentWindow } from '@/components/windows/DocumentWindow';
 import { InstagramWindow } from '@/components/windows/InstagramWindow';
-import desktopWallpaper from '@/assets/desktop-wallpaper.jpg';
+import { VideoCarouselWidget } from '@/components/mobile/widgets/VideoCarouselWidget';
+import { PhotoCarouselWidget } from '@/components/mobile/widgets/PhotoCarouselWidget';
 import mobileWallpaper from '@/assets/mobile-wallpaper.jpg';
 import {
   ContextMenu,
@@ -43,6 +44,7 @@ interface DesktopIconConfig {
 
 const desktopIcons: DesktopIconConfig[] = [
   { id: 'portfolio', type: 'portfolio', label: 'Portfolio' },
+  { id: 'mail', type: 'mail', label: 'Mail' },
   { id: 'instagram', type: 'instagram', label: 'Instagram' },
 ];
 
@@ -138,8 +140,8 @@ function DesktopContent() {
     }
   }, []);
 
-  // Choose wallpaper based on device
-  const wallpaper = isMobile ? mobileWallpaper : desktopWallpaper;
+  // Use the same wallpaper for both desktop and mobile
+  const wallpaper = mobileWallpaper;
 
   return (
     <ContextMenu>
@@ -164,15 +166,16 @@ function DesktopContent() {
             }}
           />
           
-          {/* Dark overlay for readability */}
-          <div className="absolute inset-0 bg-black/20 pointer-events-none desktop-background" />
+          {/* Light overlay for readability - Apple style (only 8% opacity) */}
+          <div className="absolute inset-0 bg-black/[0.08] pointer-events-none desktop-background" />
 
           {/* Boot Overlay */}
           {isBooting && <BootOverlay onComplete={handleBootComplete} />}
 
-          {/* Desktop Icons with selection support - desktop only */}
+          {/* Desktop Icons and Widgets with selection support - desktop only */}
           {!isMobile && (
             <>
+              {/* Left column: App icons */}
               <motion.div 
                 className="absolute top-14 left-4 flex flex-col gap-1 z-10"
                 initial={{ opacity: 0 }}
@@ -195,6 +198,24 @@ function DesktopContent() {
                     />
                   </div>
                 ))}
+              </motion.div>
+
+              {/* Desktop Widgets - positioned to the right of icons */}
+              <motion.div
+                className="absolute top-14 left-28 flex flex-col gap-4 z-10"
+                initial={{ opacity: 0 }}
+                animate={showIcons ? { opacity: 1 } : { opacity: 0 }}
+                transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1], delay: 0.1 }}
+              >
+                {/* Video Widget - 2x2 size */}
+                <div className="w-[180px] h-[180px] rounded-2xl overflow-hidden shadow-lg">
+                  <VideoCarouselWidget />
+                </div>
+                
+                {/* Photo Widget - 2x2 size */}
+                <div className="w-[180px] h-[180px] rounded-2xl overflow-hidden shadow-lg">
+                  <PhotoCarouselWidget />
+                </div>
               </motion.div>
 
               {/* Selection Box - desktop only */}
