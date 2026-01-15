@@ -1,22 +1,27 @@
 import { useWindows, WindowId } from '@/contexts/WindowContext';
 import { AppIcon, AppIconType } from '@/components/icons/AppIcon';
+import { PhotoCarouselWidget } from './widgets/PhotoCarouselWidget';
+import { VideoCarouselWidget } from './widgets/VideoCarouselWidget';
 
 interface AppItem {
   id: WindowId;
   type: AppIconType;
+  label?: string;
 }
 
-const mainApps: AppItem[] = [
-  { id: 'portfolio', type: 'portfolio' },
-  { id: 'mail', type: 'mail' },
-  { id: 'about', type: 'about' },
-  { id: 'instagram', type: 'instagram' },
+// Apps for the main grid (under widgets)
+const gridApps: AppItem[] = [
+  { id: 'portfolio', type: 'portfolio', label: 'Portfolio' },
+  { id: 'about', type: 'about', label: 'Notes' },
+  { id: 'mail', type: 'mail', label: 'Mail' },
+  { id: 'instagram', type: 'instagram', label: 'Instagram' },
 ];
 
+// Dock apps
 const dockApps: AppItem[] = [
-  { id: 'resume', type: 'resume' },
-  { id: 'trash', type: 'trash' },
-  { id: 'runner', type: 'runner' },
+  { id: 'resume', type: 'resume', label: 'Docs' },
+  { id: 'trash', type: 'trash', label: 'Trash' },
+  { id: 'runner', type: 'runner', label: 'Runner' },
 ];
 
 export function MobileHomeScreen() {
@@ -26,58 +31,50 @@ export function MobileHomeScreen() {
     openWindow(id);
   };
 
-  // Split main apps into rows of 3
-  const firstRow = mainApps.slice(0, 3);
-  const secondRow = mainApps.slice(3);
-
   return (
     <>
-      {/* App Grid - Main apps */}
-      <div className="absolute inset-x-0 top-16 bottom-24 flex flex-col items-center pt-12 px-8">
-        <div className="flex flex-col gap-8">
-          {/* First row */}
-          <div className="grid grid-cols-3 gap-8">
-            {firstRow.map((app) => (
+      {/* Main content area - widgets and app grid */}
+      <div className="absolute inset-x-0 top-14 bottom-28 flex flex-col px-5 pt-6 overflow-hidden">
+        {/* Widget row - 4 column grid, widgets span 2 columns each */}
+        <div className="grid grid-cols-4 gap-3 mb-6">
+          {/* PhotoCarouselWidget - spans columns 1-2 (2x2) */}
+          <div className="col-span-2 aspect-square">
+            <PhotoCarouselWidget />
+          </div>
+          {/* VideoCarouselWidget - spans columns 3-4 (2x2) */}
+          <div className="col-span-2 aspect-square">
+            <VideoCarouselWidget />
+          </div>
+        </div>
+
+        {/* App grid - 4 column grid */}
+        <div className="grid grid-cols-4 gap-x-3 gap-y-6">
+          {gridApps.map((app) => (
+            <div key={app.id} className="flex flex-col items-center">
               <AppIcon
-                key={app.id}
                 type={app.type}
-                size={64}
+                size={60}
                 showLabel={true}
                 onClick={() => handleAppClick(app.id)}
-                labelClassName="mt-1"
+                labelClassName="mt-1.5 text-[11px]"
+                customLabel={app.label}
               />
-            ))}
-          </div>
-          {/* Second row */}
-          {secondRow.length > 0 && (
-            <div className="grid grid-cols-3 gap-8">
-              {secondRow.map((app) => (
-                <AppIcon
-                  key={app.id}
-                  type={app.type}
-                  size={64}
-                  showLabel={true}
-                  onClick={() => handleAppClick(app.id)}
-                  labelClassName="mt-1"
-                />
-              ))}
             </div>
-          )}
+          ))}
         </div>
       </div>
 
-      {/* iPhone-style Dock at bottom */}
-      <div className="fixed bottom-6 inset-x-4 z-[9995]">
-        <div className="bg-muted/60 backdrop-blur-xl rounded-3xl px-6 py-3 border border-border/30 shadow-lg">
+      {/* iPhone-style Dock at bottom with safe area */}
+      <div className="fixed bottom-0 inset-x-0 pb-2 pt-2 z-[9995]">
+        <div className="mx-4 bg-muted/60 backdrop-blur-xl rounded-3xl px-6 py-3 border border-border/30 shadow-lg">
           <div className="flex items-center justify-around">
             {dockApps.map((app) => (
               <AppIcon
                 key={app.id}
                 type={app.type}
-                size={56}
-                showLabel={true}
+                size={52}
+                showLabel={false}
                 onClick={() => handleAppClick(app.id)}
-                labelClassName="text-[10px]"
               />
             ))}
           </div>
