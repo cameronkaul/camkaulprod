@@ -4,7 +4,7 @@ import {
   Trash2, 
   Gamepad2,
   StickyNote,
-  Aperture,
+  FolderOpen,
   Instagram,
   Mail
 } from 'lucide-react';
@@ -19,12 +19,30 @@ interface AppIconConfig {
   accentColor: string;
 }
 
+// Custom iOS Files-style folder icon for Portfolio
+const PortfolioGlyph = () => (
+  <svg viewBox="0 0 24 24" className="w-1/2 h-1/2" fill="none">
+    {/* Folder body */}
+    <path 
+      d="M3 7C3 5.89543 3.89543 5 5 5H9.58579C9.851 5 10.1054 5.10536 10.2929 5.29289L11.7071 6.70711C11.8946 6.89464 12.149 7 12.4142 7H19C20.1046 7 21 7.89543 21 9V17C21 18.1046 20.1046 19 19 19H5C3.89543 19 3 18.1046 3 17V7Z" 
+      fill="white"
+      fillOpacity="0.95"
+    />
+    {/* Folder tab highlight */}
+    <path 
+      d="M3 7C3 5.89543 3.89543 5 5 5H9.58579C9.851 5 10.1054 5.10536 10.2929 5.29289L11.7071 6.70711C11.8946 6.89464 12.149 7 12.4142 7H19C20.1046 7 21 7.89543 21 9V10H3V7Z" 
+      fill="white"
+      fillOpacity="0.3"
+    />
+  </svg>
+);
+
 const iconConfigs: Record<AppIconType, AppIconConfig> = {
   portfolio: {
-    gradient: 'linear-gradient(145deg, #FF6B6B 0%, #EE4D4D 50%, #CC3333 100%)',
-    glyph: <Aperture className="w-1/2 h-1/2 text-white drop-shadow-sm" strokeWidth={1.5} />,
-    label: 'Photos',
-    accentColor: 'hsl(0, 75%, 55%)',
+    gradient: 'linear-gradient(145deg, #60A5FA 0%, #3B82F6 50%, #1D4ED8 100%)',
+    glyph: <PortfolioGlyph />,
+    label: 'Portfolio',
+    accentColor: 'hsl(217, 91%, 60%)',
   },
   mail: {
     gradient: 'linear-gradient(145deg, #7DD3FC 0%, #38BDF8 50%, #0EA5E9 100%)',
@@ -195,7 +213,7 @@ export function HeaderIcon({ type, size = 16 }: HeaderIconProps) {
       }}
     >
       <div className="w-[60%] h-[60%] text-white flex items-center justify-center">
-        {type === 'portfolio' && <Aperture className="w-full h-full" strokeWidth={2} />}
+        {type === 'portfolio' && <FolderOpen className="w-full h-full" strokeWidth={2} />}
         {type === 'mail' && <Mail className="w-full h-full" strokeWidth={2} />}
         {type === 'about' && <StickyNote className="w-full h-full" strokeWidth={2} />}
         {type === 'resume' && <FileText className="w-full h-full" strokeWidth={2} />}

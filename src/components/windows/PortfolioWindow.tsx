@@ -332,7 +332,7 @@ export function PortfolioWindow() {
             }`}
           >
             <Image className="w-4 h-4" />
-            All Photos
+            All Projects
           </button>
           <button
             disabled
@@ -420,7 +420,7 @@ export function PortfolioWindow() {
               <span className="font-semibold text-foreground">
                 {currentCollection && currentCollectionData 
                   ? currentCollectionData.name 
-                  : 'All Photos'
+                  : 'All Projects'
                 }
               </span>
               <span className="text-muted-foreground text-xs ml-2">
@@ -596,7 +596,7 @@ export function PortfolioWindow() {
           {filteredAndSortedProjects.length === 0 && filteredCollections.length === 0 && (
             <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
               <Search className="w-12 h-12 mb-4 opacity-40" />
-              <p className="text-sm">No photos found</p>
+              <p className="text-sm">No projects found</p>
               <p className="text-xs mt-1">Try adjusting your search</p>
             </div>
           )}

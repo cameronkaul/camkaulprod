@@ -7,7 +7,7 @@ interface DesktopIconProps {
   onClick: () => void;
   onDoubleClick: () => void;
   isSelected?: boolean;
-  onSelect?: () => void;
+  onSelect?: (e?: React.MouseEvent) => void;
 }
 
 export function DesktopIcon({ 
@@ -28,7 +28,7 @@ export function DesktopIcon({
       setClickTimeout(null);
       onDoubleClick();
     } else {
-      onSelect?.();
+      onSelect?.(e);
       onClick();
       const timeout = setTimeout(() => {
         setClickTimeout(null);
@@ -44,12 +44,16 @@ export function DesktopIcon({
   }, [clickTimeout]);
 
   return (
-    <div onClick={handleClick}>
+    <div 
+      onClick={handleClick}
+      className={`relative ${isSelected ? 'ring-2 ring-primary/50 rounded-xl' : ''}`}
+    >
       <AppIcon
         type={type}
         size={56}
         showLabel={true}
         isSelected={isSelected}
+        customLabel={label}
       />
     </div>
   );
