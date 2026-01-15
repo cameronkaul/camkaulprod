@@ -102,8 +102,16 @@ export function MenuBar({ onSpotlightOpen }: MenuBarProps) {
           </div>
         </div>
 
-        {/* Right side - empty spacer for balance */}
-        <div className="w-8" />
+        {/* Right side - Instagram icon */}
+        <a
+          href="https://instagram.com/camkaul.prod"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center text-foreground/80 hover:text-foreground transition-colors p-1"
+          title="Instagram"
+        >
+          <InstagramIcon />
+        </a>
       </header>
     );
   }

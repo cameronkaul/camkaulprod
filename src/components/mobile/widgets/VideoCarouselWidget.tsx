@@ -30,7 +30,11 @@ const videos: Video[] = [
   },
 ];
 
-export function VideoCarouselWidget() {
+interface VideoCarouselWidgetProps {
+  isRectangular?: boolean;
+}
+
+export function VideoCarouselWidget({ isRectangular = false }: VideoCarouselWidgetProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
@@ -87,7 +91,7 @@ export function VideoCarouselWidget() {
     <>
       {/* Widget */}
       <motion.div
-        className="relative w-full h-full rounded-3xl overflow-hidden bg-black/90 shadow-lg cursor-pointer"
+        className={`relative w-full h-full overflow-hidden bg-black/90 shadow-lg cursor-pointer ${isRectangular ? 'rounded-2xl' : 'rounded-3xl'}`}
         whileTap={{ scale: 0.98 }}
         onClick={() => setIsModalOpen(true)}
         onTouchStart={handleTouchStart}

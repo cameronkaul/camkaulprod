@@ -3,26 +3,11 @@ import { AppIcon, AppIconType } from '@/components/icons/AppIcon';
 import { PhotoCarouselWidget } from './widgets/PhotoCarouselWidget';
 import { VideoCarouselWidget } from './widgets/VideoCarouselWidget';
 
-interface AppItem {
-  id: WindowId;
-  type: AppIconType;
-  label?: string;
-  gridArea: string; // CSS grid area placement
-}
-
-// Apps positioned in specific grid cells
-const gridApps: AppItem[] = [
-  { id: 'portfolio', type: 'portfolio', label: 'Portfolio', gridArea: '1 / 1 / 2 / 2' },
-  { id: 'mail', type: 'mail', label: 'Mail', gridArea: '1 / 2 / 2 / 3' },
-  { id: 'about', type: 'about', label: 'Notes', gridArea: '2 / 1 / 3 / 2' },
-  { id: 'instagram', type: 'instagram', label: 'Instagram', gridArea: '2 / 2 / 3 / 3' },
-];
-
 // Dock apps
-const dockApps: AppItem[] = [
-  { id: 'resume', type: 'resume', label: 'Docs', gridArea: '' },
-  { id: 'trash', type: 'trash', label: 'Trash', gridArea: '' },
-  { id: 'runner', type: 'runner', label: 'Runner', gridArea: '' },
+const dockApps: { id: WindowId; type: 'resume' | 'trash' | 'runner'; label: string }[] = [
+  { id: 'resume', type: 'resume', label: 'Docs' },
+  { id: 'trash', type: 'trash', label: 'Trash' },
+  { id: 'runner', type: 'runner', label: 'Runner' },
 ];
 
 export function MobileHomeScreen() {
@@ -35,23 +20,17 @@ export function MobileHomeScreen() {
   return (
     <>
       {/* Main content area - iOS-style mixed grid */}
-      <div className="absolute inset-x-0 top-14 bottom-28 px-5 pt-6 overflow-hidden">
-        {/* 4-column grid with fixed row heights */}
+      <div className="absolute inset-x-0 top-14 bottom-28 px-5 pt-6 overflow-hidden flex flex-col">
+        {/* Top section: 4-column grid with apps and photo widget */}
         <div 
-          className="grid gap-4"
+          className="grid gap-4 flex-1"
           style={{
             gridTemplateColumns: 'repeat(4, 1fr)',
-            gridTemplateRows: 'repeat(4, minmax(0, 1fr))',
-            aspectRatio: '1 / 1.1',
+            gridTemplateRows: 'repeat(2, 1fr)',
           }}
         >
-          {/* Row 1-2: App icons on left (cols 1-2), VideoCarouselWidget on right (cols 3-4) */}
-          
           {/* Portfolio icon - row 1, col 1 */}
-          <div 
-            className="flex items-center justify-center"
-            style={{ gridArea: '1 / 1 / 2 / 2' }}
-          >
+          <div className="flex items-center justify-center">
             <AppIcon
               type="portfolio"
               size={56}
@@ -63,10 +42,7 @@ export function MobileHomeScreen() {
           </div>
 
           {/* Mail icon - row 1, col 2 */}
-          <div 
-            className="flex items-center justify-center"
-            style={{ gridArea: '1 / 2 / 2 / 3' }}
-          >
+          <div className="flex items-center justify-center">
             <AppIcon
               type="mail"
               size={56}
@@ -77,11 +53,16 @@ export function MobileHomeScreen() {
             />
           </div>
 
-          {/* Notes icon - row 2, col 1 */}
+          {/* PhotoCarouselWidget - rows 1-2, cols 3-4 (2x2 square) */}
           <div 
-            className="flex items-center justify-center"
-            style={{ gridArea: '2 / 1 / 3 / 2' }}
+            className="w-full h-full"
+            style={{ gridArea: '1 / 3 / 3 / 5' }}
           >
+            <PhotoCarouselWidget />
+          </div>
+
+          {/* Notes icon - row 2, col 1 */}
+          <div className="flex items-center justify-center">
             <AppIcon
               type="about"
               size={56}
@@ -92,41 +73,15 @@ export function MobileHomeScreen() {
             />
           </div>
 
-          {/* Instagram icon - row 2, col 2 */}
-          <div 
-            className="flex items-center justify-center"
-            style={{ gridArea: '2 / 2 / 3 / 3' }}
-          >
-            <AppIcon
-              type="instagram"
-              size={56}
-              showLabel={true}
-              onClick={() => handleAppClick('instagram')}
-              labelClassName="mt-1 text-[10px]"
-              customLabel="Instagram"
-            />
+          {/* Empty slot - row 2, col 2 */}
+          <div className="flex items-center justify-center">
+            {/* Empty for clean look */}
           </div>
+        </div>
 
-          {/* VideoCarouselWidget - rows 1-2, cols 3-4 (2x2) */}
-          <div 
-            className="w-full h-full"
-            style={{ gridArea: '1 / 3 / 3 / 5' }}
-          >
-            <VideoCarouselWidget />
-          </div>
-
-          {/* Row 3-4: PhotoCarouselWidget on left (cols 1-2), empty or future icons on right */}
-          
-          {/* PhotoCarouselWidget - rows 3-4, cols 1-2 (2x2) */}
-          <div 
-            className="w-full h-full"
-            style={{ gridArea: '3 / 1 / 5 / 3' }}
-          >
-            <PhotoCarouselWidget />
-          </div>
-
-          {/* Empty slots rows 3-4, cols 3-4 can hold more icons if needed */}
-          {/* Currently left empty for clean look - can add more apps here later */}
+        {/* Bottom section: Wide rectangular video widget spanning full width */}
+        <div className="mt-4 w-full" style={{ height: '140px' }}>
+          <VideoCarouselWidget isRectangular />
         </div>
       </div>
 
