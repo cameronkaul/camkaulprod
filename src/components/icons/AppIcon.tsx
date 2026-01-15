@@ -154,56 +154,56 @@ const InstagramGlyph = () => (
   </svg>
 );
 
-// Vibrant Apple-style color palette with enhanced saturation
+// iOS 18 vibrant, bright color palette - punchy and fresh
 const iconConfigs: Record<AppIconType, AppIconConfig> = {
   portfolio: {
-    gradient: 'linear-gradient(145deg, #64D2FF 0%, #0A84FF 45%, #0066CC 100%)',
+    gradient: 'linear-gradient(145deg, #7DD3FC 0%, #38BDF8 40%, #0EA5E9 100%)',
     glyph: <PortfolioGlyph />,
     label: 'Portfolio',
-    accentColor: 'hsl(211, 100%, 55%)',
-    highlightColor: 'rgba(100, 210, 255, 0.4)',
+    accentColor: 'hsl(199, 95%, 60%)',
+    highlightColor: 'rgba(125, 211, 252, 0.5)',
   },
   mail: {
-    gradient: 'linear-gradient(145deg, #6EE7FF 0%, #32ADE6 45%, #0891C9 100%)',
+    gradient: 'linear-gradient(145deg, #93C5FD 0%, #60A5FA 40%, #3B82F6 100%)',
     glyph: <MailGlyph />,
     label: 'Mail',
-    accentColor: 'hsl(199, 80%, 58%)',
-    highlightColor: 'rgba(110, 231, 255, 0.4)',
+    accentColor: 'hsl(217, 91%, 65%)',
+    highlightColor: 'rgba(147, 197, 253, 0.5)',
   },
   about: {
-    gradient: 'linear-gradient(145deg, #FFE066 0%, #FF9F0A 45%, #E67E00 100%)',
+    gradient: 'linear-gradient(145deg, #FDE68A 0%, #FBBF24 40%, #F59E0B 100%)',
     glyph: <NotesGlyph />,
     label: 'Notes',
-    accentColor: 'hsl(38, 100%, 55%)',
-    highlightColor: 'rgba(255, 224, 102, 0.4)',
+    accentColor: 'hsl(45, 96%, 58%)',
+    highlightColor: 'rgba(253, 230, 138, 0.5)',
   },
   resume: {
-    gradient: 'linear-gradient(145deg, #8B85FF 0%, #5E5CE6 45%, #4240B3 100%)',
+    gradient: 'linear-gradient(145deg, #C4B5FD 0%, #A78BFA 40%, #8B5CF6 100%)',
     glyph: <DocsGlyph />,
     label: 'Docs',
-    accentColor: 'hsl(242, 70%, 62%)',
-    highlightColor: 'rgba(139, 133, 255, 0.4)',
+    accentColor: 'hsl(263, 90%, 70%)',
+    highlightColor: 'rgba(196, 181, 253, 0.5)',
   },
   runner: {
-    gradient: 'linear-gradient(145deg, #FF8080 0%, #FF453A 45%, #D93025 100%)',
+    gradient: 'linear-gradient(145deg, #FCA5A5 0%, #F87171 40%, #EF4444 100%)',
     glyph: <RunnerGlyph />,
     label: 'Runner',
-    accentColor: 'hsl(4, 100%, 62%)',
-    highlightColor: 'rgba(255, 128, 128, 0.4)',
+    accentColor: 'hsl(0, 84%, 65%)',
+    highlightColor: 'rgba(252, 165, 165, 0.5)',
   },
   trash: {
-    gradient: 'linear-gradient(145deg, #B0B0B5 0%, #8E8E93 45%, #636366 100%)',
+    gradient: 'linear-gradient(145deg, #D4D4D8 0%, #A1A1AA 40%, #71717A 100%)',
     glyph: <TrashGlyph />,
     label: 'Trash',
-    accentColor: 'hsl(240, 3%, 55%)',
-    highlightColor: 'rgba(176, 176, 181, 0.3)',
+    accentColor: 'hsl(240, 5%, 60%)',
+    highlightColor: 'rgba(212, 212, 216, 0.4)',
   },
   instagram: {
-    gradient: 'linear-gradient(145deg, #FCAF45 0%, #E1306C 35%, #C13584 60%, #833AB4 100%)',
+    gradient: 'linear-gradient(145deg, #FCD34D 0%, #F472B6 35%, #C026D3 65%, #9333EA 100%)',
     glyph: <InstagramGlyph />,
     label: 'Instagram',
-    accentColor: 'hsl(330, 75%, 55%)',
-    highlightColor: 'rgba(252, 175, 69, 0.4)',
+    accentColor: 'hsl(328, 85%, 60%)',
+    highlightColor: 'rgba(252, 211, 77, 0.5)',
   },
 };
 

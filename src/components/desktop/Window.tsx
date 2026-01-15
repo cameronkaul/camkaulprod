@@ -9,7 +9,6 @@ interface WindowProps {
   children: ReactNode;
 }
 
-// App-specific window titles
 const windowTitles: Record<WindowId, string> = {
   portfolio: 'Portfolio',
   mail: 'Mail',
@@ -20,6 +19,8 @@ const windowTitles: Record<WindowId, string> = {
   project: 'Project',
   document: 'Document',
   instagram: 'Instagram',
+  videoWidget: 'Featured Work',
+  photoWidget: 'Gallery',
 };
 
 export function Window({ id, children }: WindowProps) {
