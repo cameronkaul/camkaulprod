@@ -21,6 +21,7 @@ import { TrashWindow } from '@/components/windows/TrashWindow';
 import { RunnerWindow } from '@/components/windows/RunnerWindow';
 import { DocumentWindow } from '@/components/windows/DocumentWindow';
 import { InstagramWindow } from '@/components/windows/InstagramWindow';
+import { WidgetWindow } from '@/components/windows/WidgetWindow';
 import { VideoCarouselWidget } from '@/components/mobile/widgets/VideoCarouselWidget';
 import { PhotoCarouselWidget } from '@/components/mobile/widgets/PhotoCarouselWidget';
 import { useDesktopGrid, GRID_SIZE, GRID_GAP } from '@/hooks/useDesktopGrid';
@@ -163,45 +164,7 @@ function DesktopContent() {
     });
   };
 
-  // Render desktop widgets
-  const renderDesktopWidgets = () => {
-    const widgets = [
-      { id: 'widget-video', component: <VideoCarouselWidget /> },
-      { id: 'widget-photo', component: <PhotoCarouselWidget /> },
-    ];
-
-    return widgets.map(({ id, component }) => {
-      const item = getItem(id);
-      if (!item) return null;
-      
-      const position = getItemPosition(id);
-      
-      return (
-        <motion.div
-          key={id}
-          ref={(el) => registerItemRef(id, el)}
-          className="absolute desktop-widget"
-          animate={{
-            x: position.x,
-            y: position.y,
-          }}
-          transition={position.isDragging ? { duration: 0 } : { type: 'spring', stiffness: 300, damping: 25 }}
-          style={{ zIndex: position.isDragging ? 1000 : selectedIds.has(id) ? 20 : 10 }}
-        >
-          <DesktopWidget
-            isSelected={selectedIds.has(id)}
-            onSelect={(e) => selectItem(id, e?.shiftKey)}
-            onDragStart={(x, y) => startDrag(id, x, y)}
-            onDragMove={(dx, dy) => updateDrag(dx, dy)}
-            onDragEnd={(dx, dy) => endDrag(dx, dy)}
-            size={WIDGET_SIZE}
-          >
-            {component}
-          </DesktopWidget>
-        </motion.div>
-      );
-    });
-  };
+  // Removed - widgets now render as WidgetWindow components
 
   return (
     <ContextMenu>
@@ -232,7 +195,7 @@ function DesktopContent() {
           {/* Boot Overlay */}
           {isBooting && <BootOverlay onComplete={handleBootComplete} />}
 
-          {/* Desktop Icons and Widgets - desktop only */}
+          {/* Desktop Icons - desktop only */}
           {!isMobile && (
             <motion.div
               initial={{ opacity: 0 }}
@@ -241,7 +204,6 @@ function DesktopContent() {
               className="absolute inset-0"
             >
               {renderDesktopIcons()}
-              {renderDesktopWidgets()}
               
               {/* Selection Box */}
               <SelectionBox
@@ -250,6 +212,22 @@ function DesktopContent() {
                 disabled={isMobile}
               />
             </motion.div>
+          )}
+
+          {/* Widget Windows - desktop only */}
+          {!isMobile && (
+            <>
+              <WidgetWindow id="videoWidget" title="Featured Work">
+                <div className="w-full h-full">
+                  <VideoCarouselWidget />
+                </div>
+              </WidgetWindow>
+              <WidgetWindow id="photoWidget" title="Gallery">
+                <div className="w-full h-full">
+                  <PhotoCarouselWidget />
+                </div>
+              </WidgetWindow>
+            </>
           )}
 
           {/* Mobile Home Screen - iOS-style app grid (hidden when app is open) */}

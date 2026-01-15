@@ -34,6 +34,8 @@ const dockLabels: Record<WindowId, string> = {
   instagram: 'Instagram',
   project: 'Project',
   document: 'Document',
+  videoWidget: 'Featured Work',
+  photoWidget: 'Gallery',
 };
 
 // macOS-style magnification constants

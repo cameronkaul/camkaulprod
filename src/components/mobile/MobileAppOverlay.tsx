@@ -20,6 +20,8 @@ const windowTitles: Record<WindowId, string> = {
   project: 'Project',
   document: 'Document',
   instagram: 'Instagram',
+  videoWidget: 'Featured Work',
+  photoWidget: 'Gallery',
 };
 
 export function MobileAppOverlay({ id, children }: MobileAppOverlayProps) {
