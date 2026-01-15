@@ -73,6 +73,7 @@ interface AppIconProps {
   onDoubleClick?: () => void;
   className?: string;
   labelClassName?: string;
+  customLabel?: string;
 }
 
 export function AppIcon({
@@ -84,6 +85,7 @@ export function AppIcon({
   onDoubleClick,
   className = '',
   labelClassName = '',
+  customLabel,
 }: AppIconProps) {
   const config = iconConfigs[type];
   const borderRadius = size * 0.22; // ~22% corner radius like iOS
@@ -145,7 +147,7 @@ export function AppIcon({
             maxWidth: size + 20,
           }}
         >
-          {config.label}
+          {customLabel || config.label}
         </span>
       )}
     </motion.button>
