@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useWindows } from '@/contexts/WindowContext';
-
+import { MobileRunnerGame } from '@/components/mobile/MobileRunnerGame';
 interface GameState {
   isRunning: boolean;
   isGameOver: boolean;
@@ -42,6 +42,18 @@ const WARMUP_DURATION = 4; // seconds of gentle acceleration
 const SPEED_CURVE_K = 0.12; // Normal ramp rate after warmup
 
 export function RunnerWindow() {
+  const { closeWindow, isMobile } = useWindows();
+  
+  // Use mobile-optimized version on small screens
+  if (isMobile) {
+    return <MobileRunnerGame />;
+  }
+  
+  // Desktop version continues below
+  return <DesktopRunnerGame closeWindow={closeWindow} />;
+}
+
+function DesktopRunnerGame({ closeWindow }: { closeWindow: (id: 'runner') => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>(0);
   const obstaclesRef = useRef<Obstacle[]>([]);
@@ -55,7 +67,6 @@ export function RunnerWindow() {
     velocityY: 0,
     isJumping: false,
   });
-  const { closeWindow } = useWindows();
   
   const [gameState, setGameState] = useState<GameState>({
     isRunning: false,
