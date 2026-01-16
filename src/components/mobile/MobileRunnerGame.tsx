@@ -58,7 +58,7 @@ export function MobileRunnerGame() {
   const groundY = canvasSize.height - 40;
   
   const runnerRef = useRef<Runner>({
-    x: 50,
+    x: 30,
     y: groundY,
     width: 35,
     height: 55,
@@ -121,7 +121,7 @@ export function MobileRunnerGame() {
           clearInterval(countdownInterval);
           const newGroundY = canvasSize.height - 40;
           runnerRef.current = {
-            x: 50,
+            x: 30,
             y: newGroundY,
             width: 35,
             height: 55,
@@ -552,10 +552,23 @@ export function MobileRunnerGame() {
     drawRunner(ctx, runnerRef.current);
   }, [drawRunner, canvasSize]);
 
+  // Handle tap anywhere to jump
+  const handleTapToJump = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+    // Don't jump if clicking buttons
+    const target = e.target as HTMLElement;
+    if (target.closest('button')) return;
+    
+    if (gameState.isRunning && !gameState.isPaused) {
+      jump();
+    }
+  }, [gameState.isRunning, gameState.isPaused, jump]);
+
   return (
     <div 
       ref={containerRef}
       className="h-full flex flex-col bg-gradient-to-b from-[hsl(250,25%,12%)] to-[hsl(250,20%,8%)] relative overflow-hidden"
+      onClick={handleTapToJump}
+      onTouchStart={handleTapToJump}
     >
       {/* Header with close, score, and pause */}
       <div className="flex items-center justify-between px-4 py-3 z-10">
