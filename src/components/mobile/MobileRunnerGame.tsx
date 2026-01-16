@@ -58,7 +58,7 @@ export function MobileRunnerGame() {
   const groundY = canvasSize.height - 40;
   
   const runnerRef = useRef<Runner>({
-    x: 80,
+    x: 50,
     y: groundY,
     width: 35,
     height: 55,
@@ -121,7 +121,7 @@ export function MobileRunnerGame() {
           clearInterval(countdownInterval);
           const newGroundY = canvasSize.height - 40;
           runnerRef.current = {
-            x: 80,
+            x: 50,
             y: newGroundY,
             width: 35,
             height: 55,
