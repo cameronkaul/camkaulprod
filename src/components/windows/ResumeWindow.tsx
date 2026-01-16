@@ -1,7 +1,9 @@
-import { Mail, MapPin, Linkedin } from 'lucide-react';
-import { resumeData } from '@/data/projects';
+import { Mail, MapPin, Linkedin, ExternalLink } from 'lucide-react';
+import { resumeData, clientWorks } from '@/data/projects';
+import { useWindows } from '@/contexts/WindowContext';
 
 export function ResumeWindow() {
+  const { openWindow } = useWindows();
   return (
     <div className="flex flex-col h-full bg-white">
       {/* Minimal Docs-style Toolbar */}
@@ -56,35 +58,53 @@ export function ResumeWindow() {
               Experience
             </h2>
             <div className="space-y-5">
-              {resumeData.experience.map((job, idx) => (
-                <div key={idx}>
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1">
-                    <div>
-                      <p className="font-semibold text-gray-900">{job.title}</p>
-                      {job.companyUrl ? (
-                        <a
-                          href={job.companyUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm text-blue-600 hover:underline"
-                        >
-                          {job.company}
-                        </a>
-                      ) : (
-                        <p className="text-sm text-gray-600">{job.company}</p>
-                      )}
+              {resumeData.experience.map((job, idx) => {
+                const hasGallery = 'galleryId' in job && clientWorks.some(c => c.clientId === (job as any).galleryId);
+                
+                return (
+                  <div key={idx}>
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1">
+                      <div>
+                        <p className="font-semibold text-gray-900">{job.title}</p>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          {job.companyUrl ? (
+                            <a
+                              href={job.companyUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-sm text-blue-600 hover:underline"
+                            >
+                              {job.company}
+                            </a>
+                          ) : (
+                            <span className="text-sm text-gray-600">{job.company}</span>
+                          )}
+                          {hasGallery && (
+                            <>
+                              <span className="text-gray-300">·</span>
+                              <button
+                                onClick={() => openWindow('workGallery', undefined, (job as any).galleryId)}
+                                className="text-sm text-blue-600 hover:underline flex items-center gap-1"
+                              >
+                                View Design Work
+                                <ExternalLink className="w-3 h-3" />
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                      <span className="text-sm text-gray-500 sm:whitespace-nowrap">{job.dates}</span>
                     </div>
-                    <span className="text-sm text-gray-500 sm:whitespace-nowrap">{job.dates}</span>
+                    <ul className="mt-2 space-y-1">
+                      {job.bullets.map((bullet, bIdx) => (
+                        <li key={bIdx} className="text-sm text-gray-700 pl-4 relative before:content-['•'] before:absolute before:left-0 before:text-gray-400">
+                          {bullet}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul className="mt-2 space-y-1">
-                    {job.bullets.map((bullet, bIdx) => (
-                      <li key={bIdx} className="text-sm text-gray-700 pl-4 relative before:content-['•'] before:absolute before:left-0 before:text-gray-400">
-                        {bullet}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </section>
 

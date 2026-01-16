@@ -22,6 +22,7 @@ import { RunnerWindow } from '@/components/windows/RunnerWindow';
 import { DocumentWindow } from '@/components/windows/DocumentWindow';
 import { InstagramWindow } from '@/components/windows/InstagramWindow';
 import { WidgetWindow } from '@/components/windows/WidgetWindow';
+import { WorkGalleryWindow } from '@/components/windows/WorkGalleryWindow';
 import { VideoCarouselWidget } from '@/components/mobile/widgets/VideoCarouselWidget';
 import { PhotoCarouselWidget } from '@/components/mobile/widgets/PhotoCarouselWidget';
 import { useDesktopGrid, GRID_SIZE, GRID_GAP } from '@/hooks/useDesktopGrid';
@@ -282,6 +283,7 @@ function DesktopContent() {
               <Window id="runner"><RunnerWindow /></Window>
               <Window id="instagram"><InstagramWindow /></Window>
               <Window id="document"><DocumentWindow /></Window>
+              <Window id="workGallery"><WorkGalleryWindow /></Window>
             </>
           )}
 
@@ -297,6 +299,7 @@ function DesktopContent() {
               <MobileAppOverlay id="runner"><RunnerWindow /></MobileAppOverlay>
               <MobileAppOverlay id="instagram"><InstagramWindow /></MobileAppOverlay>
               <MobileAppOverlay id="document"><DocumentWindow /></MobileAppOverlay>
+              <MobileAppOverlay id="workGallery"><WorkGalleryWindow /></MobileAppOverlay>
             </>
           )}
 
