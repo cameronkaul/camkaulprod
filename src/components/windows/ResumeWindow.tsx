@@ -61,7 +61,18 @@ export function ResumeWindow() {
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1">
                     <div>
                       <p className="font-semibold text-gray-900">{job.title}</p>
-                      <p className="text-sm text-gray-600">{job.company}</p>
+                      {job.companyUrl ? (
+                        <a
+                          href={job.companyUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-blue-600 hover:underline"
+                        >
+                          {job.company}
+                        </a>
+                      ) : (
+                        <p className="text-sm text-gray-600">{job.company}</p>
+                      )}
                     </div>
                     <span className="text-sm text-gray-500 sm:whitespace-nowrap">{job.dates}</span>
                   </div>
