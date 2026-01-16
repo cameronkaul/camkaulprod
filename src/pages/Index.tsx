@@ -77,8 +77,10 @@ function DesktopContent() {
     getItem,
   } = useDesktopGrid();
 
-  // Check if any window is open on mobile
-  const hasOpenMobileWindow = isMobile && windows.some(w => w.isOpen && !w.isMinimized);
+  // Check if any window is open on mobile (exclude widget windows which are for desktop only)
+  const hasOpenMobileWindow = isMobile && windows.some(w => 
+    w.isOpen && !w.isMinimized && w.id !== 'videoWidget' && w.id !== 'photoWidget'
+  );
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
