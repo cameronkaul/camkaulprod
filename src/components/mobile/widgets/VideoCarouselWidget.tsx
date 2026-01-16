@@ -1,32 +1,33 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Volume2, VolumeX, Play, Pause, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, Play, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface Video {
   id: string;
-  src: string;
+  embedUrl: string;
   title: string;
   thumbnail: string;
 }
 
+// Featured videos with actual embed URLs
 const videos: Video[] = [
   {
     id: '1',
-    src: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-    title: 'Midway Football Hype',
-    thumbnail: '/thumbnails/midway-fb-hype-1.jpg',
+    embedUrl: 'https://www.loom.com/embed/4788fea6356144ff8209e98c95116ccb?autoplay=1',
+    title: 'DVLVD - Dr. Pepper Mural',
+    thumbnail: '/thumbnails/dvlvd-dr-pepper-mural.jpg',
   },
   {
     id: '2',
-    src: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-    title: 'ATO Rush Video',
-    thumbnail: '/thumbnails/rush-ato.jpg',
+    embedUrl: 'https://www.loom.com/embed/2a6cb8c50add4ff2a2078e56d0217d12?autoplay=1',
+    title: 'DVLVD - Austin Parque Zaragoza',
+    thumbnail: '/thumbnails/dvlvd-austin-parque-zaragoza.jpg',
   },
   {
     id: '3',
-    src: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-    title: 'Baylor Hockey',
-    thumbnail: '/thumbnails/baylor-hockey-1.jpg',
+    embedUrl: 'https://www.loom.com/embed/27fca03e032542a28b74c2ea1a1f70a0?autoplay=1',
+    title: 'DVLVD - Painting Frames',
+    thumbnail: '/thumbnails/dvlvd-painting-frames.jpg',
   },
 ];
 
@@ -37,36 +38,28 @@ interface VideoCarouselWidgetProps {
 export function VideoCarouselWidget({ isRectangular = false }: VideoCarouselWidgetProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [progress, setProgress] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const progressRef = useRef<NodeJS.Timeout | null>(null);
   const touchStartX = useRef<number>(0);
 
-  const ROTATION_INTERVAL = 15000; // 15 seconds
+  const ROTATION_INTERVAL = 8000; // 8 seconds for thumbnail rotation
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % videos.length);
-    setProgress(0);
   }, []);
 
   const prevSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev - 1 + videos.length) % videos.length);
-    setProgress(0);
   }, []);
 
+  // Auto-rotate thumbnails when not playing
   useEffect(() => {
-    if (!isModalOpen && isPlaying) {
+    if (!isModalOpen && !isPlaying) {
       intervalRef.current = setInterval(nextSlide, ROTATION_INTERVAL);
-      progressRef.current = setInterval(() => {
-        setProgress((prev) => Math.min(prev + (100 / (ROTATION_INTERVAL / 100)), 100));
-      }, 100);
     }
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
-      if (progressRef.current) clearInterval(progressRef.current);
     };
   }, [isModalOpen, isPlaying, nextSlide]);
 
@@ -87,13 +80,23 @@ export function VideoCarouselWidget({ isRectangular = false }: VideoCarouselWidg
     }
   };
 
+  const openModal = () => {
+    setIsModalOpen(true);
+    setIsPlaying(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setIsPlaying(false);
+  };
+
   return (
     <>
-      {/* Widget */}
+      {/* Widget - Thumbnail preview with play button */}
       <motion.div
-        className={`relative w-full h-full overflow-hidden bg-black/90 shadow-lg cursor-pointer ${isRectangular ? 'rounded-2xl' : 'rounded-3xl'}`}
+        className={`relative w-full h-full overflow-hidden bg-black shadow-lg cursor-pointer ${isRectangular ? 'rounded-2xl' : 'rounded-3xl'}`}
         whileTap={{ scale: 0.98 }}
-        onClick={() => setIsModalOpen(true)}
+        onClick={openModal}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
@@ -111,24 +114,26 @@ export function VideoCarouselWidget({ isRectangular = false }: VideoCarouselWidg
               alt={videos[currentIndex].title}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
           </motion.div>
         </AnimatePresence>
 
         {/* Play icon overlay */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-            <Play className="w-5 h-5 text-white fill-white ml-0.5" />
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="w-12 h-12 rounded-full bg-white/25 backdrop-blur-sm flex items-center justify-center border border-white/30">
+            <Play className="w-6 h-6 text-white fill-white ml-0.5" />
           </div>
         </div>
 
         {/* Title */}
-        <div className="absolute bottom-3 left-3 right-3">
-          <p className="text-white text-xs font-medium truncate">{videos[currentIndex].title}</p>
+        <div className="absolute bottom-3 left-3 right-12">
+          <p className="text-white text-xs font-semibold truncate drop-shadow-lg">
+            {videos[currentIndex].title}
+          </p>
         </div>
 
         {/* Progress dots */}
-        <div className="absolute bottom-3 right-3 flex gap-1">
+        <div className="absolute bottom-3 right-3 flex gap-1.5">
           {videos.map((_, idx) => (
             <div
               key={idx}
@@ -140,7 +145,7 @@ export function VideoCarouselWidget({ isRectangular = false }: VideoCarouselWidg
         </div>
       </motion.div>
 
-      {/* Full screen modal */}
+      {/* Full screen video player modal */}
       <AnimatePresence>
         {isModalOpen && (
           <motion.div
@@ -151,102 +156,71 @@ export function VideoCarouselWidget({ isRectangular = false }: VideoCarouselWidg
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-4 pt-12">
-              <h2 className="text-white text-lg font-semibold">Featured Work</h2>
+            <div className="flex items-center justify-between p-4 pt-12 bg-gradient-to-b from-black/80 to-transparent absolute top-0 left-0 right-0 z-10">
+              <h2 className="text-white text-lg font-semibold">{videos[currentIndex].title}</h2>
               <button
-                onClick={() => setIsModalOpen(false)}
-                className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center"
+                onClick={closeModal}
+                className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors"
               >
                 <X className="w-5 h-5 text-white" />
               </button>
             </div>
 
-            {/* Video area */}
-            <div
-              className="flex-1 relative"
-              onTouchStart={handleTouchStart}
-              onTouchEnd={handleTouchEnd}
-            >
+            {/* Video player area */}
+            <div className="flex-1 relative flex items-center justify-center">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentIndex}
-                  initial={{ opacity: 0, x: 100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -100 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="absolute inset-0 flex items-center justify-center p-4"
+                  className="w-full h-full"
                 >
-                  <div className="w-full aspect-video bg-gray-900 rounded-2xl overflow-hidden relative">
-                    <img
-                      src={videos[currentIndex].thumbnail}
-                      alt={videos[currentIndex].title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <button
-                        onClick={() => setIsPlaying(!isPlaying)}
-                        className="w-16 h-16 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center"
-                      >
-                        {isPlaying ? (
-                          <Pause className="w-8 h-8 text-white" />
-                        ) : (
-                          <Play className="w-8 h-8 text-white fill-white ml-1" />
-                        )}
-                      </button>
-                    </div>
-                  </div>
+                  {/* Actual video iframe */}
+                  <iframe
+                    src={videos[currentIndex].embedUrl}
+                    title={videos[currentIndex].title}
+                    className="w-full h-full"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
                 </motion.div>
               </AnimatePresence>
 
               {/* Navigation arrows */}
               <button
-                onClick={prevSlide}
-                className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 flex items-center justify-center"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  prevSlide();
+                }}
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center hover:bg-black/70 transition-colors z-10"
               >
-                <ChevronLeft className="w-6 h-6 text-white" />
+                <ChevronLeft className="w-7 h-7 text-white" />
               </button>
               <button
-                onClick={nextSlide}
-                className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 flex items-center justify-center"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  nextSlide();
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center hover:bg-black/70 transition-colors z-10"
               >
-                <ChevronRight className="w-6 h-6 text-white" />
+                <ChevronRight className="w-7 h-7 text-white" />
               </button>
             </div>
 
-            {/* Video info and controls */}
-            <div className="p-4 pb-8">
-              <h3 className="text-white text-xl font-semibold mb-2">
-                {videos[currentIndex].title}
-              </h3>
-              <div className="flex items-center gap-4">
+            {/* Bottom navigation dots */}
+            <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-3 z-10">
+              {videos.map((_, idx) => (
                 <button
-                  onClick={() => setIsMuted(!isMuted)}
-                  className="flex items-center gap-2 text-white/70"
-                >
-                  {isMuted ? (
-                    <VolumeX className="w-5 h-5" />
-                  ) : (
-                    <Volume2 className="w-5 h-5" />
-                  )}
-                  <span className="text-sm">{isMuted ? 'Unmute' : 'Mute'}</span>
-                </button>
-              </div>
-
-              {/* Dots */}
-              <div className="flex justify-center gap-2 mt-6">
-                {videos.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => {
-                      setCurrentIndex(idx);
-                      setProgress(0);
-                    }}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      idx === currentIndex ? 'bg-white w-6' : 'bg-white/40'
-                    }`}
-                  />
-                ))}
-              </div>
+                  key={idx}
+                  onClick={() => setCurrentIndex(idx)}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    idx === currentIndex ? 'bg-white w-8' : 'bg-white/40 w-2'
+                  }`}
+                />
+              ))}
             </div>
           </motion.div>
         )}
