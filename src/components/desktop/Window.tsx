@@ -13,7 +13,7 @@ const windowTitles: Record<WindowId, string> = {
   portfolio: 'Portfolio',
   mail: 'Mail',
   about: 'Notes',
-  resume: 'Docs',
+  resume: 'Resume',
   runner: 'Runner',
   trash: 'Trash',
   project: 'Project',

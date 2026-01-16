@@ -104,7 +104,7 @@ const iconConfigs: Record<AppIconType, AppIconConfig> = {
   resume: {
     gradient: 'linear-gradient(145deg, #C4B5FD 0%, #A78BFA 40%, #8B5CF6 100%)',
     glyph: <DocsGlyph />,
-    label: 'Docs',
+    label: 'Resume',
     accentColor: 'hsl(263, 90%, 70%)',
     highlightColor: 'rgba(196, 181, 253, 0.5)',
   },
