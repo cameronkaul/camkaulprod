@@ -38,6 +38,7 @@ export function Window({ id, children }: WindowProps) {
   const windowState = windows.find(w => w.id === id);
   const dragControls = useDragControls();
   const windowRef = useRef<HTMLDivElement>(null);
+  const dragConstraintsRef = useRef<HTMLDivElement>(null);
   const [isResizing, setIsResizing] = useState(false);
   const [resizeDirection, setResizeDirection] = useState<string | null>(null);
 
@@ -168,9 +169,15 @@ export function Window({ id, children }: WindowProps) {
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 pointer-events-none"
+        className="fixed inset-0 pointer-events-none relative"
         style={{ zIndex: windowState.zIndex }}
       >
+        {/* Hard walls: keep draggable windows inside the visible desktop area */}
+        <div
+          ref={dragConstraintsRef}
+          className="absolute inset-x-0 top-7 bottom-24 pointer-events-none"
+        />
+
         <motion.div
           ref={windowRef}
           className={`window-chrome pointer-events-auto absolute transition-shadow duration-200 ${
@@ -185,6 +192,7 @@ export function Window({ id, children }: WindowProps) {
             top: windowState.position.y,
           }}
           drag
+          dragConstraints={dragConstraintsRef}
           dragControls={dragControls}
           dragMomentum={false}
           dragElastic={0}

@@ -86,7 +86,7 @@ export function WidgetWindow({ id, title, children }: WidgetWindowProps) {
     <AnimatePresence>
       <motion.div
         className="fixed inset-0 pointer-events-none"
-        style={{ zIndex: windowState.zIndex + 10 }}
+        style={{ zIndex: Math.min(windowState.zIndex + 10, 50) }}
       >
         <motion.div
           className={`widget-window pointer-events-auto absolute rounded-2xl overflow-hidden transition-shadow duration-200 ${
