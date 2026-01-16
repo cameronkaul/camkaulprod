@@ -113,20 +113,23 @@ export function WidgetWindow({ id, title, children }: WidgetWindowProps) {
           transition={{ duration: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
           onClick={() => focusWindow(id)}
         >
-          {/* Title Bar */}
+          {/* Title Bar - Always on top of content */}
           <motion.div
-            className={`flex items-center justify-between px-4 py-3 cursor-grab active:cursor-grabbing border-b border-white/5 ${
+            className={`relative z-20 flex items-center justify-between px-4 py-3 cursor-grab active:cursor-grabbing border-b border-white/5 ${
               isActive ? '' : 'opacity-80'
             }`}
             style={{
               background: 'linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)',
             }}
             onPointerDown={(e) => {
+              // Don't start drag if clicking on buttons
+              if ((e.target as HTMLElement).closest('button')) {
+                return;
+              }
               focusWindow(id);
               // Start drag from title bar
               const target = e.currentTarget.closest('.widget-window') as HTMLElement;
               if (target) {
-                const rect = target.getBoundingClientRect();
                 const startX = e.clientX;
                 const startY = e.clientY;
                 const startPosX = windowState.position.x;
@@ -156,11 +159,12 @@ export function WidgetWindow({ id, title, children }: WidgetWindowProps) {
               {title}
             </span>
 
-            {/* Controls */}
-            <div className="flex items-center gap-2">
+            {/* Controls - Higher z-index to stay clickable */}
+            <div className="flex items-center gap-2 relative z-30">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
+                  e.preventDefault();
                   minimizeWindow(id);
                 }}
                 className="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
@@ -171,6 +175,7 @@ export function WidgetWindow({ id, title, children }: WidgetWindowProps) {
               <button
                 onClick={(e) => {
                   e.stopPropagation();
+                  e.preventDefault();
                   closeWindow(id);
                 }}
                 className="w-6 h-6 rounded-full bg-white/10 hover:bg-red-500/80 flex items-center justify-center transition-colors group"
@@ -181,8 +186,8 @@ export function WidgetWindow({ id, title, children }: WidgetWindowProps) {
             </div>
           </motion.div>
 
-          {/* Content */}
-          <div className="w-full h-[calc(100%-52px)] overflow-hidden">
+          {/* Content - Lower z-index so title bar stays on top */}
+          <div className="relative z-10 w-full h-[calc(100%-52px)] overflow-hidden">
             {children}
           </div>
 
