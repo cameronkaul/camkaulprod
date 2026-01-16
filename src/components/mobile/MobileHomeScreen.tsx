@@ -27,46 +27,47 @@ export function MobileHomeScreen() {
         </div>
 
         {/* Bottom section: Square photo widget on left, app icons on right */}
-        <div className="flex gap-4 flex-1">
-          {/* Photo widget - square, 2x2 grid equivalent */}
-          <div className="aspect-square h-full max-h-[180px]">
+        <div className="flex gap-3">
+          {/* Photo widget - square, matches 2x2 app grid height */}
+          <div className="w-[156px] h-[156px] flex-shrink-0">
             <PhotoCarouselWidget />
           </div>
 
-          {/* App icons grid - 2x2 on the right */}
-          <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-2">
-            <div className="flex items-center justify-center">
+          {/* App icons grid - 2x2, proper iOS spacing */}
+          <div className="grid grid-cols-2 gap-x-3 gap-y-1" style={{ width: '156px', height: '156px' }}>
+            <div className="flex flex-col items-center justify-center">
               <AppIcon
                 type="portfolio"
-                size={56}
+                size={60}
                 showLabel={true}
                 onClick={() => handleAppClick('portfolio')}
-                labelClassName="mt-1 text-[10px]"
+                labelClassName="mt-1.5 text-[11px] font-medium text-white drop-shadow-sm"
                 customLabel="Portfolio"
               />
             </div>
-            <div className="flex items-center justify-center">
+            <div className="flex flex-col items-center justify-center">
               <AppIcon
                 type="mail"
-                size={56}
+                size={60}
                 showLabel={true}
                 onClick={() => handleAppClick('mail')}
-                labelClassName="mt-1 text-[10px]"
+                labelClassName="mt-1.5 text-[11px] font-medium text-white drop-shadow-sm"
                 customLabel="Mail"
               />
             </div>
-            <div className="flex items-center justify-center">
+            <div className="flex flex-col items-center justify-center">
               <AppIcon
                 type="about"
-                size={56}
+                size={60}
                 showLabel={true}
                 onClick={() => handleAppClick('about')}
-                labelClassName="mt-1 text-[10px]"
+                labelClassName="mt-1.5 text-[11px] font-medium text-white drop-shadow-sm"
                 customLabel="Notes"
               />
             </div>
-            {/* Empty slot for clean look */}
-            <div className="flex items-center justify-center" />
+            <div className="flex flex-col items-center justify-center">
+              {/* Empty slot */}
+            </div>
           </div>
         </div>
       </div>
