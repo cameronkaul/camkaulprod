@@ -45,7 +45,7 @@ const WindowContext = createContext<WindowContextType | undefined>(undefined);
 export function WindowProvider({ children }: { children: ReactNode }) {
   const [windows, setWindows] = useState<WindowState[]>(defaultWindows);
   const [activeWindowId, setActiveWindowId] = useState<WindowId | null>(null);
-  const [highestZ, setHighestZ] = useState(1);
+  const [highestZ, setHighestZ] = useState(100); // Start windows at z-index 100+ to ensure they're above widgets
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   React.useEffect(() => {
