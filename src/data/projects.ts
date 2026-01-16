@@ -565,7 +565,7 @@ export const clientWorks: ClientWork[] = [
       { id: 'as-7', title: 'Pre-Owned Inventory Fall', imageUrl: '/client-work/allen-samuels/pre-owned-inventory-fall.png', type: 'social' },
       { id: 'as-8', title: 'Congratulations Graduates', imageUrl: '/client-work/allen-samuels/congratulations-graduates.jpg', type: 'social' },
       { id: 'as-9', title: 'Ram & Dodge APR Promo', imageUrl: '/client-work/allen-samuels/ram-dodge-apr-promo.jpg', type: 'social' },
-      { id: 'as-10', title: 'Baylor Partnership Poster', imageUrl: '/client-work/allen-samuels/baylor-partnership-poster-rotated.jpg', type: 'poster' },
+      { id: 'as-10', title: 'Baylor Partnership Poster', imageUrl: '/client-work/allen-samuels/baylor-partnership-poster.jpg', type: 'poster' },
       { id: 'as-11', title: 'Memorial Day Email', imageUrl: '/client-work/allen-samuels/memorial-day-email.png', type: 'email' },
       { id: 'as-12', title: 'Jeep Cherokee Email', imageUrl: '/client-work/allen-samuels/jeep-cherokee-email.png', type: 'email' },
       { id: 'as-13', title: 'Blood Drive Promo', imageUrl: '/client-work/allen-samuels/blood-drive-promo.jpg', type: 'social' },

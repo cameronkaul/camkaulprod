@@ -51,9 +51,9 @@ export function WorkGalleryWindow() {
         </div>
       </div>
 
-      {/* Gallery Grid */}
+      {/* Gallery Grid - Masonry-style with auto-sizing */}
       <div className="flex-1 overflow-auto p-4">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div className="columns-2 sm:columns-3 lg:columns-4 gap-3 space-y-3">
           {clientWork.items.map((item, index) => {
             const typeInfo = typeLabels[item.type] || { label: item.type, color: 'bg-gray-100 text-gray-700' };
             
@@ -61,12 +61,12 @@ export function WorkGalleryWindow() {
               <button
                 key={item.id}
                 onClick={() => setSelectedIndex(index)}
-                className="group relative aspect-[4/3] overflow-hidden rounded-lg bg-gray-100 hover:ring-2 hover:ring-blue-400 transition-all"
+                className="group relative w-full overflow-hidden rounded-lg bg-gray-100 hover:ring-2 hover:ring-blue-400 transition-all break-inside-avoid mb-3"
               >
                 <img
                   src={item.imageUrl}
                   alt={item.title}
-                  className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                  className="w-full h-auto object-contain transition-transform group-hover:scale-[1.02]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="absolute bottom-0 left-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
