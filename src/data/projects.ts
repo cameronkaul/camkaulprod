@@ -504,6 +504,7 @@ export const resumeData = {
       title: 'Marketing Consultant',
       company: 'Winnow Wealth Financial Management',
       dates: 'Aug 2024 – December 2024',
+      galleryId: 'winnow-wealth',
       bullets: [
         'Developed and launched 10 targeted Facebook ads, generating >110 conversions and >170 event registrations.',
         'Collaborated with the team to optimize audience targeting, increasing ad momentum and efficiency.',
@@ -577,6 +578,21 @@ export const clientWorks: ClientWork[] = [
       { id: 'as-19', title: 'Sip & Spin Event', imageUrl: '/client-work/allen-samuels/sip-and-spin-event.jpg', type: 'social' },
       { id: 'as-20', title: 'Mammoth Gala Flyer (Front)', imageUrl: '/client-work/allen-samuels/mammoth-gala-flyer-1.jpg', type: 'poster' },
       { id: 'as-21', title: 'Mammoth Gala Flyer (Back)', imageUrl: '/client-work/allen-samuels/mammoth-gala-flyer-2.jpg', type: 'poster' },
+    ],
+  },
+  {
+    clientId: 'winnow-wealth',
+    clientName: 'Winnow Wealth',
+    description: 'Facebook ads and promotional materials for retirement workshops',
+    items: [
+      { id: 'ww-1', title: 'Retire Ready Banner 1', imageUrl: '/client-work/winnow-wealth/retire-ready-banner-1.jpg', type: 'ad' },
+      { id: 'ww-2', title: 'Retire Ready Banner 2', imageUrl: '/client-work/winnow-wealth/retire-ready-banner-2.jpg', type: 'ad' },
+      { id: 'ww-3', title: 'Retire Ready Banner 3', imageUrl: '/client-work/winnow-wealth/retire-ready-banner-3.jpg', type: 'ad' },
+      { id: 'ww-4', title: 'Retire Ready Social 1', imageUrl: '/client-work/winnow-wealth/retire-ready-social-1.jpg', type: 'social' },
+      { id: 'ww-5', title: 'Retire Ready Poster', imageUrl: '/client-work/winnow-wealth/retire-ready-poster.jpg', type: 'poster' },
+      { id: 'ww-6', title: 'Retire Ready Social 2', imageUrl: '/client-work/winnow-wealth/retire-ready-social-2.jpg', type: 'social' },
+      { id: 'ww-7', title: 'Retire Ready Social 3', imageUrl: '/client-work/winnow-wealth/retire-ready-social-3.jpg', type: 'social' },
+      { id: 'ww-8', title: 'Retire Ready Social 4', imageUrl: '/client-work/winnow-wealth/retire-ready-social-4.jpg', type: 'social' },
     ],
   },
 ];
