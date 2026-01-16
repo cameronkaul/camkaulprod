@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { X, ArrowLeft, ArrowRight } from 'lucide-react';
 import { useWindows } from '@/contexts/WindowContext';
 import { clientWorks } from '@/data/projects';
@@ -11,6 +11,25 @@ const typeLabels: Record<string, { label: string; color: string }> = {
   ad: { label: 'Ad', color: 'bg-red-100 text-red-700' },
 };
 
+// Seeded random shuffle for consistent order per session
+function seededShuffle<T>(array: T[], seed: number): T[] {
+  const shuffled = [...array];
+  let currentIndex = shuffled.length;
+  let randomValue: number;
+  
+  const seededRandom = () => {
+    seed = (seed * 9301 + 49297) % 233280;
+    return seed / 233280;
+  };
+
+  while (currentIndex !== 0) {
+    randomValue = Math.floor(seededRandom() * currentIndex);
+    currentIndex--;
+    [shuffled[currentIndex], shuffled[randomValue]] = [shuffled[randomValue], shuffled[currentIndex]];
+  }
+  return shuffled;
+}
+
 export function WorkGalleryWindow() {
   const { windows } = useWindows();
   const workGalleryWindow = windows.find(w => w.id === 'workGallery');
@@ -18,6 +37,13 @@ export function WorkGalleryWindow() {
   
   const clientWork = clientWorks.find(c => c.clientId === clientId);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  
+  // Shuffle items once per mount with a consistent seed
+  const shuffledItems = useMemo(() => {
+    if (!clientWork) return [];
+    const seed = clientWork.clientId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) + Date.now() % 1000;
+    return seededShuffle(clientWork.items, seed);
+  }, [clientWork]);
 
   if (!clientWork) {
     return (
@@ -27,7 +53,7 @@ export function WorkGalleryWindow() {
     );
   }
 
-  const selectedItem = selectedIndex !== null ? clientWork.items[selectedIndex] : null;
+  const selectedItem = selectedIndex !== null ? shuffledItems[selectedIndex] : null;
 
   const handlePrev = () => {
     if (selectedIndex !== null && selectedIndex > 0) {
@@ -36,7 +62,7 @@ export function WorkGalleryWindow() {
   };
 
   const handleNext = () => {
-    if (selectedIndex !== null && selectedIndex < clientWork.items.length - 1) {
+    if (selectedIndex !== null && selectedIndex < shuffledItems.length - 1) {
       setSelectedIndex(selectedIndex + 1);
     }
   };
@@ -53,15 +79,16 @@ export function WorkGalleryWindow() {
 
       {/* Gallery Grid - Masonry-style with auto-sizing */}
       <div className="flex-1 overflow-auto p-4">
-        <div className="columns-2 sm:columns-3 lg:columns-4 gap-3 space-y-3">
-          {clientWork.items.map((item, index) => {
+        <div className="columns-2 sm:columns-3 lg:columns-4 gap-4 space-y-4">
+          {shuffledItems.map((item, index) => {
             const typeInfo = typeLabels[item.type] || { label: item.type, color: 'bg-gray-100 text-gray-700' };
+            const isBanner = item.type === 'banner';
             
             return (
               <button
                 key={item.id}
                 onClick={() => setSelectedIndex(index)}
-                className="group relative w-full overflow-hidden rounded-lg bg-gray-100 hover:ring-2 hover:ring-blue-400 transition-all break-inside-avoid mb-3"
+                className={`group relative w-full overflow-hidden rounded-lg bg-gray-100 hover:ring-2 hover:ring-blue-400 transition-all break-inside-avoid mb-4 ${isBanner ? 'scale-105 my-2' : ''}`}
               >
                 <img
                   src={item.imageUrl}
@@ -84,13 +111,13 @@ export function WorkGalleryWindow() {
       {/* Lightbox Modal */}
       {selectedItem && (
         <div 
-          className="absolute inset-0 bg-black/90 flex items-center justify-center z-50"
+          className="absolute inset-0 bg-black/95 flex items-center justify-center z-50 overflow-auto p-4"
           onClick={() => setSelectedIndex(null)}
         >
           {/* Close button */}
           <button
             onClick={() => setSelectedIndex(null)}
-            className="absolute top-4 right-4 p-2 text-white/70 hover:text-white transition-colors"
+            className="absolute top-4 right-4 p-2 text-white/70 hover:text-white transition-colors z-10"
           >
             <X className="w-6 h-6" />
           </button>
@@ -99,31 +126,32 @@ export function WorkGalleryWindow() {
           {selectedIndex !== null && selectedIndex > 0 && (
             <button
               onClick={(e) => { e.stopPropagation(); handlePrev(); }}
-              className="absolute left-4 p-2 text-white/70 hover:text-white transition-colors"
+              className="absolute left-4 top-1/2 -translate-y-1/2 p-2 text-white/70 hover:text-white transition-colors z-10"
             >
               <ArrowLeft className="w-8 h-8" />
             </button>
           )}
-          {selectedIndex !== null && selectedIndex < clientWork.items.length - 1 && (
+          {selectedIndex !== null && selectedIndex < shuffledItems.length - 1 && (
             <button
               onClick={(e) => { e.stopPropagation(); handleNext(); }}
-              className="absolute right-4 p-2 text-white/70 hover:text-white transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-white/70 hover:text-white transition-colors z-10"
             >
               <ArrowRight className="w-8 h-8" />
             </button>
           )}
 
-          {/* Image */}
+          {/* Image - scrollable container for full view */}
           <div 
-            className="max-w-[90%] max-h-[85%] flex flex-col items-center"
+            className="flex flex-col items-center max-h-full overflow-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <img
               src={selectedItem.imageUrl}
               alt={selectedItem.title}
-              className="max-w-full max-h-[calc(100vh-140px)] object-contain rounded-lg"
+              className="max-w-full w-auto h-auto object-contain rounded-lg"
+              style={{ maxHeight: 'calc(100vh - 120px)' }}
             />
-            <div className="mt-4 text-center">
+            <div className="mt-4 text-center flex-shrink-0 pb-4">
               <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${typeLabels[selectedItem.type]?.color || 'bg-gray-100 text-gray-700'}`}>
                 {typeLabels[selectedItem.type]?.label || selectedItem.type}
               </span>
