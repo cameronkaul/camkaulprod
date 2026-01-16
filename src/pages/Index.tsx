@@ -181,7 +181,7 @@ function DesktopContent() {
             style={{
               backgroundImage: `url(${wallpaper})`,
               backgroundSize: 'cover',
-              backgroundPosition: 'center',
+              backgroundPosition: 'center 60%',
               backgroundRepeat: 'no-repeat',
               filter: wallpaperSharp 
                 ? 'blur(0px) brightness(1.02) saturate(1.12) contrast(1.06)' 
