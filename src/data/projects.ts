@@ -491,6 +491,7 @@ export const resumeData = {
     {
       title: 'Website Designer',
       company: 'College Baseball Fellowship',
+      companyUrl: 'https://www.collegebaseballfellowship.org/',
       dates: 'March 2025',
       bullets: [
         'Transformed the nonprofit\'s website into a modern responsive platform aligned with CBF\'s mission.',
