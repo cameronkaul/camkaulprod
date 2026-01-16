@@ -481,6 +481,7 @@ export const resumeData = {
       title: 'Marketing Director',
       company: 'Allen Samuels Dodge Jeep Chrysler Ram Fiat',
       dates: 'May 2024 – August 2025',
+      galleryId: 'allen-samuels',
       bullets: [
         'Revitalized social media by increasing organic reach to 110,000+ on Facebook and 12,000+ accounts on Instagram.',
         'Drove 800,000+ impressions through SEO and targeted advertising campaigns on Google and Microsoft platforms.',
@@ -532,6 +533,51 @@ export const resumeData = {
     'Business Professionals of America – President, 2nd place individual & 3rd place team nationals',
   ],
 };
+
+// ============================================
+// CLIENT WORK GALLERIES (linked from Resume)
+// ============================================
+export interface ClientWorkItem {
+  id: string;
+  title: string;
+  imageUrl: string;
+  type: 'banner' | 'social' | 'email' | 'poster' | 'ad';
+}
+
+export interface ClientWork {
+  clientId: string;
+  clientName: string;
+  description: string;
+  items: ClientWorkItem[];
+}
+
+export const clientWorks: ClientWork[] = [
+  {
+    clientId: 'allen-samuels',
+    clientName: 'Allen Samuels',
+    description: 'Advertisements, graphics, and promotional materials created as Marketing Director',
+    items: [
+      { id: 'as-1', title: '4th of July Challengers', imageUrl: '/client-work/allen-samuels/4th-of-july-challengers.png', type: 'social' },
+      { id: 'as-2', title: 'Ram 1500 Crew Cab Banner', imageUrl: '/client-work/allen-samuels/ram-1500-crew-cab-banner.png', type: 'banner' },
+      { id: 'as-3', title: 'Jeep Grand Wagoneer Banner', imageUrl: '/client-work/allen-samuels/jeep-grand-wagoneer-banner.jpg', type: 'banner' },
+      { id: 'as-4', title: 'Jeep Wrangler Rubicon Banner', imageUrl: '/client-work/allen-samuels/jeep-wrangler-rubicon-banner.jpg', type: 'banner' },
+      { id: 'as-5', title: 'Ram 1500 Big Horn Banner', imageUrl: '/client-work/allen-samuels/ram-1500-big-horn-banner.jpg', type: 'banner' },
+      { id: 'as-6', title: 'Ram 1500 Tradesman Banner', imageUrl: '/client-work/allen-samuels/ram-1500-tradesman-banner.jpg', type: 'banner' },
+      { id: 'as-7', title: 'Pre-Owned Inventory Fall', imageUrl: '/client-work/allen-samuels/pre-owned-inventory-fall.png', type: 'social' },
+      { id: 'as-8', title: 'Congratulations Graduates', imageUrl: '/client-work/allen-samuels/congratulations-graduates.jpg', type: 'social' },
+      { id: 'as-9', title: 'Ram & Dodge APR Promo', imageUrl: '/client-work/allen-samuels/ram-dodge-apr-promo.jpg', type: 'social' },
+      { id: 'as-10', title: 'Baylor Partnership Poster', imageUrl: '/client-work/allen-samuels/baylor-partnership-poster.jpg', type: 'poster' },
+      { id: 'as-11', title: 'Memorial Day Email', imageUrl: '/client-work/allen-samuels/memorial-day-email.png', type: 'email' },
+      { id: 'as-12', title: 'Jeep Cherokee Email', imageUrl: '/client-work/allen-samuels/jeep-cherokee-email.png', type: 'email' },
+      { id: 'as-13', title: 'Blood Drive Promo', imageUrl: '/client-work/allen-samuels/blood-drive-promo.jpg', type: 'social' },
+      { id: 'as-14', title: 'Trade Pending Banner', imageUrl: '/client-work/allen-samuels/trade-pending-banner.png', type: 'banner' },
+      { id: 'as-15', title: 'Blood Drive Day Of', imageUrl: '/client-work/allen-samuels/blood-drive-day-of.jpg', type: 'social' },
+      { id: 'as-16', title: 'Jeep 4xe Email', imageUrl: '/client-work/allen-samuels/jeep-4xe-email.jpg', type: 'email' },
+      { id: 'as-17', title: 'Fall Email Blast', imageUrl: '/client-work/allen-samuels/fall-email-blast.jpg', type: 'email' },
+      { id: 'as-18', title: 'Hiring Poster', imageUrl: '/client-work/allen-samuels/hiring-poster.jpg', type: 'poster' },
+    ],
+  },
+];
 
 // ============================================
 // SOCIAL LINKS

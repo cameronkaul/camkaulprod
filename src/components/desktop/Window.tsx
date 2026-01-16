@@ -21,6 +21,7 @@ const windowTitles: Record<WindowId, string> = {
   instagram: 'Instagram',
   videoWidget: 'Featured Work',
   photoWidget: 'Gallery',
+  workGallery: 'Design Work',
 };
 
 export function Window({ id, children }: WindowProps) {

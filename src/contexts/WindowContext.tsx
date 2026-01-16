@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 
-export type WindowId = 'portfolio' | 'about' | 'mail' | 'resume' | 'trash' | 'project' | 'runner' | 'document' | 'instagram' | 'videoWidget' | 'photoWidget';
+export type WindowId = 'portfolio' | 'about' | 'mail' | 'resume' | 'trash' | 'project' | 'runner' | 'document' | 'instagram' | 'videoWidget' | 'photoWidget' | 'workGallery';
 
 export interface WindowState {
   id: WindowId;
@@ -11,12 +11,13 @@ export interface WindowState {
   position: { x: number; y: number };
   size: { width: number; height: number };
   projectId?: string;
+  clientId?: string;
 }
 
 interface WindowContextType {
   windows: WindowState[];
   activeWindowId: WindowId | null;
-  openWindow: (id: WindowId, projectId?: string) => void;
+  openWindow: (id: WindowId, projectId?: string, clientId?: string) => void;
   closeWindow: (id: WindowId) => void;
   minimizeWindow: (id: WindowId) => void;
   focusWindow: (id: WindowId) => void;
@@ -38,6 +39,7 @@ const defaultWindows: WindowState[] = [
   { id: 'instagram', title: 'Instagram', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 200, y: 80 }, size: { width: 400, height: 350 } },
   { id: 'videoWidget', title: 'Featured Work', isOpen: true, isMinimized: false, zIndex: -10, position: { x: 720, y: 60 }, size: { width: 500, height: 320 } },
   { id: 'photoWidget', title: 'Gallery', isOpen: true, isMinimized: false, zIndex: -10, position: { x: 560, y: 420 }, size: { width: 280, height: 280 } },
+  { id: 'workGallery', title: 'Design Work', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 140, y: 70 }, size: { width: 850, height: 620 } },
 ];
 
 const WIDGET_WINDOW_IDS: WindowId[] = ['videoWidget', 'photoWidget'];
@@ -119,7 +121,7 @@ export function WindowProvider({ children }: { children: ReactNode }) {
 
   const getHighestZIndex = useCallback(() => highestZ, [highestZ]);
 
-  const openWindow = useCallback((id: WindowId, projectId?: string) => {
+  const openWindow = useCallback((id: WindowId, projectId?: string, clientId?: string) => {
     const isWidget = WIDGET_WINDOW_IDS.includes(id);
 
     const newZ = isWidget ? -10 : highestZ + 1;
@@ -137,6 +139,7 @@ export function WindowProvider({ children }: { children: ReactNode }) {
           isMinimized: false,
           zIndex: newZ,
           projectId: projectId || w.projectId,
+          clientId: clientId || w.clientId,
           title: id === 'project' && projectId ? 'Project' : w.title,
         };
 

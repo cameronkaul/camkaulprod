@@ -36,6 +36,7 @@ const dockLabels: Record<WindowId, string> = {
   document: 'Document',
   videoWidget: 'Featured Work',
   photoWidget: 'Gallery',
+  workGallery: 'Design Work',
 };
 
 // macOS-style magnification constants
