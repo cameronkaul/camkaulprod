@@ -11,28 +11,28 @@
 
 @layer base {
   :root {
-    /* Core Colors - Refined dark mode */
-    --background: 220 18% 7%;
-    --foreground: 220 8% 96%;
+    /* Core Colors - True neutral dark mode (no blue tint) */
+    --background: 0 0% 7%;
+    --foreground: 0 0% 96%;
 
-    /* Window Chrome - Sophisticated dark glass */
-    --card: 220 14% 11%;
-    --card-foreground: 220 8% 96%;
+    /* Window Chrome - Neutral dark glass */
+    --card: 0 0% 11%;
+    --card-foreground: 0 0% 96%;
 
-    --popover: 220 14% 11%;
-    --popover-foreground: 220 8% 96%;
+    --popover: 0 0% 11%;
+    --popover-foreground: 0 0% 96%;
 
     /* Primary - Refined blue accent */
-    --primary: 212 55% 55%;
-    --primary-foreground: 220 18% 7%;
+    --primary: 211 100% 50%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Secondary - Elegant dark gray */
-    --secondary: 220 14% 16%;
-    --secondary-foreground: 220 8% 88%;
+    /* Secondary - True neutral gray */
+    --secondary: 0 0% 16%;
+    --secondary-foreground: 0 0% 88%;
 
-    /* Muted - Subtle backgrounds */
-    --muted: 220 14% 14%;
-    --muted-foreground: 220 8% 52%;
+    /* Muted - Neutral backgrounds */
+    --muted: 0 0% 14%;
+    --muted-foreground: 0 0% 52%;
 
     /* Accent - Sophisticated amber */
     --accent: 38 65% 52%;
@@ -51,34 +51,34 @@
     --window-maximize-fg: 145 50% 14%;
 
     /* Borders & Inputs */
-    --border: 220 14% 18%;
-    --input: 220 14% 14%;
-    --ring: 212 50% 50%;
+    --border: 0 0% 18%;
+    --input: 0 0% 14%;
+    --ring: 211 100% 50%;
 
     --radius: 0.75rem;
 
     /* Glass Effect */
-    --glass-bg: 220 14% 11% / 0.92;
-    --glass-border: 220 14% 22% / 0.5;
+    --glass-bg: 0 0% 11% / 0.92;
+    --glass-border: 0 0% 22% / 0.5;
 
     /* Dock */
-    --dock-bg: 220 14% 7% / 0.65;
+    --dock-bg: 0 0% 7% / 0.65;
 
     /* Refined Shadows */
-    --shadow-window: 0 20px 40px -12px hsl(220 25% 3% / 0.45);
-    --shadow-window-active: 0 25px 50px -15px hsl(220 25% 3% / 0.55);
-    --shadow-dock: 0 6px 24px hsl(220 25% 3% / 0.45);
-    --shadow-icon: 0 3px 8px hsl(220 25% 3% / 0.25);
+    --shadow-window: 0 20px 40px -12px hsl(0 0% 0% / 0.45);
+    --shadow-window-active: 0 25px 50px -15px hsl(0 0% 0% / 0.55);
+    --shadow-dock: 0 6px 24px hsl(0 0% 0% / 0.45);
+    --shadow-icon: 0 3px 8px hsl(0 0% 0% / 0.25);
 
     /* Sidebar */
-    --sidebar-background: 220 14% 9%;
-    --sidebar-foreground: 220 8% 72%;
-    --sidebar-primary: 212 55% 55%;
-    --sidebar-primary-foreground: 220 18% 7%;
-    --sidebar-accent: 220 14% 16%;
-    --sidebar-accent-foreground: 220 8% 92%;
-    --sidebar-border: 220 14% 18%;
-    --sidebar-ring: 212 50% 50%;
+    --sidebar-background: 0 0% 9%;
+    --sidebar-foreground: 0 0% 72%;
+    --sidebar-primary: 211 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 16%;
+    --sidebar-accent-foreground: 0 0% 92%;
+    --sidebar-border: 0 0% 18%;
+    --sidebar-ring: 211 100% 50%;
   }
 }
 
@@ -113,7 +113,7 @@
 
   .window-titlebar {
     @apply h-11 flex items-center px-4 border-b border-border/40;
-    background: linear-gradient(180deg, hsl(220 14% 14%) 0%, hsl(220 14% 11%) 100%);
+    background: linear-gradient(180deg, hsl(0 0% 14%) 0%, hsl(0 0% 11%) 100%);
   }
 
   .window-control {
@@ -168,7 +168,7 @@
 
   /* Spotlight */
   .spotlight-overlay {
-    background: hsl(220 18% 8% / 0.55);
+    background: hsl(0 0% 8% / 0.55);
     backdrop-filter: blur(12px);
   }
 
@@ -180,10 +180,10 @@
 
   /* Menu Bar - Refined */
   .menu-bar {
-    background: hsl(220 14% 7% / 0.85);
+    background: hsl(0 0% 7% / 0.85);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: 1px solid hsl(220 14% 18% / 0.4);
+    border-bottom: 1px solid hsl(0 0% 18% / 0.4);
   }
 
   /* Scrollbar Styling - Refined */
@@ -197,12 +197,12 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: hsl(220 14% 28%);
+    background: hsl(0 0% 28%);
     border-radius: 3px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: hsl(220 14% 38%);
+    background: hsl(0 0% 38%);
   }
 
   /* Hide scrollbar utility */
@@ -217,10 +217,10 @@
 
 @layer utilities {
   .text-shadow-sm {
-    text-shadow: 0 1px 2px hsl(220 25% 8% / 0.4);
+    text-shadow: 0 1px 2px hsl(0 0% 0% / 0.4);
   }
   
   .text-shadow-md {
-    text-shadow: 0 2px 4px hsl(220 25% 8% / 0.5);
+    text-shadow: 0 2px 4px hsl(0 0% 0% / 0.5);
   }
 }
