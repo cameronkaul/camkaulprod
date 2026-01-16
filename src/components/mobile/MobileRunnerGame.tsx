@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Pause, Play, X } from 'lucide-react';
+import { Pause, Play, X, ChevronUp } from 'lucide-react';
 import { useWindows } from '@/contexts/WindowContext';
 
 interface GameState {
@@ -34,15 +34,15 @@ interface Obstacle {
 
 type ObstacleType = 'camera' | 'tripod' | 'computer' | 'clapperboard';
 
-// Mobile-optimized constants
-const GRAVITY = 1.2;
-const JUMP_FORCE = -18;
-const FALL_MULTIPLIER = 1.5;
-const INITIAL_SPEED = 6;
-const MAX_SPEED = 16;
-const GRACE_PERIOD_MS = 800;
-const WARMUP_DURATION = 3;
-const SPEED_CURVE_K = 0.15;
+// Landscape-optimized constants
+const GRAVITY = 0.9;
+const JUMP_FORCE = -14;
+const FALL_MULTIPLIER = 1.4;
+const INITIAL_SPEED = 5;
+const MAX_SPEED = 14;
+const GRACE_PERIOD_MS = 1200;
+const WARMUP_DURATION = 4;
+const SPEED_CURVE_K = 0.12;
 
 export function MobileRunnerGame() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -53,14 +53,15 @@ export function MobileRunnerGame() {
   const recentObstaclesRef = useRef<ObstacleType[]>([]);
   const { closeWindow } = useWindows();
   
-  const [canvasSize, setCanvasSize] = useState({ width: 350, height: 500 });
-  const groundY = canvasSize.height - 80;
+  // Landscape dimensions - wide and short for good visibility
+  const [canvasSize, setCanvasSize] = useState({ width: 600, height: 200 });
+  const groundY = canvasSize.height - 40;
   
   const runnerRef = useRef<Runner>({
-    x: 60,
+    x: 80,
     y: groundY,
-    width: 45,
-    height: 75,
+    width: 35,
+    height: 55,
     velocityY: 0,
     isJumping: false,
   });
@@ -81,13 +82,14 @@ export function MobileRunnerGame() {
     gameStateRef.current = gameState;
   }, [gameState]);
 
-  // Resize canvas to fit container
+  // Resize canvas to fit container - landscape oriented
   useEffect(() => {
     const updateSize = () => {
       if (containerRef.current) {
         const rect = containerRef.current.getBoundingClientRect();
-        const width = Math.min(rect.width - 32, 400);
-        const height = Math.min(rect.height - 200, 550);
+        // Wide aspect ratio for landscape gameplay
+        const width = Math.min(rect.width - 24, 700);
+        const height = Math.min(180, rect.height * 0.4);
         setCanvasSize({ width, height });
       }
     };
@@ -99,16 +101,16 @@ export function MobileRunnerGame() {
 
   // Update groundY when canvas resizes
   useEffect(() => {
-    runnerRef.current.y = canvasSize.height - 80;
+    const newGroundY = canvasSize.height - 40;
+    runnerRef.current.y = newGroundY;
   }, [canvasSize.height]);
 
   const jump = useCallback(() => {
-    const currentGroundY = canvasSize.height - 80;
     if (!runnerRef.current.isJumping && gameStateRef.current.isRunning && !gameStateRef.current.isPaused) {
       runnerRef.current.velocityY = JUMP_FORCE;
       runnerRef.current.isJumping = true;
     }
-  }, [canvasSize.height]);
+  }, []);
 
   const startCountdown = useCallback(() => {
     setGameState(prev => ({ ...prev, countdown: 3, isGameOver: false }));
@@ -117,12 +119,12 @@ export function MobileRunnerGame() {
       setGameState(prev => {
         if (prev.countdown === null || prev.countdown <= 1) {
           clearInterval(countdownInterval);
-          // Start the game
+          const newGroundY = canvasSize.height - 40;
           runnerRef.current = {
-            x: 60,
-            y: canvasSize.height - 80,
-            width: 45,
-            height: 75,
+            x: 80,
+            y: newGroundY,
+            width: 35,
+            height: 55,
             velocityY: 0,
             isJumping: false,
           };
@@ -142,7 +144,7 @@ export function MobileRunnerGame() {
         }
         return { ...prev, countdown: prev.countdown - 1 };
       });
-    }, 800);
+    }, 700);
   }, [canvasSize.height]);
 
   const togglePause = useCallback(() => {
@@ -163,21 +165,19 @@ export function MobileRunnerGame() {
     });
   }, []);
 
-  // Draw runner - larger, higher contrast
+  // Draw runner - compact for landscape
   const drawRunner = useCallback((ctx: CanvasRenderingContext2D, runner: Runner) => {
     ctx.save();
     
-    const scale = 1.5;
-    const centerX = runner.x + 22;
-    const currentGroundY = canvasSize.height - 80;
-    const hipY = runner.y - 22 * scale;
-    const shoulderY = runner.y - 52 * scale;
-    const headY = runner.y - 68 * scale;
+    const currentGroundY = canvasSize.height - 40;
+    const centerX = runner.x + 17;
+    const hipY = runner.y - 16;
+    const shoulderY = runner.y - 38;
+    const headY = runner.y - 48;
     
-    // Stronger contrast - dark fill with white outline
     ctx.strokeStyle = '#ffffff';
     ctx.fillStyle = '#1a1a2e';
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 2.5;
     ctx.lineCap = 'round';
     
     if (runner.isJumping) {
@@ -189,43 +189,43 @@ export function MobileRunnerGame() {
       
       // Backpack
       ctx.fillStyle = '#2d2d44';
-      ctx.fillRect(centerX - 15 * scale, shoulderY + 3, 12 * scale, 20 * scale);
-      ctx.strokeRect(centerX - 15 * scale, shoulderY + 3, 12 * scale, 20 * scale);
+      ctx.fillRect(centerX - 12, shoulderY + 2, 10, 16);
+      ctx.strokeRect(centerX - 12, shoulderY + 2, 10, 16);
       ctx.fillStyle = '#1a1a2e';
       
       // Head
       ctx.beginPath();
-      ctx.arc(centerX, headY, 12 * scale, 0, Math.PI * 2);
+      ctx.arc(centerX, headY, 9, 0, Math.PI * 2);
       ctx.fill();
       ctx.stroke();
       
       // Legs tucked
       ctx.beginPath();
-      ctx.moveTo(centerX - 3, hipY);
-      ctx.lineTo(centerX - 12 * scale, hipY + 12 * scale);
-      ctx.lineTo(centerX - 18 * scale, hipY + 4 * scale);
+      ctx.moveTo(centerX - 2, hipY);
+      ctx.lineTo(centerX - 10, hipY + 10);
+      ctx.lineTo(centerX - 14, hipY + 4);
       ctx.stroke();
       
       ctx.beginPath();
-      ctx.moveTo(centerX + 3, hipY);
-      ctx.lineTo(centerX - 6 * scale, hipY + 15 * scale);
-      ctx.lineTo(centerX - 15 * scale, hipY + 9 * scale);
+      ctx.moveTo(centerX + 2, hipY);
+      ctx.lineTo(centerX - 4, hipY + 12);
+      ctx.lineTo(centerX - 12, hipY + 7);
       ctx.stroke();
       
-      // Arms
+      // Arms up
       ctx.beginPath();
-      ctx.moveTo(centerX - 3, shoulderY + 5);
-      ctx.lineTo(centerX - 15 * scale, shoulderY + 12 * scale);
+      ctx.moveTo(centerX - 2, shoulderY + 4);
+      ctx.lineTo(centerX - 12, shoulderY + 10);
       ctx.stroke();
       
       ctx.beginPath();
-      ctx.moveTo(centerX + 3, shoulderY + 5);
-      ctx.lineTo(centerX + 12 * scale, shoulderY + 15 * scale);
+      ctx.moveTo(centerX + 2, shoulderY + 4);
+      ctx.lineTo(centerX + 10, shoulderY + 12);
       ctx.stroke();
     } else {
       // Running animation
-      const frame = Math.floor((Date.now() / 150) % 2);
-      const bob = frame === 0 ? -2 : 0;
+      const frame = Math.floor((Date.now() / 140) % 2);
+      const bob = frame === 0 ? -1 : 0;
       const adjustedHipY = hipY + bob;
       const adjustedShoulderY = shoulderY + bob;
       const adjustedHeadY = headY + bob;
@@ -238,63 +238,62 @@ export function MobileRunnerGame() {
       
       // Backpack
       ctx.fillStyle = '#2d2d44';
-      ctx.fillRect(centerX - 15 * scale, adjustedShoulderY + 3, 12 * scale, 20 * scale);
-      ctx.strokeRect(centerX - 15 * scale, adjustedShoulderY + 3, 12 * scale, 20 * scale);
+      ctx.fillRect(centerX - 12, adjustedShoulderY + 2, 10, 16);
+      ctx.strokeRect(centerX - 12, adjustedShoulderY + 2, 10, 16);
       ctx.fillStyle = '#1a1a2e';
       
       // Head
       ctx.beginPath();
-      ctx.arc(centerX, adjustedHeadY, 12 * scale, 0, Math.PI * 2);
+      ctx.arc(centerX, adjustedHeadY, 9, 0, Math.PI * 2);
       ctx.fill();
       ctx.stroke();
       
       // Legs
       if (frame === 0) {
         ctx.beginPath();
-        ctx.moveTo(centerX - 4, adjustedHipY);
-        ctx.lineTo(centerX + 8 * scale, adjustedHipY + 18 * scale);
-        ctx.lineTo(centerX + 12 * scale, runner.y);
+        ctx.moveTo(centerX - 3, adjustedHipY);
+        ctx.lineTo(centerX + 6, adjustedHipY + 14);
+        ctx.lineTo(centerX + 9, runner.y);
         ctx.stroke();
         
         ctx.beginPath();
-        ctx.moveTo(centerX + 4, adjustedHipY);
-        ctx.lineTo(centerX - 8 * scale, adjustedHipY + 18 * scale);
-        ctx.lineTo(centerX - 12 * scale, runner.y);
+        ctx.moveTo(centerX + 3, adjustedHipY);
+        ctx.lineTo(centerX - 6, adjustedHipY + 14);
+        ctx.lineTo(centerX - 9, runner.y);
         ctx.stroke();
       } else {
         ctx.beginPath();
-        ctx.moveTo(centerX - 4, adjustedHipY);
-        ctx.lineTo(centerX - 8 * scale, adjustedHipY + 18 * scale);
-        ctx.lineTo(centerX - 12 * scale, runner.y);
+        ctx.moveTo(centerX - 3, adjustedHipY);
+        ctx.lineTo(centerX - 6, adjustedHipY + 14);
+        ctx.lineTo(centerX - 9, runner.y);
         ctx.stroke();
         
         ctx.beginPath();
-        ctx.moveTo(centerX + 4, adjustedHipY);
-        ctx.lineTo(centerX + 8 * scale, adjustedHipY + 18 * scale);
-        ctx.lineTo(centerX + 12 * scale, runner.y);
+        ctx.moveTo(centerX + 3, adjustedHipY);
+        ctx.lineTo(centerX + 6, adjustedHipY + 14);
+        ctx.lineTo(centerX + 9, runner.y);
         ctx.stroke();
       }
       
       // Arms
-      const armOffset = frame === 0 ? 10 : -10;
+      const armOffset = frame === 0 ? 8 : -8;
       ctx.beginPath();
-      ctx.moveTo(centerX - 3, adjustedShoulderY + 5);
-      ctx.lineTo(centerX - 3 - armOffset * scale, adjustedShoulderY + 20 * scale);
+      ctx.moveTo(centerX - 2, adjustedShoulderY + 4);
+      ctx.lineTo(centerX - 2 - armOffset, adjustedShoulderY + 16);
       ctx.stroke();
       
       ctx.beginPath();
-      ctx.moveTo(centerX + 3, adjustedShoulderY + 5);
-      ctx.lineTo(centerX + 3 + armOffset * scale, adjustedShoulderY + 20 * scale);
+      ctx.moveTo(centerX + 2, adjustedShoulderY + 4);
+      ctx.lineTo(centerX + 2 + armOffset, adjustedShoulderY + 16);
       ctx.stroke();
     }
     
     ctx.restore();
   }, [canvasSize.height]);
 
-  // Draw obstacle - larger, higher contrast
+  // Draw obstacle - sized for landscape
   const drawObstacle = useCallback((ctx: CanvasRenderingContext2D, obstacle: Obstacle) => {
     ctx.save();
-    const scale = 1.4;
     
     ctx.fillStyle = '#1a1a2e';
     ctx.strokeStyle = '#ffffff';
@@ -302,58 +301,53 @@ export function MobileRunnerGame() {
     
     switch (obstacle.type) {
       case 'camera':
-        ctx.fillRect(obstacle.x + 5, obstacle.y - 30 * scale, 30 * scale, 22 * scale);
-        ctx.strokeRect(obstacle.x + 5, obstacle.y - 30 * scale, 30 * scale, 22 * scale);
-        ctx.fillRect(obstacle.x + 25 * scale, obstacle.y - 38 * scale, 10 * scale, 8 * scale);
-        ctx.strokeRect(obstacle.x + 25 * scale, obstacle.y - 38 * scale, 10 * scale, 8 * scale);
-        // Lens
+        ctx.fillRect(obstacle.x + 4, obstacle.y - 28, 28, 20);
+        ctx.strokeRect(obstacle.x + 4, obstacle.y - 28, 28, 20);
+        ctx.fillRect(obstacle.x + 24, obstacle.y - 34, 8, 6);
+        ctx.strokeRect(obstacle.x + 24, obstacle.y - 34, 8, 6);
         ctx.beginPath();
-        ctx.arc(obstacle.x + 45 * scale, obstacle.y - 20 * scale, 7 * scale, 0, Math.PI * 2);
+        ctx.arc(obstacle.x + 40, obstacle.y - 18, 6, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
         break;
         
       case 'tripod':
-        ctx.lineWidth = 4;
+        ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.moveTo(obstacle.x + 20 * scale, obstacle.y - 60 * scale);
+        ctx.moveTo(obstacle.x + 18, obstacle.y - 50);
         ctx.lineTo(obstacle.x, obstacle.y);
-        ctx.moveTo(obstacle.x + 20 * scale, obstacle.y - 60 * scale);
-        ctx.lineTo(obstacle.x + 40 * scale, obstacle.y);
-        ctx.moveTo(obstacle.x + 20 * scale, obstacle.y);
-        ctx.lineTo(obstacle.x + 20 * scale, obstacle.y - 60 * scale);
+        ctx.moveTo(obstacle.x + 18, obstacle.y - 50);
+        ctx.lineTo(obstacle.x + 36, obstacle.y);
+        ctx.moveTo(obstacle.x + 18, obstacle.y);
+        ctx.lineTo(obstacle.x + 18, obstacle.y - 50);
         ctx.stroke();
-        // Camera on top
         ctx.lineWidth = 2;
-        ctx.fillRect(obstacle.x + 8 * scale, obstacle.y - 72 * scale, 25 * scale, 15 * scale);
-        ctx.strokeRect(obstacle.x + 8 * scale, obstacle.y - 72 * scale, 25 * scale, 15 * scale);
+        ctx.fillRect(obstacle.x + 6, obstacle.y - 60, 24, 12);
+        ctx.strokeRect(obstacle.x + 6, obstacle.y - 60, 24, 12);
         break;
         
       case 'computer':
-        ctx.fillRect(obstacle.x + 5, obstacle.y - 50 * scale, 40 * scale, 32 * scale);
-        ctx.strokeRect(obstacle.x + 5, obstacle.y - 50 * scale, 40 * scale, 32 * scale);
-        // Screen
+        ctx.fillRect(obstacle.x + 4, obstacle.y - 42, 36, 28);
+        ctx.strokeRect(obstacle.x + 4, obstacle.y - 42, 36, 28);
         ctx.fillStyle = '#3b5998';
-        ctx.fillRect(obstacle.x + 8, obstacle.y - 47 * scale, 34 * scale, 24 * scale);
+        ctx.fillRect(obstacle.x + 7, obstacle.y - 39, 30, 20);
         ctx.fillStyle = '#1a1a2e';
-        // Stand
-        ctx.fillRect(obstacle.x + 18 * scale, obstacle.y - 18 * scale, 14 * scale, 12 * scale);
-        ctx.strokeRect(obstacle.x + 18 * scale, obstacle.y - 18 * scale, 14 * scale, 12 * scale);
-        ctx.fillRect(obstacle.x + 12 * scale, obstacle.y - 6 * scale, 26 * scale, 6 * scale);
-        ctx.strokeRect(obstacle.x + 12 * scale, obstacle.y - 6 * scale, 26 * scale, 6 * scale);
+        ctx.fillRect(obstacle.x + 16, obstacle.y - 14, 12, 10);
+        ctx.strokeRect(obstacle.x + 16, obstacle.y - 14, 12, 10);
+        ctx.fillRect(obstacle.x + 10, obstacle.y - 4, 24, 4);
+        ctx.strokeRect(obstacle.x + 10, obstacle.y - 4, 24, 4);
         break;
         
       case 'clapperboard':
         ctx.fillStyle = '#f0f0f0';
-        ctx.fillRect(obstacle.x + 3, obstacle.y - 38 * scale, 40 * scale, 32 * scale);
-        ctx.strokeRect(obstacle.x + 3, obstacle.y - 38 * scale, 40 * scale, 32 * scale);
+        ctx.fillRect(obstacle.x + 2, obstacle.y - 34, 36, 28);
+        ctx.strokeRect(obstacle.x + 2, obstacle.y - 34, 36, 28);
         ctx.fillStyle = '#1a1a2e';
-        ctx.fillRect(obstacle.x + 3, obstacle.y - 50 * scale, 40 * scale, 12 * scale);
-        ctx.strokeRect(obstacle.x + 3, obstacle.y - 50 * scale, 40 * scale, 12 * scale);
-        // Stripes
+        ctx.fillRect(obstacle.x + 2, obstacle.y - 44, 36, 10);
+        ctx.strokeRect(obstacle.x + 2, obstacle.y - 44, 36, 10);
         ctx.fillStyle = '#f0f0f0';
         for (let i = 0; i < 4; i++) {
-          ctx.fillRect(obstacle.x + 8 + i * 11 * scale, obstacle.y - 50 * scale, 5 * scale, 12 * scale);
+          ctx.fillRect(obstacle.x + 6 + i * 9, obstacle.y - 44, 4, 10);
         }
         break;
     }
@@ -370,27 +364,27 @@ export function MobileRunnerGame() {
     const state = gameStateRef.current;
     if (!state.isRunning || state.isPaused) return;
 
-    const currentGroundY = canvasSize.height - 80;
+    const currentGroundY = canvasSize.height - 40;
 
-    // Clear canvas with semi-transparent dark background
-    ctx.fillStyle = 'rgba(20, 20, 35, 0.95)';
+    // Clear canvas
+    ctx.fillStyle = 'rgba(20, 20, 35, 0.97)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Draw ground line - prominent
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
-    ctx.lineWidth = 3;
+    // Draw ground line
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+    ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.moveTo(0, currentGroundY + 5);
-    ctx.lineTo(canvas.width, currentGroundY + 5);
+    ctx.moveTo(0, currentGroundY + 3);
+    ctx.lineTo(canvas.width, currentGroundY + 3);
     ctx.stroke();
     
     // Ground texture
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
     ctx.lineWidth = 1;
-    for (let i = 0; i < canvas.width; i += 20) {
+    for (let i = 0; i < canvas.width; i += 25) {
       ctx.beginPath();
-      ctx.moveTo(i, currentGroundY + 5);
-      ctx.lineTo(i + 10, currentGroundY + 5);
+      ctx.moveTo(i, currentGroundY + 3);
+      ctx.lineTo(i + 12, currentGroundY + 3);
       ctx.stroke();
     }
 
@@ -409,16 +403,17 @@ export function MobileRunnerGame() {
     // Draw runner
     drawRunner(ctx, runner);
 
-    // Spawn obstacles
+    // Spawn obstacles - larger gaps for reaction time
     const timeSinceStart = Date.now() - gameStartTimeRef.current;
     const pastGracePeriod = timeSinceStart > GRACE_PERIOD_MS;
-    const baseSpawnChance = 0.015;
-    const speedBonus = (state.speed - INITIAL_SPEED) * 0.002;
+    const baseSpawnChance = 0.012;
+    const speedBonus = (state.speed - INITIAL_SPEED) * 0.0015;
     const spawnChance = baseSpawnChance + speedBonus;
     
-    const baseGap = 180;
-    const speedGapBonus = (state.speed - INITIAL_SPEED) * 6;
-    const randomVariance = Math.random() * 50;
+    // Wider min gap for landscape - more reaction time
+    const baseGap = 280;
+    const speedGapBonus = (state.speed - INITIAL_SPEED) * 8;
+    const randomVariance = Math.random() * 60;
     const minGap = baseGap + speedGapBonus + randomVariance;
     
     const lastObstacle = obstaclesRef.current[obstaclesRef.current.length - 1];
@@ -435,16 +430,15 @@ export function MobileRunnerGame() {
       const type = availableTypes[Math.floor(Math.random() * availableTypes.length)];
       recentObstaclesRef.current = [...recentTypes, type].slice(-2);
       
-      // Larger hitboxes for mobile
       const dimensions: Record<ObstacleType, { width: number; height: number }> = {
-        camera: { width: 55, height: 50 },
-        tripod: { width: 50, height: 80 },
-        computer: { width: 55, height: 65 },
-        clapperboard: { width: 50, height: 55 },
+        camera: { width: 48, height: 40 },
+        tripod: { width: 40, height: 65 },
+        computer: { width: 48, height: 50 },
+        clapperboard: { width: 42, height: 48 },
       };
       
       obstaclesRef.current.push({
-        x: canvas.width,
+        x: canvas.width + 20,
         y: currentGroundY,
         width: dimensions[type].width,
         height: dimensions[type].height,
@@ -457,21 +451,21 @@ export function MobileRunnerGame() {
     obstaclesRef.current = obstaclesRef.current.filter(obstacle => {
       obstacle.x -= state.speed;
       drawObstacle(ctx, obstacle);
-      return obstacle.x > -80;
+      return obstacle.x > -60;
     });
 
     // Collision detection
     for (const obstacle of obstaclesRef.current) {
       const runnerBox = {
-        left: runner.x + 8,
-        right: runner.x + runner.width - 8,
-        top: runner.y - runner.height + 15,
+        left: runner.x + 6,
+        right: runner.x + runner.width - 6,
+        top: runner.y - runner.height + 10,
         bottom: runner.y,
       };
       
       const obstacleBox = {
-        left: obstacle.x + 5,
-        right: obstacle.x + obstacle.width - 5,
+        left: obstacle.x + 4,
+        right: obstacle.x + obstacle.width - 4,
         top: obstacle.y - obstacle.height,
         bottom: obstacle.y,
       };
@@ -502,11 +496,11 @@ export function MobileRunnerGame() {
     let newSpeed: number;
     if (timeSec < WARMUP_DURATION) {
       const warmupProgress = timeSec / WARMUP_DURATION;
-      const warmupTarget = INITIAL_SPEED + 2;
+      const warmupTarget = INITIAL_SPEED + 1.5;
       newSpeed = INITIAL_SPEED + (warmupTarget - INITIAL_SPEED) * warmupProgress;
     } else {
       const adjustedTime = timeSec - WARMUP_DURATION;
-      const warmupEndSpeed = INITIAL_SPEED + 2;
+      const warmupEndSpeed = INITIAL_SPEED + 1.5;
       newSpeed = warmupEndSpeed + (MAX_SPEED - warmupEndSpeed) * (1 - Math.exp(-SPEED_CURVE_K * adjustedTime));
     }
     
@@ -538,28 +532,21 @@ export function MobileRunnerGame() {
     return () => cancelAnimationFrame(animationRef.current);
   }, [gameState.isRunning, gameState.isPaused, gameLoop]);
 
-  // Handle touch/tap to jump
-  const handleTap = useCallback(() => {
-    if (gameState.isRunning && !gameState.isPaused) {
-      jump();
-    }
-  }, [gameState.isRunning, gameState.isPaused, jump]);
-
   // Draw initial state
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d');
     if (!canvas || !ctx) return;
 
-    ctx.fillStyle = 'rgba(20, 20, 35, 0.95)';
+    ctx.fillStyle = 'rgba(20, 20, 35, 0.97)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    const currentGroundY = canvasSize.height - 80;
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
-    ctx.lineWidth = 3;
+    const currentGroundY = canvasSize.height - 40;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+    ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.moveTo(0, currentGroundY + 5);
-    ctx.lineTo(canvas.width, currentGroundY + 5);
+    ctx.moveTo(0, currentGroundY + 3);
+    ctx.lineTo(canvas.width, currentGroundY + 3);
     ctx.stroke();
 
     drawRunner(ctx, runnerRef.current);
@@ -570,7 +557,7 @@ export function MobileRunnerGame() {
       ref={containerRef}
       className="h-full flex flex-col bg-gradient-to-b from-[hsl(250,25%,12%)] to-[hsl(250,20%,8%)] relative overflow-hidden"
     >
-      {/* Header with close and pause */}
+      {/* Header with close, score, and pause */}
       <div className="flex items-center justify-between px-4 py-3 z-10">
         <button
           onClick={() => closeWindow('runner')}
@@ -579,9 +566,15 @@ export function MobileRunnerGame() {
           <X className="w-5 h-5 text-white" />
         </button>
         
-        {/* Score pill */}
-        <div className="px-4 py-2 bg-black/50 backdrop-blur-sm rounded-full">
-          <span className="text-white font-bold text-lg">{gameState.score}</span>
+        {/* Score and high score */}
+        <div className="flex items-center gap-4">
+          <div className="text-center">
+            <div className="text-white/50 text-[10px] uppercase tracking-wider">Best</div>
+            <div className="text-white/80 font-semibold text-sm">{gameState.highScore}</div>
+          </div>
+          <div className="px-5 py-2 bg-black/50 backdrop-blur-sm rounded-full">
+            <span className="text-white font-bold text-xl">{gameState.score}</span>
+          </div>
         </div>
         
         {gameState.isRunning && (
@@ -599,40 +592,29 @@ export function MobileRunnerGame() {
         {!gameState.isRunning && <div className="w-10" />}
       </div>
 
-      {/* High score */}
-      <div className="text-center pb-2">
-        <span className="text-white/50 text-xs uppercase tracking-wider">High Score: </span>
-        <span className="text-white/80 font-semibold">{gameState.highScore}</span>
-      </div>
+      {/* Streak indicator */}
+      <AnimatePresence>
+        {gameState.isRunning && gameState.streak >= 5 && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="absolute top-16 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full text-sm font-bold shadow-lg z-20"
+          >
+            🔥 x{gameState.streak}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* Game canvas area */}
-      <div className="flex-1 flex items-center justify-center px-4">
-        <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+      {/* Game canvas area - centered and landscape */}
+      <div className="flex-1 flex items-center justify-center px-3">
+        <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 w-full max-w-[700px]">
           <canvas
             ref={canvasRef}
             width={canvasSize.width}
             height={canvasSize.height}
-            className="block"
-            onClick={handleTap}
-            onTouchStart={(e) => {
-              e.preventDefault();
-              handleTap();
-            }}
+            className="block w-full"
           />
-
-          {/* Streak indicator */}
-          <AnimatePresence>
-            {gameState.isRunning && gameState.streak >= 5 && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                className="absolute top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full text-sm font-bold shadow-lg"
-              >
-                🔥 x{gameState.streak}
-              </motion.div>
-            )}
-          </AnimatePresence>
 
           {/* Countdown overlay */}
           <AnimatePresence>
@@ -648,7 +630,7 @@ export function MobileRunnerGame() {
                   initial={{ scale: 0.5, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 1.5, opacity: 0 }}
-                  className="text-7xl font-bold text-white"
+                  className="text-6xl font-bold text-white"
                 >
                   {gameState.countdown}
                 </motion.span>
@@ -663,11 +645,10 @@ export function MobileRunnerGame() {
               onClick={startCountdown}
             >
               <div className="text-center">
-                <h2 className="text-3xl font-bold text-white mb-4">Runner</h2>
-                <button className="px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-2xl font-semibold text-lg shadow-lg active:scale-95 transition-transform">
+                <h2 className="text-2xl font-bold text-white mb-3">Runner</h2>
+                <button className="px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-2xl font-semibold shadow-lg active:scale-95 transition-transform">
                   Start Game
                 </button>
-                <p className="text-white/50 text-sm mt-4">Tap anywhere to jump</p>
               </div>
             </div>
           )}
@@ -683,9 +664,9 @@ export function MobileRunnerGame() {
                 onClick={togglePause}
               >
                 <div className="text-center">
-                  <Pause className="w-16 h-16 text-white mx-auto mb-4" />
-                  <p className="text-white text-xl font-semibold">Paused</p>
-                  <p className="text-white/50 text-sm mt-2">Tap to resume</p>
+                  <Pause className="w-12 h-12 text-white mx-auto mb-2" />
+                  <p className="text-white text-lg font-semibold">Paused</p>
+                  <p className="text-white/50 text-xs mt-1">Tap to resume</p>
                 </div>
               </motion.div>
             )}
@@ -695,14 +676,14 @@ export function MobileRunnerGame() {
           {gameState.isGameOver && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm">
               <div className="text-center">
-                <h2 className="text-3xl font-bold text-red-400 mb-2">Game Over</h2>
-                <p className="text-5xl font-bold text-white mb-2">{gameState.score}</p>
-                <p className="text-white/50 text-sm mb-6">
+                <h2 className="text-2xl font-bold text-red-400 mb-1">Game Over</h2>
+                <p className="text-4xl font-bold text-white mb-1">{gameState.score}</p>
+                <p className="text-white/50 text-xs mb-4">
                   {gameState.score >= gameState.highScore ? '🎉 New High Score!' : `Best: ${gameState.highScore}`}
                 </p>
                 <button
                   onClick={startCountdown}
-                  className="px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-2xl font-semibold text-lg shadow-lg active:scale-95 transition-transform"
+                  className="px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-2xl font-semibold shadow-lg active:scale-95 transition-transform"
                 >
                   Play Again
                 </button>
@@ -712,9 +693,24 @@ export function MobileRunnerGame() {
         </div>
       </div>
 
-      {/* Bottom hint */}
-      <div className="text-center py-4">
-        <p className="text-white/40 text-xs">Tap anywhere on game to jump</p>
+      {/* Jump button - large and prominent */}
+      <div className="px-4 pb-6 pt-4">
+        <button
+          onTouchStart={(e) => {
+            e.preventDefault();
+            jump();
+          }}
+          onMouseDown={jump}
+          disabled={!gameState.isRunning || gameState.isPaused}
+          className={`w-full py-6 rounded-2xl flex items-center justify-center gap-3 font-semibold text-lg transition-all active:scale-[0.98] ${
+            gameState.isRunning && !gameState.isPaused
+              ? 'bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg shadow-purple-900/30'
+              : 'bg-white/10 text-white/40'
+          }`}
+        >
+          <ChevronUp className="w-6 h-6" />
+          <span>JUMP</span>
+        </button>
       </div>
     </div>
   );
