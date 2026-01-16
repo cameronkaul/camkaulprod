@@ -42,12 +42,25 @@ const NotesGlyph = () => (
 );
 
 const ResumeGlyph = () => (
-  <svg viewBox="0 0 24 24" className="w-[55%] h-[55%]" fill="none">
-    {/* Word doc style - document with W */}
-    <path d="M5 3C4.45 3 4 3.45 4 4V20C4 20.55 4.45 21 5 21H19C19.55 21 20 20.55 20 20V8L15 3H5Z" fill="white" />
-    <path d="M15 3V8H20L15 3Z" fill="rgba(0,0,0,0.1)" />
-    {/* W letter */}
-    <text x="12" y="16" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#2B579A" fontFamily="Arial, sans-serif">W</text>
+  <svg viewBox="0 0 24 24" className="w-[75%] h-[75%]" fill="none">
+    {/* Minimized Word document file - paper with folded corner */}
+    <defs>
+      <linearGradient id="wordDocGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stopColor="#ffffff" />
+        <stop offset="100%" stopColor="#f0f0f0" />
+      </linearGradient>
+    </defs>
+    {/* Paper */}
+    <path d="M4 2C3.45 2 3 2.45 3 3V21C3 21.55 3.45 22 4 22H20C20.55 22 21 21.55 21 21V7L16 2H4Z" fill="url(#wordDocGradient)" />
+    {/* Folded corner */}
+    <path d="M16 2V7H21L16 2Z" fill="#d0d0d0" />
+    {/* Word blue bar at top */}
+    <rect x="3" y="2" width="13" height="3" fill="#2B579A" rx="1" />
+    {/* Text lines */}
+    <rect x="5" y="9" width="10" height="1.2" rx="0.6" fill="#2B579A" fillOpacity="0.7" />
+    <rect x="5" y="12" width="14" height="1.2" rx="0.6" fill="#ccc" />
+    <rect x="5" y="15" width="12" height="1.2" rx="0.6" fill="#ccc" />
+    <rect x="5" y="18" width="8" height="1.2" rx="0.6" fill="#ccc" />
   </svg>
 );
 
@@ -104,11 +117,11 @@ const iconConfigs: Record<AppIconType, AppIconConfig> = {
     highlightColor: 'rgba(253, 230, 138, 0.5)',
   },
   resume: {
-    gradient: 'linear-gradient(145deg, #5B9BD5 0%, #2B579A 50%, #1E3A5F 100%)',
+    gradient: 'linear-gradient(145deg, #E8E8E8 0%, #D4D4D4 50%, #BEBEBE 100%)',
     glyph: <ResumeGlyph />,
-    label: 'Resume',
-    accentColor: 'hsl(213, 55%, 50%)',
-    highlightColor: 'rgba(91, 155, 213, 0.5)',
+    label: 'Resume.doc',
+    accentColor: 'hsl(0, 0%, 80%)',
+    highlightColor: 'rgba(255, 255, 255, 0.5)',
   },
   runner: {
     gradient: 'linear-gradient(145deg, #FCA5A5 0%, #F87171 40%, #EF4444 100%)',

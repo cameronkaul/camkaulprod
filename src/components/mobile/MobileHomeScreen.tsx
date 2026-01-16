@@ -5,7 +5,7 @@ import { VideoCarouselWidget } from './widgets/VideoCarouselWidget';
 
 // Dock apps
 const dockApps: { id: WindowId; type: 'resume' | 'trash' | 'runner'; label: string }[] = [
-  { id: 'resume', type: 'resume', label: 'Docs' },
+  { id: 'resume', type: 'resume', label: 'Resume.doc' },
   { id: 'trash', type: 'trash', label: 'Trash' },
   { id: 'runner', type: 'runner', label: 'Runner' },
 ];
@@ -74,16 +74,20 @@ export function MobileHomeScreen() {
 
       {/* iPhone-style Dock at bottom with safe area */}
       <div className="fixed bottom-0 inset-x-0 pb-2 pt-2 z-[9995]">
-        <div className="mx-4 bg-muted/60 backdrop-blur-xl rounded-3xl px-6 py-3 border border-border/30 shadow-lg">
+        <div className="mx-4 bg-muted/60 backdrop-blur-xl rounded-3xl px-4 py-2.5 border border-border/30 shadow-lg">
           <div className="flex items-center justify-around">
             {dockApps.map((app) => (
-              <AppIcon
-                key={app.id}
-                type={app.type}
-                size={52}
-                showLabel={false}
-                onClick={() => handleAppClick(app.id)}
-              />
+              <div key={app.id} className="flex flex-col items-center gap-0.5">
+                <AppIcon
+                  type={app.type}
+                  size={48}
+                  showLabel={false}
+                  onClick={() => handleAppClick(app.id)}
+                />
+                <span className="text-[10px] font-medium text-white/80 truncate max-w-[60px]">
+                  {app.label}
+                </span>
+              </div>
             ))}
           </div>
         </div>
