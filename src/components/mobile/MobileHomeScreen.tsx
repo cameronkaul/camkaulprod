@@ -6,8 +6,8 @@ import { VideoCarouselWidget } from './widgets/VideoCarouselWidget';
 // Dock apps
 const dockApps: { id: WindowId; type: 'resume' | 'trash' | 'runner'; label: string }[] = [
   { id: 'resume', type: 'resume', label: 'Resume.doc' },
-  { id: 'trash', type: 'trash', label: 'Trash' },
   { id: 'runner', type: 'runner', label: 'Runner' },
+  { id: 'trash', type: 'trash', label: 'Trash' },
 ];
 
 export function MobileHomeScreen() {
