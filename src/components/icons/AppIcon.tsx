@@ -41,11 +41,13 @@ const NotesGlyph = () => (
   </svg>
 );
 
-const DocsGlyph = () => (
+const ResumeGlyph = () => (
   <svg viewBox="0 0 24 24" className="w-[55%] h-[55%]" fill="none">
-    {/* Document - SF Symbols doc.fill style */}
-    <path d="M6 3C5.45 3 5 3.45 5 4V20C5 20.55 5.45 21 6 21H18C18.55 21 19 20.55 19 20V8L14 3H6Z" fill="white" />
-    <path d="M14 3V8H19L14 3Z" fill="rgba(0,0,0,0.1)" />
+    {/* Word doc style - document with W */}
+    <path d="M5 3C4.45 3 4 3.45 4 4V20C4 20.55 4.45 21 5 21H19C19.55 21 20 20.55 20 20V8L15 3H5Z" fill="white" />
+    <path d="M15 3V8H20L15 3Z" fill="rgba(0,0,0,0.1)" />
+    {/* W letter */}
+    <text x="12" y="16" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#2B579A" fontFamily="Arial, sans-serif">W</text>
   </svg>
 );
 
@@ -102,11 +104,11 @@ const iconConfigs: Record<AppIconType, AppIconConfig> = {
     highlightColor: 'rgba(253, 230, 138, 0.5)',
   },
   resume: {
-    gradient: 'linear-gradient(145deg, #C4B5FD 0%, #A78BFA 40%, #8B5CF6 100%)',
-    glyph: <DocsGlyph />,
+    gradient: 'linear-gradient(145deg, #5B9BD5 0%, #2B579A 50%, #1E3A5F 100%)',
+    glyph: <ResumeGlyph />,
     label: 'Resume',
-    accentColor: 'hsl(263, 90%, 70%)',
-    highlightColor: 'rgba(196, 181, 253, 0.5)',
+    accentColor: 'hsl(213, 55%, 50%)',
+    highlightColor: 'rgba(91, 155, 213, 0.5)',
   },
   runner: {
     gradient: 'linear-gradient(145deg, #FCA5A5 0%, #F87171 40%, #EF4444 100%)',
