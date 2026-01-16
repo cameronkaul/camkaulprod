@@ -40,6 +40,57 @@ const defaultWindows: WindowState[] = [
   { id: 'photoWidget', title: 'Gallery', isOpen: true, isMinimized: false, zIndex: -10, position: { x: 560, y: 420 }, size: { width: 280, height: 280 } },
 ];
 
+const WIDGET_WINDOW_IDS: WindowId[] = ['videoWidget', 'photoWidget'];
+
+const clampNumber = (value: number, min: number, max: number) => {
+  if (!Number.isFinite(value)) return min;
+  return Math.max(min, Math.min(value, max));
+};
+
+const getDesktopSafeArea = () => {
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  const menuBarHeight =
+    document.querySelector('.menu-bar')?.getBoundingClientRect().height ?? 28;
+  const dockHeight =
+    document.querySelector('.dock-container')?.getBoundingClientRect().height ?? 96;
+
+  const margin = 8;
+
+  return {
+    minX: margin,
+    minY: menuBarHeight + margin,
+    maxX: vw - margin,
+    maxY: vh - dockHeight - margin,
+  };
+};
+
+const clampWindowToViewport = (
+  id: WindowId,
+  position: { x: number; y: number },
+  size: { width: number; height: number },
+) => {
+  // Only clamp on desktop; mobile windows are fullscreen overlays.
+  if (window.innerWidth < 768) return { position, size };
+
+  const isWidget = WIDGET_WINDOW_IDS.includes(id);
+  const minWidth = isWidget ? 200 : 300;
+  const minHeight = isWidget ? 150 : 200;
+
+  const area = getDesktopSafeArea();
+  const maxWidth = Math.max(minWidth, area.maxX - area.minX);
+  const maxHeight = Math.max(minHeight, area.maxY - area.minY);
+
+  const width = clampNumber(size.width, minWidth, maxWidth);
+  const height = clampNumber(size.height, minHeight, maxHeight);
+
+  const x = clampNumber(position.x, area.minX, area.maxX - width);
+  const y = clampNumber(position.y, area.minY, area.maxY - height);
+
+  return { position: { x, y }, size: { width, height } };
+};
+
 const WindowContext = createContext<WindowContextType | undefined>(undefined);
 
 export function WindowProvider({ children }: { children: ReactNode }) {
@@ -49,7 +100,19 @@ export function WindowProvider({ children }: { children: ReactNode }) {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   React.useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+
+      // Keep all windows inside the viewport when the browser size changes.
+      if (window.innerWidth >= 768) {
+        setWindows(prev =>
+          prev.map(w => {
+            const clamped = clampWindowToViewport(w.id, w.position, w.size);
+            return { ...w, position: clamped.position, size: clamped.size };
+          })
+        );
+      }
+    };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -57,23 +120,30 @@ export function WindowProvider({ children }: { children: ReactNode }) {
   const getHighestZIndex = useCallback(() => highestZ, [highestZ]);
 
   const openWindow = useCallback((id: WindowId, projectId?: string) => {
-    const newZ = highestZ + 1;
-    setHighestZ(newZ);
+    const isWidget = WIDGET_WINDOW_IDS.includes(id);
+
+    const newZ = isWidget ? -10 : highestZ + 1;
+    if (!isWidget) setHighestZ(newZ);
+
     setActiveWindowId(id);
-    
-    setWindows(prev => prev.map(w => {
-      if (w.id === id) {
-        return { 
-          ...w, 
-          isOpen: true, 
-          isMinimized: false, 
+
+    setWindows(prev =>
+      prev.map(w => {
+        if (w.id !== id) return w;
+
+        const next: WindowState = {
+          ...w,
+          isOpen: true,
+          isMinimized: false,
           zIndex: newZ,
           projectId: projectId || w.projectId,
-          title: id === 'project' && projectId ? 'Project' : w.title
+          title: id === 'project' && projectId ? 'Project' : w.title,
         };
-      }
-      return w;
-    }));
+
+        const clamped = clampWindowToViewport(id, next.position, next.size);
+        return { ...next, position: clamped.position, size: clamped.size };
+      })
+    );
   }, [highestZ]);
 
   const closeWindow = useCallback((id: WindowId) => {
@@ -95,24 +165,37 @@ export function WindowProvider({ children }: { children: ReactNode }) {
   }, [activeWindowId]);
 
   const focusWindow = useCallback((id: WindowId) => {
-    const newZ = highestZ + 1;
-    setHighestZ(newZ);
+    const isWidget = WIDGET_WINDOW_IDS.includes(id);
+
+    const newZ = isWidget ? -10 : highestZ + 1;
+    if (!isWidget) setHighestZ(newZ);
+
     setActiveWindowId(id);
-    setWindows(prev => prev.map(w => 
-      w.id === id ? { ...w, zIndex: newZ, isMinimized: false } : w
-    ));
+    setWindows(prev =>
+      prev.map(w => {
+        if (w.id !== id) return w;
+
+        const next: WindowState = { ...w, zIndex: newZ, isMinimized: false };
+        const clamped = clampWindowToViewport(id, next.position, next.size);
+        return { ...next, position: clamped.position, size: clamped.size };
+      })
+    );
   }, [highestZ]);
 
   const updateWindowPosition = useCallback((id: WindowId, position: { x: number; y: number }) => {
-    setWindows(prev => prev.map(w => 
-      w.id === id ? { ...w, position } : w
-    ));
+    setWindows(prev => prev.map(w => {
+      if (w.id !== id) return w;
+      const clamped = clampWindowToViewport(id, position, w.size);
+      return { ...w, position: clamped.position, size: clamped.size };
+    }));
   }, []);
 
   const updateWindowSize = useCallback((id: WindowId, size: { width: number; height: number }) => {
-    setWindows(prev => prev.map(w => 
-      w.id === id ? { ...w, size } : w
-    ));
+    setWindows(prev => prev.map(w => {
+      if (w.id !== id) return w;
+      const clamped = clampWindowToViewport(id, w.position, size);
+      return { ...w, size: clamped.size, position: clamped.position };
+    }));
   }, []);
 
   return (
