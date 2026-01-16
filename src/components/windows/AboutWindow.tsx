@@ -18,7 +18,7 @@ const notes: Note[] = [
   { id: 'about', title: 'About Me', preview: "Hey, I'm Cam. I make cinematic video...", date: 'Today' },
   { id: 'services', title: 'Services', preview: 'Video Production, Editing, Photography...', date: 'Yesterday' },
   { id: 'gear', title: 'Gear & Software', preview: 'Panasonic Lumix S5IIX, Final Cut Pro...', date: 'Last week' },
-  { id: 'education', title: 'Education', preview: 'Baylor University, Film & Digital Media', date: 'Last month' },
+  { id: 'education', title: 'Education', preview: 'Baylor University, BBA Marketing', date: 'Last month' },
 ];
 
 export function AboutWindow() {
@@ -138,11 +138,13 @@ export function AboutWindow() {
               <GraduationCap className="w-5 h-5 text-primary" />
               Education
             </h2>
-            <div className="px-4 py-4 bg-muted/30 rounded-lg border border-border/30">
+            <div className="px-4 py-4 bg-muted/30 rounded-lg border border-border/30 space-y-2">
               <p className="font-semibold">Baylor University</p>
-              <p className="text-sm text-muted-foreground">Bachelor of Arts in Film & Digital Media</p>
-              <p className="text-sm text-muted-foreground">Minor in Business Administration</p>
-              <p className="text-xs text-muted-foreground mt-2">Waco, Texas</p>
+              <p className="text-sm text-muted-foreground">Bachelor of Business Administration</p>
+              <p className="text-sm text-muted-foreground">Marketing / Entrepreneurship and Corporate Innovation</p>
+              <p className="text-xs text-muted-foreground mt-2">Waco, Texas • May 2025</p>
+              <p className="text-xs text-muted-foreground">GPA: 3.49</p>
+              <p className="text-xs text-primary/80 mt-1">Dean's List: Fall 2023, Fall 2024</p>
             </div>
           </div>
         );

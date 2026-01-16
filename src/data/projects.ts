@@ -422,12 +422,13 @@ export const aboutData = {
   name: 'Cam Kaul',
   title: 'Videographer & Editor',
   location: 'Waco, Texas',
-  bio: "Hey, I'm Cam. I make cinematic video for brands and artists who care about taste. I can handle the full process, concept to shoot to edit, or jump in wherever you need help, content, campaigns, socials, design, whatever moves the project forward.",
+  bio: "I make cinematic video and design for brands and artists who care about taste. I handle direction, shooting, and editing, and I can carry a project from first idea to final deliverables. I'm always refining the craft, learning more, and pushing the work further.",
   services: [
     'Video Production',
-    'Post-Production & Editing',
+    'Post Production and Editing',
     'Photography',
-    'Branded Content',
+    'Graphic Design',
+    'Campaign Content',
     'Event Coverage',
     'Music Videos',
   ],
@@ -522,8 +523,8 @@ export const resumeData = {
     },
   ],
   skills: [
-    'Adobe Photoshop', 'Adobe Premiere', 'Adobe Illustrator', 'Final Cut Pro',
-    'Cinematography', 'Video Editing', 'Graphic Design', 'Social Media Marketing',
+    'Final Cut Pro', 'Adobe Premiere Pro', 'Adobe Photoshop', 'Adobe Illustrator',
+    'Cinematography', 'Video Editing', 'Graphic Design', 'Social Media Strategy',
   ],
   certifications: [
     'Microsoft Office Specialist: Excel 2019 Associate',
