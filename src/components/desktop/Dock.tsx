@@ -28,7 +28,7 @@ const dockLabels: Record<WindowId, string> = {
   portfolio: 'Portfolio',
   mail: 'Mail',
   about: 'Notes',
-  resume: 'Docs',
+  resume: 'Resume.doc',
   runner: 'Runner',
   trash: 'Trash',
   instagram: 'Instagram',
