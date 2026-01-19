@@ -3,13 +3,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Images } from 'lucide-react';
 import { getAllPhotos, type Photo } from '@/data/photos';
 
-const PREFERRED_START_URL = '/photos/dr-pepper-mural/P1220822_1.jpg';
+// This is the exact photo you want first: artist on the lift against the blue sky.
+const PREFERRED_START_URL = '/photos/dr-pepper-mural/P1220766.jpg';
 const TAO_ROCKET_PREFIX = '/photos/tao-rocket/';
 
 function orderPhotosForWidget(all: Photo[]): Photo[] {
   const preferred = all.filter((p) => p.url === PREFERRED_START_URL);
   const rest = all.filter((p) => p.url !== PREFERRED_START_URL);
 
+  // Push Tao Rocket toward the end.
   const tao = rest.filter((p) => p.url.startsWith(TAO_ROCKET_PREFIX));
   const nonTao = rest.filter((p) => !p.url.startsWith(TAO_ROCKET_PREFIX));
 
@@ -45,15 +47,6 @@ export function PhotoCarouselWidget() {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, [isModalOpen, nextSlide, photos.length]);
-
-  // If the photo list changes (during dev hot-reload), ensure we still show the preferred start photo first.
-  useEffect(() => {
-    if (!photos.length) return;
-    if (currentIndex === 0) return;
-    if (photos[0]?.url === PREFERRED_START_URL) return;
-    setCurrentIndex(0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [photos.length]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
@@ -172,10 +165,7 @@ export function PhotoCarouselWidget() {
           >
             {/* Header */}
             <div className="flex items-center justify-between p-4 pt-12">
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="flex items-center gap-1 text-blue-400"
-              >
+              <button onClick={() => setIsModalOpen(false)} className="flex items-center gap-1 text-blue-400">
                 <ChevronLeft className="w-5 h-5" />
                 <span>Back</span>
               </button>
