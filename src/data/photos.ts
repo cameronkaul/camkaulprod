@@ -47,6 +47,16 @@ export const photoAlbums: PhotoAlbum[] = [
       { id: 'cc-3', url: '/photos/colton-climbing/P1034586.jpg' },
     ],
   },
+  {
+    id: 'tao-rocket',
+    title: 'Tao Rocket',
+    coverPhoto: '/photos/tao-rocket/P1023051.jpg',
+    photos: [
+      { id: 'tr-1', url: '/photos/tao-rocket/P1023051.jpg' },
+      { id: 'tr-2', url: '/photos/tao-rocket/P1023052.jpg' },
+      { id: 'tr-3', url: '/photos/tao-rocket/P1023062.jpg' },
+    ],
+  },
 ];
 
 // Get all photos across all albums
