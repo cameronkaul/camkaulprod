@@ -39,12 +39,6 @@ export function ProjectWindow() {
         </div>
       </div>
 
-      {/* Tools */}
-      <div className="flex flex-wrap gap-2">
-        {project.tools.map(tool => (
-          <span key={tool} className="px-2 py-1 bg-muted rounded text-xs">{tool}</span>
-        ))}
-      </div>
 
       {/* Description */}
       <p className="text-sm text-foreground/80 leading-relaxed">{project.longDescription}</p>

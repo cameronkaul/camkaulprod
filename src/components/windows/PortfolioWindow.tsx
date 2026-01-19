@@ -290,7 +290,6 @@ export function PortfolioWindow() {
                 <div className="p-4 space-y-3">
                   <div>
                     <h3 className="text-xl font-bold text-white">{selectedProject.title}</h3>
-                    <p className="text-sm text-muted-foreground capitalize">{selectedProject.category} · {selectedProject.year}</p>
                   </div>
                   <p className="text-sm text-gray-300 leading-relaxed">{selectedProject.description}</p>
                   <div className="flex flex-wrap gap-2 pt-2">
@@ -530,7 +529,6 @@ export function PortfolioWindow() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                   <div className="absolute bottom-0 left-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <p className="text-white text-xs font-medium truncate">{project.title}</p>
-                    <p className="text-white/70 text-[10px]">{project.year}</p>
                   </div>
                 </button>
               ))}
@@ -542,7 +540,6 @@ export function PortfolioWindow() {
                 <span className="w-12"></span>
                 <span className="flex-1">Name</span>
                 <span className="w-24">Type</span>
-                <span className="w-16 text-right">Year</span>
               </div>
 
               {/* Folders in list view */}
@@ -587,7 +584,6 @@ export function PortfolioWindow() {
                     {project.title}
                   </span>
                   <span className="w-24 text-sm text-muted-foreground capitalize">{project.category}</span>
-                  <span className="w-16 text-sm text-muted-foreground text-right">{project.year}</span>
                 </button>
               ))}
             </div>
