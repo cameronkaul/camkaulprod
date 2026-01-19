@@ -1,50 +1,75 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Images } from 'lucide-react';
-import { getAllPhotos } from '@/data/photos';
+import { getAllPhotos, type Photo } from '@/data/photos';
+
+const PREFERRED_START_URL = '/photos/dr-pepper-mural/P1220822_1.jpg';
+const TAO_ROCKET_PREFIX = '/photos/tao-rocket/';
+
+function orderPhotosForWidget(all: Photo[]): Photo[] {
+  const preferred = all.filter((p) => p.url === PREFERRED_START_URL);
+  const rest = all.filter((p) => p.url !== PREFERRED_START_URL);
+
+  const tao = rest.filter((p) => p.url.startsWith(TAO_ROCKET_PREFIX));
+  const nonTao = rest.filter((p) => !p.url.startsWith(TAO_ROCKET_PREFIX));
+
+  return [...preferred, ...nonTao, ...tao];
+}
 
 export function PhotoCarouselWidget() {
+  const photos = orderPhotosForWidget(getAllPhotos());
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const touchStartX = useRef<number>(0);
 
-  // Get photos from the photos data
-  const photos = useMemo(() => getAllPhotos(), []);
-
   const ROTATION_INTERVAL = 5000; // 5 seconds
 
   const nextSlide = useCallback(() => {
+    if (photos.length <= 1) return;
     setCurrentIndex((prev) => (prev + 1) % photos.length);
   }, [photos.length]);
 
   const prevSlide = useCallback(() => {
+    if (photos.length <= 1) return;
     setCurrentIndex((prev) => (prev - 1 + photos.length) % photos.length);
   }, [photos.length]);
 
   useEffect(() => {
-    if (!isModalOpen) {
+    if (!isModalOpen && photos.length > 1) {
       intervalRef.current = setInterval(nextSlide, ROTATION_INTERVAL);
     }
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [isModalOpen, nextSlide]);
+  }, [isModalOpen, nextSlide, photos.length]);
+
+  // If the photo list changes (during dev hot-reload), ensure we still show the preferred start photo first.
+  useEffect(() => {
+    if (!photos.length) return;
+    if (currentIndex === 0) return;
+    if (photos[0]?.url === PREFERRED_START_URL) return;
+    setCurrentIndex(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [photos.length]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
+    if (photos.length <= 1) return;
+
     const touchEndX = e.changedTouches[0].clientX;
     const diff = touchStartX.current - touchEndX;
 
     if (Math.abs(diff) > 50) {
       if (diff > 0) {
-        setCurrentIndex((prev) => (prev + 1) % photos.length);
+        nextSlide();
       } else {
-        setCurrentIndex((prev) => (prev - 1 + photos.length) % photos.length);
+        prevSlide();
       }
     }
   };
@@ -89,24 +114,30 @@ export function PhotoCarouselWidget() {
             </div>
 
             {/* Navigation arrows */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                prevSlide();
-              }}
-              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center hover:bg-black/50 transition-colors z-10"
-            >
-              <ChevronLeft className="w-5 h-5 text-white" />
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                nextSlide();
-              }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center hover:bg-black/50 transition-colors z-10"
-            >
-              <ChevronRight className="w-5 h-5 text-white" />
-            </button>
+            {photos.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    prevSlide();
+                  }}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center hover:bg-black/50 transition-colors z-10"
+                  aria-label="Previous photo"
+                >
+                  <ChevronLeft className="w-5 h-5 text-white" />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    nextSlide();
+                  }}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center hover:bg-black/50 transition-colors z-10"
+                  aria-label="Next photo"
+                >
+                  <ChevronRight className="w-5 h-5 text-white" />
+                </button>
+              </>
+            )}
 
             {/* Progress dots */}
             <div className="absolute bottom-3 right-3 flex gap-1">
@@ -166,11 +197,7 @@ export function PhotoCarouselWidget() {
                     whileTap={{ scale: 0.95 }}
                     className="aspect-square rounded-xl overflow-hidden"
                   >
-                    <img
-                      src={photo.url}
-                      alt={photo.title}
-                      className="w-full h-full object-cover"
-                    />
+                    <img src={photo.url} alt={photo.title || ''} className="w-full h-full object-cover" />
                   </motion.div>
                 ))}
               </div>
