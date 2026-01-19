@@ -21,7 +21,7 @@ interface Position {
   y: number;
 }
 
-const STORAGE_KEY = 'desktop-grid-layout';
+const STORAGE_KEY = 'desktop-grid-layout-v2';
 
 function getDefaultLayout(): GridItem[] {
   return [
