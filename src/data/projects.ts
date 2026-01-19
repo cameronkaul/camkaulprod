@@ -395,6 +395,20 @@ export const projects: Project[] = [
     thumbnailUrl: '/thumbnails/movement-of-everything.png',
     galleryUrls: [],
   },
+  {
+    id: 'allen-samuels-vertical-reel',
+    title: 'Vertical Reel',
+    collection: 'allen-samuels',
+    category: 'brand',
+    year: 2024,
+    description: 'Vertical promotional reel for Allen Samuels dealership',
+    longDescription: 'A vertical social media reel showcasing vehicles and dealership atmosphere at Allen Samuels, optimized for mobile-first platforms like Instagram and TikTok.',
+    role: 'Videographer, Editor',
+    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
+    videoUrl: 'https://www.loom.com/embed/0602d4579e774d26946d311539bf93c7',
+    thumbnailUrl: '/thumbnails/allen-samuels-bronco-reel.jpg',
+    galleryUrls: [],
+  },
 ];
 
 // ============================================
@@ -542,8 +556,9 @@ export const resumeData = {
 export interface ClientWorkItem {
   id: string;
   title: string;
-  imageUrl: string;
-  type: 'banner' | 'social' | 'email' | 'poster' | 'ad';
+  imageUrl?: string;
+  videoUrl?: string;
+  type: 'banner' | 'social' | 'email' | 'poster' | 'ad' | 'video';
 }
 
 export interface ClientWork {
@@ -559,6 +574,10 @@ export const clientWorks: ClientWork[] = [
     clientName: 'Allen Samuels',
     description: 'Advertisements, graphics, and promotional materials created as Marketing Director',
     items: [
+      { id: 'as-v1', title: 'Dealership Promo 1', videoUrl: 'https://www.loom.com/embed/3050fdf098c042478817daca616b71b1', type: 'video' },
+      { id: 'as-v2', title: 'Dealership Promo 2', videoUrl: 'https://www.loom.com/embed/3de2528259624153a78002a59f6b7d76', type: 'video' },
+      { id: 'as-v3', title: 'Dealership Promo 3', videoUrl: 'https://www.loom.com/embed/b8734f15c37b436ebc79a37c54719f4e', type: 'video' },
+      { id: 'as-v4', title: 'Dealership Promo 4', videoUrl: 'https://www.loom.com/embed/aaf7cbb0f04a40ae8fdb9bebe580bc65', type: 'video' },
       { id: 'as-1', title: '4th of July Challengers', imageUrl: '/client-work/allen-samuels/4th-of-july-challengers.png', type: 'social' },
       { id: 'as-2', title: 'Ram 1500 Crew Cab Banner', imageUrl: '/client-work/allen-samuels/ram-1500-crew-cab-banner.png', type: 'banner' },
       { id: 'as-3', title: 'Jeep Grand Wagoneer Banner', imageUrl: '/client-work/allen-samuels/jeep-grand-wagoneer-banner.jpg', type: 'banner' },

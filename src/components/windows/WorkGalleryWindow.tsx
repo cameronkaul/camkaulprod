@@ -9,6 +9,7 @@ const typeLabels: Record<string, { label: string; color: string }> = {
   email: { label: 'Email', color: 'bg-purple-100 text-purple-700' },
   poster: { label: 'Poster', color: 'bg-orange-100 text-orange-700' },
   ad: { label: 'Ad', color: 'bg-red-100 text-red-700' },
+  video: { label: 'Video', color: 'bg-pink-100 text-pink-700' },
 };
 
 // Seeded random shuffle for consistent order per session
@@ -83,6 +84,7 @@ export function WorkGalleryWindow() {
           {shuffledItems.map((item, index) => {
             const typeInfo = typeLabels[item.type] || { label: item.type, color: 'bg-gray-100 text-gray-700' };
             const isBanner = item.type === 'banner';
+            const isVideo = item.type === 'video';
             
             return (
               <button
@@ -90,11 +92,22 @@ export function WorkGalleryWindow() {
                 onClick={() => setSelectedIndex(index)}
                 className={`group relative w-full overflow-hidden rounded-lg bg-gray-100 hover:ring-2 hover:ring-blue-400 transition-all break-inside-avoid mb-4 ${isBanner ? 'scale-105 my-2' : ''}`}
               >
-                <img
-                  src={item.imageUrl}
-                  alt={item.title}
-                  className="w-full h-auto object-contain transition-transform group-hover:scale-[1.02]"
-                />
+                {isVideo ? (
+                  <div className="aspect-[9/16] bg-black flex items-center justify-center">
+                    <div className="text-white/70 text-center">
+                      <svg className="w-12 h-12 mx-auto mb-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                      </svg>
+                      <p className="text-xs">{item.title}</p>
+                    </div>
+                  </div>
+                ) : (
+                  <img
+                    src={item.imageUrl}
+                    alt={item.title}
+                    className="w-full h-auto object-contain transition-transform group-hover:scale-[1.02]"
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="absolute bottom-0 left-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${typeInfo.color}`}>
@@ -140,17 +153,32 @@ export function WorkGalleryWindow() {
             </button>
           )}
 
-          {/* Image - scrollable container for full view */}
+          {/* Content - Video or Image */}
           <div 
             className="flex flex-col items-center max-h-full overflow-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <img
-              src={selectedItem.imageUrl}
-              alt={selectedItem.title}
-              className="max-w-full w-auto h-auto object-contain rounded-lg"
-              style={{ maxHeight: 'calc(100vh - 120px)' }}
-            />
+            {selectedItem.videoUrl ? (
+              <div className="w-full max-w-sm" style={{ maxHeight: 'calc(100vh - 120px)' }}>
+                <div className="relative" style={{ paddingBottom: '177.77%' }}>
+                  <iframe
+                    src={selectedItem.videoUrl}
+                    title={selectedItem.title}
+                    className="absolute inset-0 w-full h-full rounded-lg"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              </div>
+            ) : (
+              <img
+                src={selectedItem.imageUrl}
+                alt={selectedItem.title}
+                className="max-w-full w-auto h-auto object-contain rounded-lg"
+                style={{ maxHeight: 'calc(100vh - 120px)' }}
+              />
+            )}
             <div className="mt-4 text-center flex-shrink-0 pb-4">
               <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${typeLabels[selectedItem.type]?.color || 'bg-gray-100 text-gray-700'}`}>
                 {typeLabels[selectedItem.type]?.label || selectedItem.type}
