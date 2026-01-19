@@ -19,15 +19,33 @@ const videos: Video[] = [
   },
   {
     id: '2',
+    embedUrl: 'https://www.loom.com/embed/da6bebb1b7594fd693cc09cf7e3a2bf3?autoplay=1',
+    title: 'Bolaji Lavish - Music Video',
+    thumbnail: '/thumbnails/bolaji-lavish-music-video.jpg',
+  },
+  {
+    id: '3',
     embedUrl: 'https://www.loom.com/embed/2a6cb8c50add4ff2a2078e56d0217d12?autoplay=1',
     title: 'DVLVD - Austin Parque Zaragoza',
     thumbnail: '/thumbnails/dvlvd-austin-parque-zaragoza.jpg',
   },
   {
-    id: '3',
-    embedUrl: 'https://www.loom.com/embed/27fca03e032542a28b74c2ea1a1f70a0?autoplay=1',
-    title: 'DVLVD - Painting Frames',
-    thumbnail: '/thumbnails/dvlvd-painting-frames.jpg',
+    id: '4',
+    embedUrl: 'https://www.loom.com/embed/98be23f50ec64595aaec7ad5ca55f9f3?autoplay=1',
+    title: 'Midway Football - Hype Video 1',
+    thumbnail: '/thumbnails/midway-fb-hype-1.jpg',
+  },
+  {
+    id: '5',
+    embedUrl: 'https://www.loom.com/embed/5e1d5c0a5c5f4d4c8f5e1d5c0a5c5f4d?autoplay=1',
+    title: 'Rush ATO 2',
+    thumbnail: '/thumbnails/rush-ato-2.jpg',
+  },
+  {
+    id: '6',
+    embedUrl: 'https://www.loom.com/embed/b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2?autoplay=1',
+    title: 'India Short',
+    thumbnail: '/thumbnails/india-short.jpg',
   },
 ];
 
