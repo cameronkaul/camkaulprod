@@ -285,32 +285,18 @@ export const projects: Project[] = [
   // ============================================
   // ALLEN SAMUELS COLLECTION
   // ============================================
-  {
-    id: 'allen-samuels-bronco-reel',
-    title: 'Bronco Reel',
+{
+    id: 'allen-samuels-vertical-reel',
+    title: 'Vertical Reel',
     collection: 'allen-samuels',
     category: 'brand',
     year: 2024,
-    description: 'Ford Bronco promotional reel for Allen Samuels dealership',
-    longDescription: 'Cinematic promotional video showcasing a Ford Bronco for Allen Samuels Dodge Jeep Chrysler Ram dealership, featuring scenic outdoor shots highlighting the vehicle\'s rugged appeal.',
+    description: 'Vertical promotional reel for Allen Samuels dealership',
+    longDescription: 'A vertical social media reel showcasing vehicles and dealership atmosphere at Allen Samuels, optimized for mobile-first platforms like Instagram and TikTok.',
     role: 'Videographer, Editor',
     tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
     videoUrl: 'https://www.loom.com/embed/ea7ea52827134ab1b6639a7ad6957a8e',
     thumbnailUrl: '/thumbnails/allen-samuels-bronco-reel.jpg',
-    galleryUrls: [],
-  },
-  {
-    id: 'allen-samuels-starting-lineup',
-    title: 'Starting Lineup',
-    collection: 'allen-samuels',
-    category: 'brand',
-    year: 2024,
-    description: 'Fun team video for Allen Samuels dealership staff',
-    longDescription: 'Energetic and fun promotional video featuring the Allen Samuels dealership sales team in a football-themed starting lineup introduction, showcasing team spirit and personality.',
-    role: 'Videographer, Editor',
-    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
-    videoUrl: 'https://www.loom.com/embed/9321c697af2740ac902307e40185f615',
-    thumbnailUrl: '/thumbnails/allen-samuels-starting-lineup.jpg',
     galleryUrls: [],
   },
 
@@ -393,20 +379,6 @@ export const projects: Project[] = [
     tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
     videoUrl: 'https://www.loom.com/embed/577ff1ea60da4fc0af39d491e7032d6f',
     thumbnailUrl: '/thumbnails/movement-of-everything.png',
-    galleryUrls: [],
-  },
-  {
-    id: 'allen-samuels-vertical-reel',
-    title: 'Vertical Reel',
-    collection: 'allen-samuels',
-    category: 'brand',
-    year: 2024,
-    description: 'Vertical promotional reel for Allen Samuels dealership',
-    longDescription: 'A vertical social media reel showcasing vehicles and dealership atmosphere at Allen Samuels, optimized for mobile-first platforms like Instagram and TikTok.',
-    role: 'Videographer, Editor',
-    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
-    videoUrl: 'https://www.loom.com/embed/0602d4579e774d26946d311539bf93c7',
-    thumbnailUrl: '/thumbnails/allen-samuels-bronco-reel.jpg',
     galleryUrls: [],
   },
 ];
@@ -598,6 +570,7 @@ export const clientWorks: ClientWork[] = [
       { id: 'as-v2', title: 'Dealership Promo 2', imageUrl: '/client-work/allen-samuels/dealership-promo-2.png', videoUrl: 'https://www.loom.com/embed/3de2528259624153a78002a59f6b7d76', type: 'video' },
       { id: 'as-v3', title: 'Dealership Promo 3', imageUrl: '/client-work/allen-samuels/dealership-promo-3.png', videoUrl: 'https://www.loom.com/embed/b8734f15c37b436ebc79a37c54719f4e', type: 'video' },
       { id: 'as-v4', title: 'Dealership Promo 4', imageUrl: '/client-work/allen-samuels/dealership-promo-4.png', videoUrl: 'https://www.loom.com/embed/aaf7cbb0f04a40ae8fdb9bebe580bc65', type: 'video' },
+      { id: 'as-v5', title: 'Starting Lineup', imageUrl: '/client-work/allen-samuels/starting-lineup-thumbnail.png', videoUrl: 'https://www.loom.com/embed/08ae80f671474bb5b4795c7f81d6f125', type: 'video' },
     ],
   },
   {
