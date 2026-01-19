@@ -38,8 +38,8 @@ const defaultWindows: WindowState[] = [
   { id: 'runner', title: 'Runner', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 150, y: 80 }, size: { width: 700, height: 420 } },
   { id: 'document', title: 'Nothing Important.doc', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 180, y: 70 }, size: { width: 650, height: 550 } },
   { id: 'instagram', title: 'Instagram', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 200, y: 80 }, size: { width: 400, height: 350 } },
-  { id: 'videoWidget', title: 'Featured Work', isOpen: true, isMinimized: false, zIndex: -10, position: { x: 720, y: 60 }, size: { width: 500, height: 320 } },
-  { id: 'photoWidget', title: 'Gallery', isOpen: true, isMinimized: false, zIndex: -10, position: { x: 560, y: 420 }, size: { width: 280, height: 280 } },
+  { id: 'videoWidget', title: 'Featured Video', isOpen: true, isMinimized: false, zIndex: -10, position: { x: 720, y: 60 }, size: { width: 500, height: 320 } },
+  { id: 'photoWidget', title: 'Photo Gallery', isOpen: true, isMinimized: false, zIndex: -10, position: { x: 560, y: 420 }, size: { width: 340, height: 340 } },
   { id: 'workGallery', title: 'Design Work', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 140, y: 70 }, size: { width: 850, height: 620 } },
 ];
 

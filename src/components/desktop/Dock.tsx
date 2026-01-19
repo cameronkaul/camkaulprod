@@ -36,8 +36,8 @@ const dockLabels: Record<WindowId, string> = {
   instagram: 'Instagram',
   project: 'Project',
   document: 'Document',
-  videoWidget: 'Featured Work',
-  photoWidget: 'Gallery',
+  videoWidget: 'Featured Video',
+  photoWidget: 'Photo Gallery',
   workGallery: 'Design Work',
 };
 

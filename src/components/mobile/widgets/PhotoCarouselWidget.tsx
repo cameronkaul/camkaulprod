@@ -84,10 +84,6 @@ export function PhotoCarouselWidget() {
               </div>
             </div>
 
-            {/* Title */}
-            <div className="absolute bottom-3 left-3 right-3">
-              <p className="text-white text-xs font-medium truncate">{photos[currentIndex].title || 'Photo'}</p>
-            </div>
 
             {/* Progress dots */}
             <div className="absolute bottom-3 right-3 flex gap-1">
@@ -129,7 +125,7 @@ export function PhotoCarouselWidget() {
                 <ChevronLeft className="w-5 h-5" />
                 <span>Back</span>
               </button>
-              <h2 className="text-white text-lg font-semibold">Gallery</h2>
+              <h2 className="text-white text-lg font-semibold">Photo Gallery</h2>
               <button
                 onClick={() => setIsModalOpen(false)}
                 className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center"

@@ -21,7 +21,7 @@ interface Position {
   y: number;
 }
 
-const STORAGE_KEY = 'desktop-grid-layout-v2';
+const STORAGE_KEY = 'desktop-grid-layout-v3';
 
 const CORE_ICON_ORDER = ['portfolio', 'photos', 'mail', 'instagram'] as const;
 const coreIconSet = new Set<string>(CORE_ICON_ORDER);
@@ -151,17 +151,17 @@ export function useDesktopGrid() {
 
   // Convert grid position to pixel position
   const gridToPixel = useCallback((gridX: number, gridY: number): Position => {
-    return {
-      x: GRID_PADDING + gridX * (GRID_SIZE + GRID_GAP),
-      y: GRID_PADDING + 56 + gridY * (GRID_SIZE + GRID_GAP), // 56px for menu bar
-    };
+  return {
+    x: GRID_PADDING + gridX * (GRID_SIZE + GRID_GAP),
+    y: GRID_PADDING + 40 + gridY * (GRID_SIZE + GRID_GAP), // 40px for tighter spacing below menu bar
+  };
   }, []);
 
   // Convert pixel position to grid position
   const pixelToGrid = useCallback((pixelX: number, pixelY: number): Position => {
     return {
       x: Math.max(0, Math.round((pixelX - GRID_PADDING) / (GRID_SIZE + GRID_GAP))),
-      y: Math.max(0, Math.round((pixelY - GRID_PADDING - 56) / (GRID_SIZE + GRID_GAP))),
+      y: Math.max(0, Math.round((pixelY - GRID_PADDING - 40) / (GRID_SIZE + GRID_GAP))),
     };
   }, []);
 
