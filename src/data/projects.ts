@@ -299,6 +299,20 @@ export const projects: Project[] = [
     thumbnailUrl: '/thumbnails/allen-samuels-bronco-reel.jpg',
     galleryUrls: [],
   },
+  {
+    id: 'allen-samuels-starting-lineup',
+    title: 'Starting Lineup',
+    collection: 'allen-samuels',
+    category: 'brand',
+    year: 2024,
+    description: 'Fun team video for Allen Samuels dealership staff',
+    longDescription: 'Energetic and fun promotional video featuring the Allen Samuels dealership sales team in a football-themed starting lineup introduction, showcasing team spirit and personality.',
+    role: 'Videographer, Editor',
+    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
+    videoUrl: 'https://www.loom.com/embed/9321c697af2740ac902307e40185f615',
+    thumbnailUrl: '/thumbnails/allen-samuels-starting-lineup.jpg',
+    galleryUrls: [],
+  },
 
   // ============================================
   // STANDALONE PROJECTS (No Collection)
@@ -570,7 +584,7 @@ export const clientWorks: ClientWork[] = [
       { id: 'as-v2', title: 'Dealership Promo 2', imageUrl: '/client-work/allen-samuels/dealership-promo-2.png', videoUrl: 'https://www.loom.com/embed/3de2528259624153a78002a59f6b7d76', type: 'video' },
       { id: 'as-v3', title: 'Dealership Promo 3', imageUrl: '/client-work/allen-samuels/dealership-promo-3.png', videoUrl: 'https://www.loom.com/embed/b8734f15c37b436ebc79a37c54719f4e', type: 'video' },
       { id: 'as-v4', title: 'Dealership Promo 4', imageUrl: '/client-work/allen-samuels/dealership-promo-4.png', videoUrl: 'https://www.loom.com/embed/aaf7cbb0f04a40ae8fdb9bebe580bc65', type: 'video' },
-      { id: 'as-v5', title: 'Starting Lineup', imageUrl: '/client-work/allen-samuels/starting-lineup-thumbnail.png', videoUrl: 'https://www.loom.com/embed/08ae80f671474bb5b4795c7f81d6f125', type: 'video' },
+      { id: 'as-v5', title: 'Dealership Promo 5', imageUrl: '/client-work/allen-samuels/starting-lineup-thumbnail.png', videoUrl: 'https://www.loom.com/embed/08ae80f671474bb5b4795c7f81d6f125', type: 'video' },
     ],
   },
   {
