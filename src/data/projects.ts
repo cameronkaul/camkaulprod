@@ -318,6 +318,19 @@ export const projects: Project[] = [
   // STANDALONE PROJECTS (No Collection)
   // ============================================
   {
+    id: 'tao-rocket-2-easy-reel',
+    title: 'Tao Rocket - 2 Easy Reel',
+    category: 'music',
+    year: 2024,
+    description: 'Promotional reel for Tao Rocket',
+    longDescription: 'Dynamic promotional reel for artist Tao Rocket, featuring cinematic nighttime shots with urban aesthetics that capture the artist\'s energy and style.',
+    role: 'Videographer, Editor',
+    tools: ['Panasonic Lumix S5IIX', 'Final Cut Pro'],
+    videoUrl: 'https://www.loom.com/embed/c06e2e06bf8f4aee8e38d5be99d88253',
+    thumbnailUrl: '/thumbnails/tao-rocket-2-easy-reel.jpg',
+    galleryUrls: [],
+  },
+  {
     id: 'bolaji-lavish-music-video',
     title: 'Bōlají - Lavish',
     category: 'music',
