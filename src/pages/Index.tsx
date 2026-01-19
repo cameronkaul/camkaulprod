@@ -225,12 +225,12 @@ function DesktopContent() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
             >
-              <WidgetWindow id="videoWidget" title="Featured Work">
+              <WidgetWindow id="videoWidget" title="Featured Video">
                 <div className="w-full h-full">
                   <VideoCarouselWidget />
                 </div>
               </WidgetWindow>
-              <WidgetWindow id="photoWidget" title="Gallery">
+              <WidgetWindow id="photoWidget" title="Photo Gallery">
                 <div className="w-full h-full">
                   <PhotoCarouselWidget />
                 </div>

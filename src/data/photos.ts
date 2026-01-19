@@ -13,15 +13,13 @@ export interface PhotoAlbum {
 
 export const photoAlbums: PhotoAlbum[] = [
   {
-    id: 'matthew-concert',
-    title: 'Matthew Concert',
-    coverPhoto: '/photos/matthew-concert/P1022422.jpg',
+    id: 'tao-rocket',
+    title: 'Tao Rocket',
+    coverPhoto: '/photos/tao-rocket/P1023051.jpg',
     photos: [
-      { id: 'mc-1', url: '/photos/matthew-concert/P1022422.jpg' },
-      { id: 'mc-2', url: '/photos/matthew-concert/P1022500-2.jpg' },
-      { id: 'mc-3', url: '/photos/matthew-concert/P1022513.jpg' },
-      { id: 'mc-4', url: '/photos/matthew-concert/P1022566.jpg' },
-      { id: 'mc-5', url: '/photos/matthew-concert/P1022626.jpg' },
+      { id: 'tr-1', url: '/photos/tao-rocket/P1023051.jpg' },
+      { id: 'tr-2', url: '/photos/tao-rocket/P1023052.jpg' },
+      { id: 'tr-3', url: '/photos/tao-rocket/P1023062.jpg' },
     ],
   },
   {
@@ -38,6 +36,18 @@ export const photoAlbums: PhotoAlbum[] = [
     ],
   },
   {
+    id: 'matthew-concert',
+    title: 'Matthew Concert',
+    coverPhoto: '/photos/matthew-concert/P1022422.jpg',
+    photos: [
+      { id: 'mc-1', url: '/photos/matthew-concert/P1022422.jpg' },
+      { id: 'mc-2', url: '/photos/matthew-concert/P1022500-2.jpg' },
+      { id: 'mc-3', url: '/photos/matthew-concert/P1022513.jpg' },
+      { id: 'mc-4', url: '/photos/matthew-concert/P1022566.jpg' },
+      { id: 'mc-5', url: '/photos/matthew-concert/P1022626.jpg' },
+    ],
+  },
+  {
     id: 'colton-climbing',
     title: 'Colton Climbing',
     coverPhoto: '/photos/colton-climbing/P1034579.jpg',
@@ -45,16 +55,6 @@ export const photoAlbums: PhotoAlbum[] = [
       { id: 'cc-1', url: '/photos/colton-climbing/P1034574.jpg' },
       { id: 'cc-2', url: '/photos/colton-climbing/P1034579.jpg' },
       { id: 'cc-3', url: '/photos/colton-climbing/P1034586.jpg' },
-    ],
-  },
-  {
-    id: 'tao-rocket',
-    title: 'Tao Rocket',
-    coverPhoto: '/photos/tao-rocket/P1023051.jpg',
-    photos: [
-      { id: 'tr-1', url: '/photos/tao-rocket/P1023051.jpg' },
-      { id: 'tr-2', url: '/photos/tao-rocket/P1023052.jpg' },
-      { id: 'tr-3', url: '/photos/tao-rocket/P1023062.jpg' },
     ],
   },
 ];
