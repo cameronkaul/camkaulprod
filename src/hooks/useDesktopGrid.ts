@@ -23,6 +23,70 @@ interface Position {
 
 const STORAGE_KEY = 'desktop-grid-layout-v2';
 
+const CORE_ICON_ORDER = ['portfolio', 'photos', 'mail', 'instagram'] as const;
+const coreIconSet = new Set<string>(CORE_ICON_ORDER);
+
+function rectsOverlap(a: GridItem, b: GridItem) {
+  return (
+    a.gridX < b.gridX + b.width &&
+    a.gridX + a.width > b.gridX &&
+    a.gridY < b.gridY + b.height &&
+    a.gridY + a.height > b.gridY
+  );
+}
+
+function normalizeAndResolveLayout(rawItems: GridItem[]) {
+  const defaultItems = getDefaultLayout();
+  const defaultById = new Map(defaultItems.map((d) => [d.id, d] as const));
+
+  // Ensure all default items exist
+  const existingIds = new Set(rawItems.map((i) => i.id));
+  const merged: GridItem[] = [...rawItems, ...defaultItems.filter((d) => !existingIds.has(d.id))];
+
+  // Normalize core icon positions to match the desktop column order
+  const desired = merged.map((item) => {
+    const def = defaultById.get(item.id);
+    if (def && item.type === 'icon' && coreIconSet.has(item.id)) {
+      return { ...item, ...def, gridX: def.gridX, gridY: def.gridY };
+    }
+    return item;
+  });
+
+  // Place icons first (core icons at the very top), then everything else.
+  const stableIndex = new Map(desired.map((it, idx) => [it.id, idx] as const));
+  const sorted = [...desired].sort((a, b) => {
+    const aCore = a.type === 'icon' && coreIconSet.has(a.id);
+    const bCore = b.type === 'icon' && coreIconSet.has(b.id);
+    if (aCore && bCore) {
+      return CORE_ICON_ORDER.indexOf(a.id as (typeof CORE_ICON_ORDER)[number]) -
+        CORE_ICON_ORDER.indexOf(b.id as (typeof CORE_ICON_ORDER)[number]);
+    }
+    if (aCore) return -1;
+    if (bCore) return 1;
+
+    if (a.type !== b.type) return a.type === 'icon' ? -1 : 1;
+    return (stableIndex.get(a.id) ?? 0) - (stableIndex.get(b.id) ?? 0);
+  });
+
+  // Resolve overlaps by pushing colliding items downward.
+  const placed: GridItem[] = [];
+  const placedById = new Map<string, GridItem>();
+
+  for (const item of sorted) {
+    let candidate = { ...item };
+    let safety = 0;
+    while (placed.some((p) => rectsOverlap(candidate, p)) && safety < 200) {
+      candidate = { ...candidate, gridY: candidate.gridY + 1 };
+      safety++;
+    }
+    placed.push(candidate);
+    placedById.set(candidate.id, candidate);
+  }
+
+  // Return in the original merged order (stable), with corrected positions.
+  return merged.map((item) => placedById.get(item.id) ?? item);
+}
+
 function getDefaultLayout(): GridItem[] {
   return [
     // Icons on the left column
@@ -42,26 +106,17 @@ export function useDesktopGrid() {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         const parsedItems = JSON.parse(stored) as GridItem[];
-        const defaultItems = getDefaultLayout();
-        
-        // Check if any default items are missing and add them
-        const missingItems = defaultItems.filter(
-          defaultItem => !parsedItems.some(item => item.id === defaultItem.id)
-        );
-        
-        if (missingItems.length > 0) {
-          // Add missing items with their default positions
-          const updatedItems = [...parsedItems, ...missingItems];
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedItems));
-          return updatedItems;
-        }
-        
-        return parsedItems;
+        const normalized = normalizeAndResolveLayout(parsedItems);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
+        return normalized;
       }
     } catch (e) {
       console.error('Failed to load grid layout:', e);
     }
-    return getDefaultLayout();
+
+    const defaults = getDefaultLayout();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(defaults));
+    return defaults;
   });
 
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -76,6 +131,18 @@ export function useDesktopGrid() {
     startGrid: null,
     currentOffset: { x: 0, y: 0 },
   });
+
+  // Normalize layout on mount (prevents Mail from covering Photos, etc.)
+  useEffect(() => {
+    setItems((prev) => {
+      const next = normalizeAndResolveLayout(prev);
+      const prevStr = JSON.stringify(prev);
+      const nextStr = JSON.stringify(next);
+      if (prevStr === nextStr) return prev;
+      localStorage.setItem(STORAGE_KEY, nextStr);
+      return next;
+    });
+  }, []);
 
   // Save to localStorage when items change
   useEffect(() => {
