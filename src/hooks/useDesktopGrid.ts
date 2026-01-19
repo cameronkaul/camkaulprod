@@ -27,8 +27,9 @@ function getDefaultLayout(): GridItem[] {
   return [
     // Icons on the left column
     { id: 'portfolio', type: 'icon', gridX: 0, gridY: 0, width: 1, height: 1 },
-    { id: 'mail', type: 'icon', gridX: 0, gridY: 1, width: 1, height: 1 },
-    { id: 'instagram', type: 'icon', gridX: 0, gridY: 2, width: 1, height: 1 },
+    { id: 'photos', type: 'icon', gridX: 0, gridY: 1, width: 1, height: 1 },
+    { id: 'mail', type: 'icon', gridX: 0, gridY: 2, width: 1, height: 1 },
+    { id: 'instagram', type: 'icon', gridX: 0, gridY: 3, width: 1, height: 1 },
     // Widgets on the right side
     { id: 'widget-video', type: 'widget', gridX: 3, gridY: 0, width: 2, height: 2 },
     { id: 'widget-photo', type: 'widget', gridX: 3, gridY: 2, width: 2, height: 2 },
