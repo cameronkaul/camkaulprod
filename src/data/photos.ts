@@ -37,6 +37,16 @@ export const photoAlbums: PhotoAlbum[] = [
       { id: 'dpm-6', url: '/photos/dr-pepper-mural/P1220822_1.jpg' },
     ],
   },
+  {
+    id: 'colton-climbing',
+    title: 'Colton Climbing',
+    coverPhoto: '/photos/colton-climbing/P1034579.jpg',
+    photos: [
+      { id: 'cc-1', url: '/photos/colton-climbing/P1034574.jpg' },
+      { id: 'cc-2', url: '/photos/colton-climbing/P1034579.jpg' },
+      { id: 'cc-3', url: '/photos/colton-climbing/P1034586.jpg' },
+    ],
+  },
 ];
 
 // Get all photos across all albums
