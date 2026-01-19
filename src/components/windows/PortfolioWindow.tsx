@@ -14,7 +14,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const FALLBACK_THUMBNAIL = 'https://images.unsplash.com/photo-1566577739112-5180d4bf9390?w=800&q=80';
 
 type ViewMode = 'grid' | 'list';
-type SortOption = 'name' | 'date' | 'category';
+type SortOption = 'curated' | 'date' | 'name' | 'category';
 type SidebarSection = 'library' | 'albums';
 
 // Categories for "Recent Plays" section
@@ -29,7 +29,7 @@ const categories = [
 export function PortfolioWindow() {
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState<SortOption>('date');
+  const [sortBy, setSortBy] = useState<SortOption>('curated');
   const [currentCollection, setCurrentCollection] = useState<string | null>(null);
   const [sidebarSection, setSidebarSection] = useState<SidebarSection>('library');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -92,6 +92,9 @@ export function PortfolioWindow() {
 
     // Apply sort
     switch (sortBy) {
+      case 'curated':
+        // Keep curated order as defined in src/data/projects.ts
+        break;
       case 'name':
         result = [...result].sort((a, b) => a.title.localeCompare(b.title));
         break;
@@ -290,15 +293,9 @@ export function PortfolioWindow() {
                 <div className="p-4 space-y-3">
                   <div>
                     <h3 className="text-xl font-bold text-white">{selectedProject.title}</h3>
+                    <p className="text-xs text-white/70 mt-1">Role: {selectedProject.role}</p>
                   </div>
                   <p className="text-sm text-gray-300 leading-relaxed">{selectedProject.description}</p>
-                  <div className="flex flex-wrap gap-2 pt-2">
-                    {selectedProject.tools.map(tool => (
-                      <span key={tool} className="px-2 py-1 bg-white/10 text-white/80 rounded text-xs">
-                        {tool}
-                      </span>
-                    ))}
-                  </div>
                 </div>
               </div>
             </motion.div>
@@ -450,6 +447,9 @@ export function PortfolioWindow() {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="bg-popover/95 backdrop-blur-xl border border-border/50">
+                <DropdownMenuItem onClick={() => setSortBy('curated')} className={sortBy === 'curated' ? 'bg-accent' : ''}>
+                  Curated
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setSortBy('date')} className={sortBy === 'date' ? 'bg-accent' : ''}>
                   Date (Newest)
                 </DropdownMenuItem>
