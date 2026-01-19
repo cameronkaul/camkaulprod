@@ -41,7 +41,22 @@ export function useDesktopGrid() {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
-        return JSON.parse(stored);
+        const parsedItems = JSON.parse(stored) as GridItem[];
+        const defaultItems = getDefaultLayout();
+        
+        // Check if any default items are missing and add them
+        const missingItems = defaultItems.filter(
+          defaultItem => !parsedItems.some(item => item.id === defaultItem.id)
+        );
+        
+        if (missingItems.length > 0) {
+          // Add missing items with their default positions
+          const updatedItems = [...parsedItems, ...missingItems];
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedItems));
+          return updatedItems;
+        }
+        
+        return parsedItems;
       }
     } catch (e) {
       console.error('Failed to load grid layout:', e);
