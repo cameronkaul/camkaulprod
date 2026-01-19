@@ -92,7 +92,22 @@ export function WorkGalleryWindow() {
                 onClick={() => setSelectedIndex(index)}
                 className={`group relative w-full overflow-hidden rounded-lg bg-gray-100 hover:ring-2 hover:ring-blue-400 transition-all break-inside-avoid mb-4 ${isBanner ? 'scale-105 my-2' : ''}`}
               >
-                {isVideo ? (
+                {isVideo && item.imageUrl ? (
+                  <div className="relative aspect-[9/16]">
+                    <img
+                      src={item.imageUrl}
+                      alt={item.title}
+                      className="w-full h-full object-cover transition-transform group-hover:scale-[1.02]"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                      <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
+                        <svg className="w-6 h-6 text-black ml-1" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                ) : isVideo ? (
                   <div className="aspect-[9/16] bg-black flex items-center justify-center">
                     <div className="text-white/70 text-center">
                       <svg className="w-12 h-12 mx-auto mb-2" fill="currentColor" viewBox="0 0 24 24">
