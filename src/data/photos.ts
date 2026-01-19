@@ -15,11 +15,11 @@ export const photoAlbums: PhotoAlbum[] = [
   {
     id: 'tao-rocket',
     title: 'Tao Rocket',
-    coverPhoto: '/photos/tao-rocket/P1023051.jpg',
+    coverPhoto: '/photos/tao-rocket/P1023062.jpg',
     photos: [
-      { id: 'tr-1', url: '/photos/tao-rocket/P1023051.jpg' },
-      { id: 'tr-2', url: '/photos/tao-rocket/P1023052.jpg' },
-      { id: 'tr-3', url: '/photos/tao-rocket/P1023062.jpg' },
+      { id: 'tr-1', url: '/photos/tao-rocket/P1023062.jpg' },
+      { id: 'tr-2', url: '/photos/tao-rocket/P1023051.jpg' },
+      { id: 'tr-3', url: '/photos/tao-rocket/P1023052.jpg' },
     ],
   },
   {

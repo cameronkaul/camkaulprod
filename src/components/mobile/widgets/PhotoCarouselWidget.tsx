@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, Images } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Images } from 'lucide-react';
 import { getAllPhotos } from '@/data/photos';
 
 export function PhotoCarouselWidget() {
@@ -16,6 +16,10 @@ export function PhotoCarouselWidget() {
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % photos.length);
+  }, [photos.length]);
+
+  const prevSlide = useCallback(() => {
+    setCurrentIndex((prev) => (prev - 1 + photos.length) % photos.length);
   }, [photos.length]);
 
   useEffect(() => {
@@ -84,6 +88,25 @@ export function PhotoCarouselWidget() {
               </div>
             </div>
 
+            {/* Navigation arrows */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                prevSlide();
+              }}
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center hover:bg-black/50 transition-colors z-10"
+            >
+              <ChevronLeft className="w-5 h-5 text-white" />
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                nextSlide();
+              }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center hover:bg-black/50 transition-colors z-10"
+            >
+              <ChevronRight className="w-5 h-5 text-white" />
+            </button>
 
             {/* Progress dots */}
             <div className="absolute bottom-3 right-3 flex gap-1">
