@@ -13,6 +13,7 @@ import { MobileHomeScreen } from '@/components/mobile/MobileHomeScreen';
 import { MobileAppOverlay } from '@/components/mobile/MobileAppOverlay';
 import { SelectionBox, isElementInSelection } from '@/components/desktop/SelectionBox';
 import { PortfolioWindow } from '@/components/windows/PortfolioWindow';
+import { PhotosWindow } from '@/components/windows/PhotosWindow';
 import { ProjectWindow } from '@/components/windows/ProjectWindow';
 import { AboutWindow } from '@/components/windows/AboutWindow';
 import { MailWindow } from '@/components/windows/MailWindow';
@@ -275,6 +276,7 @@ function DesktopContent() {
           {!isMobile && (
             <>
               <Window id="portfolio"><PortfolioWindow /></Window>
+              <Window id="photos"><PhotosWindow /></Window>
               <Window id="project"><ProjectWindow /></Window>
               <Window id="about"><AboutWindow /></Window>
               <Window id="mail"><MailWindow /></Window>
@@ -291,6 +293,7 @@ function DesktopContent() {
           {isMobile && (
             <>
               <MobileAppOverlay id="portfolio"><PortfolioWindow /></MobileAppOverlay>
+              <MobileAppOverlay id="photos"><PhotosWindow /></MobileAppOverlay>
               <MobileAppOverlay id="project"><ProjectWindow /></MobileAppOverlay>
               <MobileAppOverlay id="about"><AboutWindow /></MobileAppOverlay>
               <MobileAppOverlay id="mail"><MailWindow /></MobileAppOverlay>
