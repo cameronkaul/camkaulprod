@@ -36,8 +36,6 @@ export function ProjectWindow() {
         <p className="text-muted-foreground">{project.description}</p>
         <div className="flex flex-wrap gap-4 mt-3 text-sm">
           <span><strong>Role:</strong> {project.role}</span>
-          <span><strong>Year:</strong> {project.year}</span>
-          <span className="capitalize"><strong>Category:</strong> {project.category}</span>
         </div>
       </div>
 
