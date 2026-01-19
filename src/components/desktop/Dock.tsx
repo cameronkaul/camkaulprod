@@ -17,6 +17,7 @@ interface DockItem {
 
 const dockItems: DockItem[] = [
   { id: 'portfolio', type: 'portfolio' },
+  { id: 'photos', type: 'photos' },
   { id: 'mail', type: 'mail' },
   { id: 'about', type: 'about' },
   { id: 'resume', type: 'resume' },
@@ -26,6 +27,7 @@ const dockItems: DockItem[] = [
 
 const dockLabels: Record<WindowId, string> = {
   portfolio: 'Portfolio',
+  photos: 'Photos',
   mail: 'Mail',
   about: 'Notes',
   resume: 'Resume.doc',

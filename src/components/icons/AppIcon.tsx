@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { WindowId } from '@/contexts/WindowContext';
 
-export type AppIconType = 'portfolio' | 'mail' | 'about' | 'resume' | 'runner' | 'trash' | 'instagram';
+export type AppIconType = 'portfolio' | 'photos' | 'mail' | 'about' | 'resume' | 'runner' | 'trash' | 'instagram';
 
 interface AppIconConfig {
   gradient: string;
@@ -20,6 +20,21 @@ const PortfolioGlyph = () => (
     {/* Mountain/sun photo detail */}
     <circle cx="9" cy="7" r="1.5" fill="rgba(0,0,0,0.2)" />
     <path d="M6 13L9.5 10L12 12L16 8L20 13V14C20 14.83 19.33 15.5 18.5 15.5H7.5C6.67 15.5 6 14.83 6 14V13Z" fill="rgba(0,0,0,0.15)" />
+  </svg>
+);
+
+// iOS Photos app icon - colorful flower/pinwheel design
+const PhotosGlyph = () => (
+  <svg viewBox="0 0 24 24" className="w-[60%] h-[60%]" fill="none">
+    {/* 8-petal flower design like iOS Photos */}
+    <circle cx="12" cy="8" r="4" fill="white" fillOpacity="0.95" />
+    <circle cx="16" cy="10" r="4" fill="white" fillOpacity="0.9" />
+    <circle cx="16" cy="14" r="4" fill="white" fillOpacity="0.85" />
+    <circle cx="12" cy="16" r="4" fill="white" fillOpacity="0.9" />
+    <circle cx="8" cy="14" r="4" fill="white" fillOpacity="0.85" />
+    <circle cx="8" cy="10" r="4" fill="white" fillOpacity="0.9" />
+    {/* Center dot */}
+    <circle cx="12" cy="12" r="2" fill="rgba(0,0,0,0.15)" />
   </svg>
 );
 
@@ -101,6 +116,13 @@ const iconConfigs: Record<AppIconType, AppIconConfig> = {
     label: 'Portfolio',
     accentColor: 'hsl(199, 95%, 60%)',
     highlightColor: 'rgba(125, 211, 252, 0.5)',
+  },
+  photos: {
+    gradient: 'linear-gradient(145deg, #F472B6 0%, #FB923C 25%, #FACC15 50%, #4ADE80 75%, #38BDF8 100%)',
+    glyph: <PhotosGlyph />,
+    label: 'Photos',
+    accentColor: 'hsl(330, 80%, 60%)',
+    highlightColor: 'rgba(244, 114, 182, 0.5)',
   },
   mail: {
     gradient: 'linear-gradient(145deg, #93C5FD 0%, #60A5FA 40%, #3B82F6 100%)',
@@ -268,6 +290,7 @@ export function getAppConfig(type: AppIconType) {
 export function windowIdToIconType(id: WindowId): AppIconType | null {
   const mapping: Record<string, AppIconType> = {
     portfolio: 'portfolio',
+    photos: 'photos',
     mail: 'mail',
     about: 'about',
     resume: 'resume',

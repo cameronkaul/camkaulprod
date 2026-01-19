@@ -47,6 +47,16 @@ export function MobileHomeScreen() {
             </div>
             <div className="flex flex-col items-center justify-center">
               <AppIcon
+                type="photos"
+                size={60}
+                showLabel={true}
+                onClick={() => handleAppClick('photos')}
+                labelClassName="mt-1.5 text-[11px] font-medium text-white drop-shadow-sm"
+                customLabel="Photos"
+              />
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <AppIcon
                 type="mail"
                 size={60}
                 showLabel={true}
@@ -64,9 +74,6 @@ export function MobileHomeScreen() {
                 labelClassName="mt-1.5 text-[11px] font-medium text-white drop-shadow-sm"
                 customLabel="Notes"
               />
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              {/* Empty slot */}
             </div>
           </div>
         </div>

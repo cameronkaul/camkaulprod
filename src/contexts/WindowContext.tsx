@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 
-export type WindowId = 'portfolio' | 'about' | 'mail' | 'resume' | 'trash' | 'project' | 'runner' | 'document' | 'instagram' | 'videoWidget' | 'photoWidget' | 'workGallery';
+export type WindowId = 'portfolio' | 'photos' | 'about' | 'mail' | 'resume' | 'trash' | 'project' | 'runner' | 'document' | 'instagram' | 'videoWidget' | 'photoWidget' | 'workGallery';
 
 export interface WindowState {
   id: WindowId;
@@ -29,6 +29,7 @@ interface WindowContextType {
 
 const defaultWindows: WindowState[] = [
   { id: 'portfolio', title: 'Portfolio', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 80, y: 60 }, size: { width: 1000, height: 680 } },
+  { id: 'photos', title: 'Photos', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 100, y: 70 }, size: { width: 900, height: 650 } },
   { id: 'about', title: 'About', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 120, y: 80 }, size: { width: 800, height: 600 } },
   { id: 'mail', title: 'Mail', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 160, y: 100 }, size: { width: 500, height: 400 } },
   { id: 'resume', title: 'Resume', isOpen: false, isMinimized: false, zIndex: 0, position: { x: 250, y: 60 }, size: { width: 680, height: 580 } },
