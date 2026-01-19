@@ -1,35 +1,7 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, Images } from 'lucide-react';
-
-interface Photo {
-  id: string;
-  src: string;
-  title: string;
-}
-
-const photos: Photo[] = [
-  {
-    id: '1',
-    src: '/thumbnails/dvlvd-dr-pepper-mural.jpg',
-    title: 'DVLVD Dr Pepper Mural',
-  },
-  {
-    id: '2',
-    src: '/thumbnails/dvlvd-austin-parque-zaragoza.jpg',
-    title: 'Austin Parque Zaragoza',
-  },
-  {
-    id: '3',
-    src: '/thumbnails/dvlvd-painting-frames.jpg',
-    title: 'Painting Frames',
-  },
-  {
-    id: '4',
-    src: '/thumbnails/clase-event-promo.jpg',
-    title: 'Clase Event',
-  },
-];
+import { getAllPhotos } from '@/data/photos';
 
 export function PhotoCarouselWidget() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -37,11 +9,14 @@ export function PhotoCarouselWidget() {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const touchStartX = useRef<number>(0);
 
+  // Get photos from the photos data
+  const photos = useMemo(() => getAllPhotos(), []);
+
   const ROTATION_INTERVAL = 5000; // 5 seconds
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % photos.length);
-  }, []);
+  }, [photos.length]);
 
   useEffect(() => {
     if (!isModalOpen) {
@@ -94,8 +69,8 @@ export function PhotoCarouselWidget() {
                 className="absolute inset-0"
               >
                 <img
-                  src={photos[currentIndex].src}
-                  alt={photos[currentIndex].title}
+                  src={photos[currentIndex].url}
+                  alt={photos[currentIndex].title || ''}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
@@ -111,7 +86,7 @@ export function PhotoCarouselWidget() {
 
             {/* Title */}
             <div className="absolute bottom-3 left-3 right-3">
-              <p className="text-white text-xs font-medium truncate">{photos[currentIndex].title}</p>
+              <p className="text-white text-xs font-medium truncate">{photos[currentIndex].title || 'Photo'}</p>
             </div>
 
             {/* Progress dots */}
@@ -173,7 +148,7 @@ export function PhotoCarouselWidget() {
                     className="aspect-square rounded-xl overflow-hidden"
                   >
                     <img
-                      src={photo.src}
+                      src={photo.url}
                       alt={photo.title}
                       className="w-full h-full object-cover"
                     />

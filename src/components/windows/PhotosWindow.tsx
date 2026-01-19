@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, ChevronLeft, X, Grid, LayoutGrid } from 'lucide-react';
+import { Search, ChevronLeft, X, Grid } from 'lucide-react';
 import { useWindows } from '@/contexts/WindowContext';
 import { photoAlbums, Photo, PhotoAlbum } from '@/data/photos';
 import { HeaderIcon } from '@/components/icons/AppIcon';
@@ -11,9 +11,8 @@ export function PhotosWindow() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedAlbum, setSelectedAlbum] = useState<PhotoAlbum | null>(null);
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
-  const [viewMode, setViewMode] = useState<'grid' | 'albums'>('albums');
 
-  // All photos for grid view
+  // All photos for the main view
   const allPhotos = useMemo(() => {
     return photoAlbums.flatMap(album => 
       album.photos.map(photo => ({ ...photo, albumTitle: album.title }))
@@ -49,7 +48,7 @@ export function PhotosWindow() {
                 className="flex items-center gap-1 text-primary"
               >
                 <ChevronLeft className="w-5 h-5" />
-                Albums
+                Back
               </button>
               <span className="font-semibold text-sm">{selectedAlbum.title}</span>
               <div className="w-16" />
@@ -81,7 +80,7 @@ export function PhotosWindow() {
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-4">
           {selectedAlbum ? (
-            // Photo Grid
+            // Album Photo Grid
             <div className="grid grid-cols-3 gap-1">
               {selectedAlbum.photos.map((photo) => (
                 <motion.button
@@ -100,27 +99,55 @@ export function PhotosWindow() {
               ))}
             </div>
           ) : (
-            // Album Grid
-            <div className="grid grid-cols-2 gap-4">
-              {photoAlbums.map((album) => (
-                <motion.button
-                  key={album.id}
-                  className="flex flex-col items-start"
-                  onClick={() => handleAlbumClick(album)}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <div className="w-full aspect-square overflow-hidden rounded-xl shadow-lg">
-                    <img
-                      src={album.coverPhoto}
-                      alt={album.title}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                  <span className="mt-2 text-sm font-medium">{album.title}</span>
-                  <span className="text-xs text-muted-foreground">{album.photos.length}</span>
-                </motion.button>
-              ))}
+            // All Photos + Albums below
+            <div className="space-y-6">
+              {/* All Photos Section */}
+              <div>
+                <h3 className="text-sm font-semibold text-muted-foreground mb-3">All Photos</h3>
+                <div className="grid grid-cols-3 gap-1">
+                  {allPhotos.map((photo) => (
+                    <motion.button
+                      key={photo.id}
+                      className="aspect-square overflow-hidden rounded-sm"
+                      onClick={() => handlePhotoClick(photo)}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <img
+                        src={photo.url}
+                        alt={photo.title || ''}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Albums Section */}
+              <div>
+                <h3 className="text-sm font-semibold text-muted-foreground mb-3">Albums</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  {photoAlbums.map((album) => (
+                    <motion.button
+                      key={album.id}
+                      className="flex flex-col items-start"
+                      onClick={() => handleAlbumClick(album)}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <div className="w-full aspect-square overflow-hidden rounded-xl shadow-lg">
+                        <img
+                          src={album.coverPhoto}
+                          alt={album.title}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                      </div>
+                      <span className="mt-2 text-sm font-medium">{album.title}</span>
+                      <span className="text-xs text-muted-foreground">{album.photos.length}</span>
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -162,19 +189,9 @@ export function PhotosWindow() {
         </div>
         
         <button
-          onClick={() => { setViewMode('albums'); setSelectedAlbum(null); }}
+          onClick={() => setSelectedAlbum(null)}
           className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm ${
-            viewMode === 'albums' && !selectedAlbum ? 'bg-primary/15 text-primary' : 'text-foreground hover:bg-muted'
-          }`}
-        >
-          <LayoutGrid className="w-4 h-4" />
-          Albums
-        </button>
-        
-        <button
-          onClick={() => setViewMode('grid')}
-          className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm ${
-            viewMode === 'grid' ? 'bg-primary/15 text-primary' : 'text-foreground hover:bg-muted'
+            !selectedAlbum ? 'bg-primary/15 text-primary' : 'text-foreground hover:bg-muted'
           }`}
         >
           <Grid className="w-4 h-4" />
@@ -188,7 +205,7 @@ export function PhotosWindow() {
         {photoAlbums.map((album) => (
           <button
             key={album.id}
-            onClick={() => { setSelectedAlbum(album); setViewMode('albums'); }}
+            onClick={() => setSelectedAlbum(album)}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm ${
               selectedAlbum?.id === album.id ? 'bg-primary/15 text-primary' : 'text-foreground hover:bg-muted'
             }`}
@@ -212,11 +229,14 @@ export function PhotosWindow() {
                 className="flex items-center gap-1 text-primary text-sm hover:underline"
               >
                 <ChevronLeft className="w-4 h-4" />
-                Albums
+                All Photos
               </button>
             )}
             <span className="font-medium text-sm">
-              {selectedAlbum?.title || (viewMode === 'grid' ? 'All Photos' : 'Albums')}
+              {selectedAlbum?.title || 'All Photos'}
+            </span>
+            <span className="text-xs text-muted-foreground">
+              ({selectedAlbum ? selectedAlbum.photos.length : allPhotos.length} photos)
             </span>
           </div>
           
@@ -233,7 +253,7 @@ export function PhotosWindow() {
 
         {/* Content Grid */}
         <div className="flex-1 overflow-y-auto p-4">
-          {viewMode === 'grid' || selectedAlbum ? (
+          {selectedAlbum ? (
             // Photo Grid
             <div className="grid grid-cols-4 gap-2">
               {(selectedAlbum?.photos || allPhotos).map((photo) => (
@@ -254,28 +274,54 @@ export function PhotosWindow() {
               ))}
             </div>
           ) : (
-            // Album Grid
-            <div className="grid grid-cols-3 gap-6">
-              {photoAlbums.map((album) => (
-                <motion.button
-                  key={album.id}
-                  className="flex flex-col items-start text-left"
-                  onClick={() => handleAlbumClick(album)}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <div className="w-full aspect-square overflow-hidden rounded-xl shadow-lg">
+            // All Photos Grid with Albums section below
+            <div className="space-y-8">
+              {/* All Photos */}
+              <div className="grid grid-cols-5 gap-2">
+                {allPhotos.map((photo) => (
+                  <motion.button
+                    key={photo.id}
+                    className="aspect-square overflow-hidden rounded-md group relative"
+                    onClick={() => handlePhotoClick(photo)}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
                     <img
-                      src={album.coverPhoto}
-                      alt={album.title}
-                      className="w-full h-full object-cover"
+                      src={photo.url}
+                      alt={photo.title || ''}
+                      className="w-full h-full object-cover transition-transform group-hover:brightness-110"
                       loading="lazy"
                     />
-                  </div>
-                  <span className="mt-2 text-sm font-semibold">{album.title}</span>
-                  <span className="text-xs text-muted-foreground">{album.photos.length} photos</span>
-                </motion.button>
-              ))}
+                  </motion.button>
+                ))}
+              </div>
+
+              {/* Albums Section */}
+              <div>
+                <h3 className="text-sm font-semibold text-muted-foreground mb-4">Albums</h3>
+                <div className="grid grid-cols-4 gap-4">
+                  {photoAlbums.map((album) => (
+                    <motion.button
+                      key={album.id}
+                      className="flex flex-col items-start text-left"
+                      onClick={() => handleAlbumClick(album)}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <div className="w-full aspect-square overflow-hidden rounded-xl shadow-lg">
+                        <img
+                          src={album.coverPhoto}
+                          alt={album.title}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                      </div>
+                      <span className="mt-2 text-sm font-semibold">{album.title}</span>
+                      <span className="text-xs text-muted-foreground">{album.photos.length} photos</span>
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
         </div>
