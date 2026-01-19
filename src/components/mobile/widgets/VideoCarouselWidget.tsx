@@ -19,7 +19,7 @@ const videos: Video[] = [
   },
   {
     id: '2',
-    embedUrl: 'https://www.loom.com/embed/da6bebb1b7594fd693cc09cf7e3a2bf3?autoplay=1',
+    embedUrl: 'https://www.loom.com/embed/b046ba275b704fde8efa373c5c0655b8?autoplay=1',
     title: 'Bolaji Lavish - Music Video',
     thumbnail: '/thumbnails/bolaji-lavish-music-video.jpg',
   },
@@ -31,19 +31,19 @@ const videos: Video[] = [
   },
   {
     id: '4',
-    embedUrl: 'https://www.loom.com/embed/98be23f50ec64595aaec7ad5ca55f9f3?autoplay=1',
+    embedUrl: 'https://www.loom.com/embed/6312d86d70ab446993b828c402f1f9e2?autoplay=1',
     title: 'Midway Football - Hype Video 1',
     thumbnail: '/thumbnails/midway-fb-hype-1.jpg',
   },
   {
     id: '5',
-    embedUrl: 'https://www.loom.com/embed/5e1d5c0a5c5f4d4c8f5e1d5c0a5c5f4d?autoplay=1',
+    embedUrl: 'https://www.loom.com/embed/181df640ebe642028fb40d2d6c489526?autoplay=1',
     title: 'Rush ATO 2',
     thumbnail: '/thumbnails/rush-ato-2.jpg',
   },
   {
     id: '6',
-    embedUrl: 'https://www.loom.com/embed/b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2?autoplay=1',
+    embedUrl: 'https://www.loom.com/embed/291fcf1171d9496b98d9b919ba88cce3?autoplay=1',
     title: 'India Short',
     thumbnail: '/thumbnails/india-short.jpg',
   },
