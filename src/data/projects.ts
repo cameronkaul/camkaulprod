@@ -584,7 +584,8 @@ export const clientWorks: ClientWork[] = [
       { id: 'as-v2', title: 'Dealership Promo 2', imageUrl: '/client-work/allen-samuels/dealership-promo-2.png', videoUrl: 'https://www.loom.com/embed/3de2528259624153a78002a59f6b7d76', type: 'video' },
       { id: 'as-v3', title: 'Dealership Promo 3', imageUrl: '/client-work/allen-samuels/dealership-promo-3.png', videoUrl: 'https://www.loom.com/embed/b8734f15c37b436ebc79a37c54719f4e', type: 'video' },
       { id: 'as-v4', title: 'Dealership Promo 4', imageUrl: '/client-work/allen-samuels/dealership-promo-4.png', videoUrl: 'https://www.loom.com/embed/aaf7cbb0f04a40ae8fdb9bebe580bc65', type: 'video' },
-      { id: 'as-v5', title: 'Dealership Promo 5', imageUrl: '/client-work/allen-samuels/starting-lineup-thumbnail.png', videoUrl: 'https://www.loom.com/embed/9321c697af2740ac902307e40185f615', type: 'video' },
+      { id: 'as-v5', title: 'Dealership Promo 5', imageUrl: '/client-work/allen-samuels/starting-lineup-thumbnail.png', videoUrl: 'https://www.loom.com/embed/08ae80f671474bb5b4795c7f81d6f125', type: 'video' },
+      { id: 'as-v6', title: 'Starting Lineup', imageUrl: '/thumbnails/allen-samuels-starting-lineup.jpg', videoUrl: 'https://www.loom.com/embed/9321c697af2740ac902307e40185f615', type: 'video' },
     ],
   },
   {
