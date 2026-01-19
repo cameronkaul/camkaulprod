@@ -150,17 +150,6 @@ export function VideoCarouselWidget({ isRectangular = false }: VideoCarouselWidg
           </p>
         </div>
 
-        {/* Progress dots */}
-        <div className="absolute bottom-3 right-3 flex gap-1.5">
-          {videos.map((_, idx) => (
-            <div
-              key={idx}
-              className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                idx === currentIndex ? 'bg-white' : 'bg-white/40'
-              }`}
-            />
-          ))}
-        </div>
       </motion.div>
 
       {/* Full screen video player modal */}
