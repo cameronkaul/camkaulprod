@@ -23,18 +23,20 @@ const PortfolioGlyph = () => (
   </svg>
 );
 
-// iOS Photos app icon - colorful flower/pinwheel design
+// iOS Photos app icon - colorful 8-petal pinwheel/flower design with distinct colors
 const PhotosGlyph = () => (
-  <svg viewBox="0 0 24 24" className="w-[60%] h-[60%]" fill="none">
-    {/* 8-petal flower design like iOS Photos */}
-    <circle cx="12" cy="8" r="4" fill="white" fillOpacity="0.95" />
-    <circle cx="16" cy="10" r="4" fill="white" fillOpacity="0.9" />
-    <circle cx="16" cy="14" r="4" fill="white" fillOpacity="0.85" />
-    <circle cx="12" cy="16" r="4" fill="white" fillOpacity="0.9" />
-    <circle cx="8" cy="14" r="4" fill="white" fillOpacity="0.85" />
-    <circle cx="8" cy="10" r="4" fill="white" fillOpacity="0.9" />
-    {/* Center dot */}
-    <circle cx="12" cy="12" r="2" fill="rgba(0,0,0,0.15)" />
+  <svg viewBox="0 0 24 24" className="w-[70%] h-[70%]" fill="none">
+    {/* 8-petal flower design like iOS Photos - each petal is a different color */}
+    <ellipse cx="12" cy="7" rx="2.5" ry="4" fill="#FF3B30" /> {/* Red - top */}
+    <ellipse cx="15.5" cy="8.5" rx="2.5" ry="4" transform="rotate(45 15.5 8.5)" fill="#FF9500" /> {/* Orange - top right */}
+    <ellipse cx="17" cy="12" rx="4" ry="2.5" fill="#FFCC00" /> {/* Yellow - right */}
+    <ellipse cx="15.5" cy="15.5" rx="2.5" ry="4" transform="rotate(-45 15.5 15.5)" fill="#34C759" /> {/* Green - bottom right */}
+    <ellipse cx="12" cy="17" rx="2.5" ry="4" fill="#00C7BE" /> {/* Teal - bottom */}
+    <ellipse cx="8.5" cy="15.5" rx="2.5" ry="4" transform="rotate(45 8.5 15.5)" fill="#007AFF" /> {/* Blue - bottom left */}
+    <ellipse cx="7" cy="12" rx="4" ry="2.5" fill="#5856D6" /> {/* Purple - left */}
+    <ellipse cx="8.5" cy="8.5" rx="2.5" ry="4" transform="rotate(-45 8.5 8.5)" fill="#AF52DE" /> {/* Magenta - top left */}
+    {/* White center circle */}
+    <circle cx="12" cy="12" r="2.5" fill="white" />
   </svg>
 );
 
@@ -118,11 +120,11 @@ const iconConfigs: Record<AppIconType, AppIconConfig> = {
     highlightColor: 'rgba(125, 211, 252, 0.5)',
   },
   photos: {
-    gradient: 'linear-gradient(145deg, #F472B6 0%, #FB923C 25%, #FACC15 50%, #4ADE80 75%, #38BDF8 100%)',
+    gradient: 'linear-gradient(145deg, #1C1C1E 0%, #2C2C2E 50%, #1C1C1E 100%)',
     glyph: <PhotosGlyph />,
     label: 'Photos',
-    accentColor: 'hsl(330, 80%, 60%)',
-    highlightColor: 'rgba(244, 114, 182, 0.5)',
+    accentColor: 'hsl(0, 0%, 15%)',
+    highlightColor: 'rgba(60, 60, 60, 0.5)',
   },
   mail: {
     gradient: 'linear-gradient(145deg, #93C5FD 0%, #60A5FA 40%, #3B82F6 100%)',

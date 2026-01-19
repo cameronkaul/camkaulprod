@@ -49,6 +49,7 @@ interface DesktopIconConfig {
 
 const desktopIconConfigs: DesktopIconConfig[] = [
   { id: 'portfolio', type: 'portfolio', label: 'Portfolio' },
+  { id: 'photos', type: 'photos', label: 'Photos' },
   { id: 'mail', type: 'mail', label: 'Mail' },
 ];
 
