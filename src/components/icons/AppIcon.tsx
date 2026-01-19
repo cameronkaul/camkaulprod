@@ -120,11 +120,11 @@ const iconConfigs: Record<AppIconType, AppIconConfig> = {
     highlightColor: 'rgba(125, 211, 252, 0.5)',
   },
   photos: {
-    gradient: 'linear-gradient(145deg, #1C1C1E 0%, #2C2C2E 50%, #1C1C1E 100%)',
+    gradient: 'linear-gradient(145deg, #FFFFFF 0%, #F5F5F5 50%, #E8E8E8 100%)',
     glyph: <PhotosGlyph />,
     label: 'Photos',
-    accentColor: 'hsl(0, 0%, 15%)',
-    highlightColor: 'rgba(60, 60, 60, 0.5)',
+    accentColor: 'hsl(0, 0%, 95%)',
+    highlightColor: 'rgba(255, 255, 255, 0.6)',
   },
   mail: {
     gradient: 'linear-gradient(145deg, #93C5FD 0%, #60A5FA 40%, #3B82F6 100%)',
