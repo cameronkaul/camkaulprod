@@ -113,6 +113,20 @@ export const projects: Project[] = [
     thumbnailUrl: '/thumbnails/bolaji-lavish-music-video.jpg',
     galleryUrls: [],
   },
+  // Zilker Brewing BTS
+  {
+    id: 'zilker-brewing-bts',
+    title: 'Zilker Brewing BTS',
+    category: 'brand',
+    year: 2025,
+    description: 'Behind-the-scenes video for Zilker Brewing',
+    longDescription: 'Behind-the-scenes look at Zilker Brewing, capturing the people, process, and atmosphere behind the brand.',
+    role: 'Videographer & Editor',
+    tools: ['Final Cut Pro'],
+    videoUrl: 'https://www.youtube.com/embed/q756h7dY9Rc',
+    thumbnailUrl: 'https://i.ytimg.com/vi/q756h7dY9Rc/hqdefault.jpg',
+    galleryUrls: [],
+  },
   // Starting Lineup
   {
     id: 'allen-samuels-starting-lineup',
