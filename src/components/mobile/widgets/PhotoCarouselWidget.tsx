@@ -81,14 +81,15 @@ export function PhotoCarouselWidget() {
       >
         {hasPhotos ? (
           <>
-            <AnimatePresence mode="wait">
+            <AnimatePresence initial={false}>
               <motion.div
                 key={currentIndex}
-                initial={{ opacity: 0, scale: 1.05 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.5 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
                 className="absolute inset-0"
+                style={{ willChange: 'opacity' }}
               >
                 <img
                   src={photos[currentIndex].url}
