@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Play, ChevronLeft, ChevronRight } from 'lucide-react';
+import { CrossfadeImage } from '@/components/shared/CrossfadeImage';
 
 interface Video {
   id: string;
@@ -118,23 +119,13 @@ export function VideoCarouselWidget({ isRectangular = false }: VideoCarouselWidg
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
-        <AnimatePresence initial={false}>
-          <motion.div
-            key={currentIndex}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, transition: { duration: 1.6, ease: [0.25, 0.1, 0.25, 1] } }}
-            exit={{ opacity: 0, transition: { duration: 1.4, ease: [0.4, 0, 0.6, 1] } }}
-            className="absolute inset-0"
-            style={{ willChange: 'opacity' }}
-          >
-            <img
-              src={videos[currentIndex].thumbnail}
-              alt={videos[currentIndex].title}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-          </motion.div>
-        </AnimatePresence>
+        <CrossfadeImage
+          src={videos[currentIndex].thumbnail}
+          alt={videos[currentIndex].title}
+          fadeDurationMs={1800}
+        >
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+        </CrossfadeImage>
 
         {/* Play icon overlay */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
