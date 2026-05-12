@@ -57,7 +57,7 @@ export function VideoCarouselWidget({ isRectangular = false }: VideoCarouselWidg
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const touchStartX = useRef<number>(0);
 
   const ROTATION_INTERVAL = 8000; // 8 seconds for thumbnail rotation
