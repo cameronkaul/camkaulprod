@@ -85,20 +85,6 @@ export const projects: Project[] = [
     thumbnailUrl: '/thumbnails/dvlvd-austin-parque-zaragoza.jpg',
     galleryUrls: [],
   },
-  {
-    id: 'dvlvd-painting-frames',
-    title: 'Painting Frames',
-    collection: 'dvlvd-murals',
-    category: 'brand',
-    year: 2024,
-    description: 'DVLVD Murals behind-the-scenes painting frames video',
-    longDescription: 'Behind-the-scenes video showcasing the DVLVD Murals team at work in their studio, capturing the artistic process of creating and framing large-scale paintings.',
-    role: 'Videographer & Editor',
-    tools: ['Final Cut Pro'],
-    videoUrl: 'https://www.loom.com/embed/27fca03e032542a28b74c2ea1a1f70a0',
-    thumbnailUrl: '/thumbnails/dvlvd-painting-frames.jpg',
-    galleryUrls: [],
-  },
   // Lavish Music Video
   {
     id: 'bolaji-lavish-music-video',
@@ -125,6 +111,20 @@ export const projects: Project[] = [
     tools: ['Final Cut Pro'],
     videoUrl: 'https://www.youtube.com/embed/q756h7dY9Rc',
     thumbnailUrl: 'https://i.ytimg.com/vi/q756h7dY9Rc/hqdefault.jpg',
+    galleryUrls: [],
+  },
+  // Clayton Homes x Blues Brothers
+  {
+    id: 'clayton-homes-blues-brothers',
+    title: 'Clayton Homes 2 x Blues Brothers',
+    category: 'brand',
+    year: 2025,
+    description: 'Clayton Homes promotional video with a Blues Brothers twist',
+    longDescription: 'A creative promotional piece for Clayton Homes inspired by the Blues Brothers, blending brand storytelling with a stylized cinematic edit.',
+    role: 'Videographer & Editor',
+    tools: ['Final Cut Pro'],
+    videoUrl: 'https://www.youtube.com/embed/QheogEMf5-Y',
+    thumbnailUrl: 'https://i.ytimg.com/vi/QheogEMf5-Y/hqdefault.jpg',
     galleryUrls: [],
   },
   // Starting Lineup
@@ -198,6 +198,21 @@ export const projects: Project[] = [
     tools: ['Final Cut Pro'],
     videoUrl: 'https://www.loom.com/embed/885b68b426d8444e84ac5fd275f7c1fe',
     thumbnailUrl: '/thumbnails/ato-fb-champ-2-v2.jpg',
+    galleryUrls: [],
+  },
+  // Painting Frames (moved behind FB Championships)
+  {
+    id: 'dvlvd-painting-frames',
+    title: 'Painting Frames',
+    collection: 'dvlvd-murals',
+    category: 'brand',
+    year: 2024,
+    description: 'DVLVD Murals behind-the-scenes painting frames video',
+    longDescription: 'Behind-the-scenes video showcasing the DVLVD Murals team at work in their studio, capturing the artistic process of creating and framing large-scale paintings.',
+    role: 'Videographer & Editor',
+    tools: ['Final Cut Pro'],
+    videoUrl: 'https://www.loom.com/embed/27fca03e032542a28b74c2ea1a1f70a0',
+    thumbnailUrl: '/thumbnails/dvlvd-painting-frames.jpg',
     galleryUrls: [],
   },
   // Reyna Reyes Real Estate
