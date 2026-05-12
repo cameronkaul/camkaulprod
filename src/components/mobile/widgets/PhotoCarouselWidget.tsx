@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Images } from 'lucide-react';
 import { getAllPhotos, type Photo } from '@/data/photos';
+import { CrossfadeImage } from '@/components/shared/CrossfadeImage';
 
 // This is the exact photo you want first: artist on the lift against the blue sky.
 const PREFERRED_START_URL = '/photos/dr-pepper-mural/P1220766.jpg';
@@ -86,23 +87,13 @@ export function PhotoCarouselWidget() {
       >
         {hasPhotos ? (
           <>
-            <AnimatePresence initial={false}>
-              <motion.div
-                key={currentIndex}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { duration: 1.6, ease: [0.25, 0.1, 0.25, 1] } }}
-                exit={{ opacity: 0, transition: { duration: 1.4, ease: [0.4, 0, 0.6, 1] } }}
-                className="absolute inset-0"
-                style={{ willChange: 'opacity' }}
-              >
-                <img
-                  src={photos[currentIndex].url}
-                  alt={photos[currentIndex].title || ''}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-              </motion.div>
-            </AnimatePresence>
+            <CrossfadeImage
+              src={photos[currentIndex].url}
+              alt={photos[currentIndex].title || ''}
+              fadeDurationMs={1800}
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+            </CrossfadeImage>
 
             {/* Photo icon */}
             <div className="absolute top-3 left-3">
