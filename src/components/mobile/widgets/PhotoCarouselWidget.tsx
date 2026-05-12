@@ -23,7 +23,7 @@ export function PhotoCarouselWidget() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const touchStartX = useRef<number>(0);
 
   const ROTATION_INTERVAL = 5000; // 5 seconds

@@ -26,7 +26,7 @@ export function DesktopIcon({
   onDragEnd,
 }: DesktopIconProps) {
   const [isDragging, setIsDragging] = useState(false);
-  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const clickTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const dragStartRef = useRef({ x: 0, y: 0 });
   const dragThresholdRef = useRef(false);
   const clickCountRef = useRef(0);
