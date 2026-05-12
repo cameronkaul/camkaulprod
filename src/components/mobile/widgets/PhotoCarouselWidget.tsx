@@ -40,12 +40,17 @@ export function PhotoCarouselWidget() {
 
   useEffect(() => {
     if (!isModalOpen && photos.length > 1) {
-      intervalRef.current = setInterval(nextSlide, ROTATION_INTERVAL);
-    }
+      // Offset start so photos and videos don't rotate in lockstep
+      const startDelay = setTimeout(() => {
+        nextSlide();
+        intervalRef.current = setInterval(nextSlide, ROTATION_INTERVAL);
+      }, 2500);
 
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
+      return () => {
+        clearTimeout(startDelay);
+        if (intervalRef.current) clearInterval(intervalRef.current);
+      };
+    }
   }, [isModalOpen, nextSlide, photos.length]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -85,9 +90,8 @@ export function PhotoCarouselWidget() {
               <motion.div
                 key={currentIndex}
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
+                animate={{ opacity: 1, transition: { duration: 1.6, ease: [0.25, 0.1, 0.25, 1] } }}
+                exit={{ opacity: 0, transition: { duration: 1.4, ease: [0.4, 0, 0.6, 1] } }}
                 className="absolute inset-0"
                 style={{ willChange: 'opacity' }}
               >
