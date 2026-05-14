@@ -110,7 +110,7 @@ export const projects: Project[] = [
     role: 'Videographer & Editor',
     tools: ['Final Cut Pro'],
     videoUrl: 'https://www.youtube.com/embed/q756h7dY9Rc',
-    thumbnailUrl: 'https://i.ytimg.com/vi/q756h7dY9Rc/hqdefault.jpg',
+    thumbnailUrl: 'https://i.ytimg.com/vi/q756h7dY9Rc/maxresdefault.jpg',
     galleryUrls: [],
   },
   // Clayton Homes x Blues Brothers
@@ -124,7 +124,7 @@ export const projects: Project[] = [
     role: 'Videographer & Editor',
     tools: ['Final Cut Pro'],
     videoUrl: 'https://www.youtube.com/embed/QheogEMf5-Y',
-    thumbnailUrl: 'https://i.ytimg.com/vi/QheogEMf5-Y/hqdefault.jpg',
+    thumbnailUrl: 'https://i.ytimg.com/vi/QheogEMf5-Y/maxresdefault.jpg',
     galleryUrls: [],
   },
   // Starting Lineup
