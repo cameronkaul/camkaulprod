@@ -15,6 +15,8 @@ export interface Project {
   tools: string[];
   videoUrl?: string;
   thumbnailUrl: string;
+  /** Optional CSS scale to crop into the thumbnail (e.g. 1.35 zooms 35%). */
+  thumbnailZoom?: number;
   galleryUrls: string[];
   externalLinks?: {
     label: string;
@@ -111,6 +113,7 @@ export const projects: Project[] = [
     tools: ['Final Cut Pro'],
     videoUrl: 'https://www.youtube.com/embed/q756h7dY9Rc',
     thumbnailUrl: 'https://i.ytimg.com/vi/q756h7dY9Rc/maxresdefault.jpg',
+    thumbnailZoom: 1.4,
     galleryUrls: [],
   },
   // Clayton Homes x Blues Brothers
@@ -125,6 +128,7 @@ export const projects: Project[] = [
     tools: ['Final Cut Pro'],
     videoUrl: 'https://www.youtube.com/embed/QheogEMf5-Y',
     thumbnailUrl: 'https://i.ytimg.com/vi/QheogEMf5-Y/maxresdefault.jpg',
+    thumbnailZoom: 1.4,
     galleryUrls: [],
   },
   // Starting Lineup
