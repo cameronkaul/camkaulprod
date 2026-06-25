@@ -58,6 +58,21 @@ export const collections = {
 // PROJECTS - In display order
 // ============================================
 export const projects: Project[] = [
+  // Featured: Gibson Wedding
+  {
+    id: 'eli-hannah-gibson-wedding',
+    title: 'Eli and Hannah Gibson Wedding',
+    category: 'weddings',
+    year: 2025,
+    description: 'Wedding highlight video for Eli and Hannah Gibson',
+    longDescription: 'Cinematic wedding highlight video capturing the beautiful ceremony and celebration of Eli and Hannah Gibson. Features emotional moments, candid interactions, and stunning 4K visuals.',
+    role: 'Videographer & Editor',
+    tools: ['Final Cut Pro'],
+    videoUrl: 'https://www.youtube.com/embed/6OO3oZ9VxjY',
+    thumbnailUrl: 'https://i.ytimg.com/vi/6OO3oZ9VxjY/maxresdefault.jpg',
+    thumbnailZoom: 1.4,
+    galleryUrls: [],
+  },
   // DVLVD Murals (1-3)
   {
     id: 'dvlvd-dr-pepper-mural',
