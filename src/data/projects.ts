@@ -146,6 +146,21 @@ export const projects: Project[] = [
     thumbnailZoom: 1.4,
     galleryUrls: [],
   },
+  // Hermès to Home
+  {
+    id: 'hermes-to-home',
+    title: 'Hermès to Home',
+    category: 'brand',
+    year: 2025,
+    description: 'Cinematic brand piece — Hermès to Home',
+    longDescription: 'A stylized brand film blending luxury aesthetics with warm, homegrown storytelling.',
+    role: 'Videographer & Editor',
+    tools: ['Final Cut Pro'],
+    videoUrl: 'https://www.youtube.com/embed/LGEnRZ3Bno0',
+    thumbnailUrl: 'https://i.ytimg.com/vi/LGEnRZ3Bno0/maxresdefault.jpg',
+    thumbnailZoom: 1.4,
+    galleryUrls: [],
+  },
   // Starting Lineup
   {
     id: 'allen-samuels-starting-lineup',
