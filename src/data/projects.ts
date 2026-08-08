@@ -131,6 +131,21 @@ export const projects: Project[] = [
     thumbnailZoom: 1.4,
     galleryUrls: [],
   },
+  // Day of the Dead Reel
+  {
+    id: 'day-of-the-dead-reel',
+    title: 'Day of the Dead Reel',
+    category: 'brand',
+    year: 2025,
+    description: 'Short-form reel capturing a Day of the Dead celebration',
+    longDescription: 'A fast-paced vertical reel documenting the color, movement, and energy of a Day of the Dead celebration.',
+    role: 'Videographer & Editor',
+    tools: ['Final Cut Pro'],
+    videoUrl: 'https://www.youtube.com/embed/F3UP6FQ80KI',
+    thumbnailUrl: 'https://i.ytimg.com/vi/F3UP6FQ80KI/maxresdefault.jpg',
+    thumbnailZoom: 1.4,
+    galleryUrls: [],
+  },
   // Clayton Homes x Blues Brothers
   {
     id: 'clayton-homes-blues-brothers',
