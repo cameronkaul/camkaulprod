@@ -191,6 +191,20 @@ export const projects: Project[] = [
     thumbnailUrl: '/thumbnails/allen-samuels-starting-lineup.jpg',
     galleryUrls: [],
   },
+  // Matthew Mata Concert Reel
+  {
+    id: 'matthew-mata-concert-reel',
+    title: 'Matthew Mata Concert Reel',
+    category: 'brand',
+    year: 2024,
+    description: 'Concert reel for Matthew Mata',
+    longDescription: 'Fast-cut concert reel capturing the energy of a live Matthew Mata performance, blending crowd reactions with stage moments.',
+    role: 'Videographer & Editor',
+    tools: ['Final Cut Pro'],
+    videoUrl: 'https://www.loom.com/embed/0602d4579e774d26946d311539bf93c7',
+    thumbnailUrl: 'https://cdn.loom.com/sessions/thumbnails/0602d4579e774d26946d311539bf93c7-e112b5b5cfe359bd.gif',
+    galleryUrls: [],
+  },
   // Rush Videos 1 & 2
   {
     id: 'rush-ato-lr',
